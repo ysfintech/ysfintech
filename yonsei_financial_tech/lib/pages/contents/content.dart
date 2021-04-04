@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+class Content extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _ContentState createState() => _ContentState();
 }
 
-class _HomeState extends State<Home> {
+class _ContentState extends State<Content> {
 
   ScrollController _controller = new ScrollController();
 
@@ -21,11 +21,11 @@ class _HomeState extends State<Home> {
                 // MENU BAR ----------------------------------------------------------
                 
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                title(context),
+                ourMission(context),
                 // About Us - INTRODUCTION -------------------------------------------
-                aboutUs(context),
+                articleShort(context),
                 // Meet Our People ---------------------------------------------------
-                meetOutPeople(context),
+                articleLong(context),
               ],
             ),
           ),
@@ -35,30 +35,30 @@ class _HomeState extends State<Home> {
   }
 }
 
-Container title(BuildContext context) {
+Container ourMission(BuildContext context) {
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("images and Title"),
+    child: Text("Our Mission"),
   );
 }
 
-Container aboutUs(BuildContext context) {
+Container articleShort(BuildContext context) {
 
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("About Us"),
+    child: Text("Subtitle1"),
   );
 }
 
-Container meetOutPeople(BuildContext context) {
+Container articleLong(BuildContext context) {
   var md = MediaQuery.of(context).size; 
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Meet Out People"),
+    child: Text("Subtitle2"),
   );
 }
