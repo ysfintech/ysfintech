@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/util/textify.dart';
 // pages
-import '../body/home/home.dart' as home;
+import '../pages/home/home.dart' as home;
 
 class Header extends StatefulWidget {
   Header({Key key}) : super(key: key);
@@ -25,6 +25,7 @@ class _HeaderState extends State<Header> {
 
   Widget topBar(BuildContext c) {
     return Container(
+      color: Colors.white,
       width: MediaQuery.of(c).size.width,
       height: MediaQuery.of(c).size.height * 0.1,
       padding: EdgeInsets.only(
@@ -43,16 +44,15 @@ class _HeaderState extends State<Header> {
           ),
           // space
           Expanded(
-            flex: 4,
+            flex: MediaQuery.of(c).size.width < 800 ? 1 : 4,
             child: SizedBox(),
           ),
           // group of tabs
           Expanded(
-            flex: 5,
+            flex: MediaQuery.of(c).size.width < 800 ? 8 : 5,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
               children: [
                 // tab : intro
                 TextButton(
@@ -70,8 +70,8 @@ class _HeaderState extends State<Header> {
                             Expanded(
                               flex: 2,
                               child: Icon(Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black
-                                  // size: MediaQuery.of(c).size.width * 0.017,
+                                  color: Colors.black,
+                                  size: MediaQuery.of(c).size.width * 0.017,
                                   ),
                             )
                           ],
@@ -92,8 +92,8 @@ class _HeaderState extends State<Header> {
                             Expanded(
                               flex: 2,
                               child: Icon(Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black
-                                  // size: MediaQuery.of(c).size.width * 0.017,
+                                  color: Colors.black,
+                                  size: MediaQuery.of(c).size.width * 0.017,
                                   ),
                             )
                           ],
@@ -114,8 +114,8 @@ class _HeaderState extends State<Header> {
                             Expanded(
                               flex: 2,
                               child: Icon(Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black
-                                  // size: MediaQuery.of(c).size.width * 0.017,
+                                  color: Colors.black,
+                                  size: MediaQuery.of(c).size.width * 0.017,
                                   ),
                             )
                           ],
@@ -136,8 +136,8 @@ class _HeaderState extends State<Header> {
                             Expanded(
                               flex: 2,
                               child: Icon(Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black
-                                  // size: MediaQuery.of(c).size.width * 0.017,
+                                  color: Colors.black,
+                                  size: MediaQuery.of(c).size.width * 0.017,
                                   ),
                             )
                           ],
@@ -158,8 +158,8 @@ class _HeaderState extends State<Header> {
                             Expanded(
                               flex: 2,
                               child: Icon(Icons.keyboard_arrow_down_rounded,
-                                  color: Colors.black
-                                  // size: MediaQuery.of(c).size.width * 0.017,
+                                  color: Colors.black,
+                                  size: MediaQuery.of(c).size.width * 0.017,
                                   ),
                             )
                           ],
@@ -175,9 +175,16 @@ class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: topBar(context),
-        elevation: 0.0,
+      // appBar: AppBar(
+      //   title: topBar(context),
+      //   elevation: 0.0,
+      // ),
+      appBar: PreferredSize(
+        preferredSize: Size(
+          double.infinity,
+          MediaQuery.of(context).size.height * 0.1,
+        ),
+        child: topBar(context),
       ),
       body: Center(
         child: gotoPage(pageIndex),
