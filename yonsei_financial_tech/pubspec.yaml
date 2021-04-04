@@ -23,7 +23,8 @@ environment:
 dependencies:
   responsive_framework: ^0.1.0
   animations: ^2.0.0
-  
+  google_fonts: ^2.0.0
+
   flutter:
     sdk: flutter
 
