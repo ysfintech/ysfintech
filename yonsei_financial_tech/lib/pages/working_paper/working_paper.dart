@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Home extends StatefulWidget {
+class Paper extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _PaperState createState() => _PaperState();
 }
 
-class _HomeState extends State<Home> {
+class _PaperState extends State<Paper> {
 
   ScrollController _controller = new ScrollController();
 
@@ -21,11 +21,9 @@ class _HomeState extends State<Home> {
                 // MENU BAR ----------------------------------------------------------
                 
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                title(context),
-                // About Us - INTRODUCTION -------------------------------------------
-                aboutUs(context),
-                // Meet Our People ---------------------------------------------------
-                meetOutPeople(context),
+                searchTab(context),
+                // Board  ------------------------------------------------------------
+                board(context),
               ],
             ),
           ),
@@ -35,30 +33,21 @@ class _HomeState extends State<Home> {
   }
 }
 
-Container title(BuildContext context) {
+Container searchTab(BuildContext context) {
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("images and Title"),
+    child: Text("search Tab"),
   );
 }
 
-Container aboutUs(BuildContext context) {
+Container board(BuildContext context) {
 
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("About Us"),
-  );
-}
-
-Container meetOutPeople(BuildContext context) {
-  var md = MediaQuery.of(context).size; 
-
-  return Container(
-    margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Meet Out People"),
+    child: Text("Board"),
   );
 }
