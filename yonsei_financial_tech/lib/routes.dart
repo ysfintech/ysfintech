@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 
 class Routes {
   static const String home = "/";
-  static const String people = "people";
   static const String content = "content";
   static const String paper = "paper";
   static const String publish = "publish";

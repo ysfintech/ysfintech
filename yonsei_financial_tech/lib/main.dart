@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter/pages/pages.dart';
+// pages
+import 'package:yonsei_financial_tech/pages/contents/content.dart';
+import 'package:yonsei_financial_tech/pages/home/home.dart';
+import 'package:yonsei_financial_tech/pages/publishment/publish.dart';
+import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
 // routes
 import './routes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -30,11 +34,13 @@ class MyApp extends StatelessWidget {
         return Routes.fadeThrough(settings, (context) {
           switch (settings.name) {
             case Routes.home:
-              // return ListPage();
-            case Routes.people:
-              // return PostPage();
+              return Home();
             case Routes.content:
-              // return TypographyPage();
+              return Content();
+            case Routes.paper:
+              return Paper();
+            case Routes.publish:
+              return Publish();
             default:
               return SizedBox.shrink();
           }
