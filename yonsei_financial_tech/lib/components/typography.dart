@@ -25,14 +25,14 @@ TextStyle buttonTextStyle = GoogleFonts.montserrat(
     textStyle: TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
 
 // Advanced
-TextStyle titleIntroductionTextStyle = GoogleFonts.montserrat(
-    textStyle: TextStyle(
-        fontSize: 40, color: Colors.white, fontWeight: FontWeight.w800));
+TextStyle titleIntroductionTextStyle =
+    TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.w800, fontFamily: 'Yonsei');
 
 TextStyle articleTitleTextStyle({Color color}) {
   return TextStyle(
       fontSize: 28,
       color: color != null ? color : Colors.white,
+      fontFamily: 'Yonsei',
       fontWeight: FontWeight.w700);
 }
 

@@ -14,6 +14,7 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
         alignment: Alignment.center,
@@ -158,73 +159,99 @@ class Article extends StatelessWidget {
   Widget build(BuildContext context) {
     final md = MediaQuery.of(context).size;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(
-          width: md.width,
-          height: 100,
-        ),
-        Container(
-          width: md.width,
-          height: 80,
-          margin: marginHorizontal(md.width),
-          child: Text('Introduction', style: headlineTextStyle),
-        ),
-        md.width > 1600
-            ? Container(
-                margin: marginHorizontal(md.width),
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 4,
-                      child: Text(
-                        content,
-                        style: bodyTextStyle,
+    return Container(
+        color: backgroundColor != null ? backgroundColor : Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+              width: md.width,
+              height: 100,
+            ),
+            Container(
+              width: md.width,
+              height: 80,
+              margin: marginHorizontal(md.width),
+              child: Text('Introduction', style: headlineTextStyle),
+            ),
+            md.width > 1600
+                ? Container(
+                    margin: marginHorizontal(md.width),
+                    child: isImageRight 
+                    ? Row(
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            content,
+                            style: bodyTextStyle,
+                          ),
+                        ),
+                        Expanded(child: SizedBox(), flex: 1),
+                        Expanded(
+                            flex: 4,
+                            child: ClipRect(
+                                child: Container(
+                              child: Image(
+                                  image: AssetImage(imagePath),
+                                  fit: BoxFit.cover),
+                            )))
+                      ],
+                    )
+                    :
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 4,
+                            child: ClipRect(
+                                child: Container(
+                              child: Image(
+                                  image: AssetImage(imagePath),
+                                  fit: BoxFit.cover),
+                            ))),
+                        Expanded(child: SizedBox(), flex: 1),
+                        Expanded(
+                          flex: 4,
+                          child: Text(
+                            content,
+                            style: bodyTextStyle,
+                          ),
+                        ),
+                      ],
+                    )
+                    )
+                : Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          margin: marginHorizontal(md.width),
+                          child: Text(
+                            content,
+                            style: bodyTextStyle,
+                          ),
+                        ),
                       ),
-                    ),
-                    Expanded(child: SizedBox(), flex: 1),
-                    Expanded(
-                        flex: 4,
-                        child: ClipRect(
-                            child: Container(
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: md.width * 0.5,
+                          height: md.width * 0.5,
                           child: Image(
                               image: AssetImage(imagePath), fit: BoxFit.cover),
-                        )))
-                  ],
-                ))
-            : Column(
-                children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      margin: marginHorizontal(md.width),
-                      child: Text(
-                        content,
-                        style: bodyTextStyle,
-                      ),
-                    ),
+                        ),
+                      )
+                    ],
                   ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: md.width * 0.5,
-                      height: md.width * 0.5,
-                      child: Image(
-                          image: AssetImage(imagePath), fit: BoxFit.cover),
-                    ),
-                  )
-                ],
-              ),
-        SizedBox(
-          width: md.width,
-          height: 100,
-        ),
-      ],
-    );
+            SizedBox(
+              width: md.width,
+              height: 100,
+            ),
+          ],
+        ));
 
     // return Container(
     //   width: double.infinity,

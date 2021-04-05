@@ -60,7 +60,7 @@ Stack title(BuildContext context) {
             fit: BoxFit.cover,
           ))),
       Positioned(
-        left: 150,
+        left: md.width > 700 ? 150 : 0,
         top: 150,
         child: Container(
             decoration: BoxDecoration(
@@ -74,25 +74,20 @@ Stack title(BuildContext context) {
                       spreadRadius: 3.0)
                 ]),
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 60),
-            width: md.width > 450 ? 500 : 400,
+            padding: EdgeInsets.symmetric(
+                horizontal: md.width > 540 ? 25 : 0, vertical: 60),
+            width: md.width > 450 ? 520 : 400,
             height: md.height > 400 ? 300 : 240,
             child: RichText(
               text: TextSpan(children: <TextSpan>[
                 TextSpan(
                     text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
                 TextSpan(
-                    text: '에 \n',
+                    text: '\n에 오신 것을 환영합니다',
                     style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 24,
                         fontWeight: FontWeight.w500,
-                        color: Colors.white)),
-                TextSpan(
-                    text: '오신 것을 환영합니다',
-                    style: TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white)),
+                        color: lightWhite)),
               ]),
             )),
       ),
