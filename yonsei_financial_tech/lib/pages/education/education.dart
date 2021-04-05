@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 
-class HomePage extends StatefulWidget {
+class EduPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _EduPageState createState() => _EduPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _EduPageState extends State<EduPage> {
   ScrollController _controller = new ScrollController();
 
   @override

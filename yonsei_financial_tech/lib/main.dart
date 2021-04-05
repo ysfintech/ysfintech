@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:yonsei_financial_tech/pages/education/education.dart';
 // pages
 import 'package:yonsei_financial_tech/pages/people/people.dart';
 import 'package:yonsei_financial_tech/pages/home/home.dart';
 import 'package:yonsei_financial_tech/pages/project/project.dart';
+import 'package:yonsei_financial_tech/pages/publication/publication.dart';
 import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
 // routes
 import './routes.dart';
@@ -35,12 +37,16 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case Routes.home:
               return HomePage();
+            case Routes.education:
+              return EduPage();
             case Routes.people:
               return PeoplePage();
             case Routes.project:
               return ProjectPage();
             case Routes.paper:
               return PaperPage();
+            case Routes.publish:
+              return PublishPage();
             default:
               return SizedBox.shrink();
           }
