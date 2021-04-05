@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
@@ -74,4 +75,18 @@ class TextBlockquote extends StatelessWidget {
       ),
     );
   }
+}
+
+Text makeSmallTitle(final text, BuildContext context,
+    {Color color, FontWeight fontWeight, double fontSize}) {
+  return Text(
+    text,
+    style: TextStyle(
+        color: color != null ? color : Colors.black,
+        fontWeight: fontWeight != null ? fontWeight : FontWeight.bold,
+        fontSize: fontSize != null && context != null
+            ? fontSize
+            : MediaQuery.of(context).size.width * 0.01),
+        textAlign: TextAlign.center,
+  );
 }
