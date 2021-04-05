@@ -238,8 +238,8 @@ class Article extends StatelessWidget {
                       Align(
                         alignment: Alignment.center,
                         child: Container(
-                          width: md.width * 0.5,
-                          height: md.width * 0.5,
+                          width: md.width * 0.4,
+                          height: md.width * 0.4,
                           child: Image(
                               image: AssetImage(imagePath), fit: BoxFit.cover),
                         ),
