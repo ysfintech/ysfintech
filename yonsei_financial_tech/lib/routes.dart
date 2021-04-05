@@ -4,9 +4,9 @@ import 'package:flutter/widgets.dart';
 
 class Routes {
   static const String home = "/";
-  static const String content = "content";
+  static const String people = "people";
+  static const String project = "project";
   static const String paper = "paper";
-  static const String publish = "publish";
 
   static Route<T> fadeThrough<T>(RouteSettings settings, WidgetBuilder page,
       {int duration = 300}) {

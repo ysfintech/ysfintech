@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:yonsei_financial_tech/components/blog.dart';
 
-class Home extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _HomeState extends State<Home> {
+class _HomePageState extends State<HomePage> {
 
   ScrollController _controller = new ScrollController();
 
@@ -19,7 +20,7 @@ class _HomeState extends State<Home> {
             child: Column(
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
-                
+                MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 title(context),
                 // About Us - INTRODUCTION -------------------------------------------

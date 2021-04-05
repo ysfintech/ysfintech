@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Publish extends StatefulWidget {
+class PeoplePage extends StatefulWidget {
   @override
-  _PublishState createState() => _PublishState();
+  _PeoplePageState createState() => _PeoplePageState();
 }
 
-class _PublishState extends State<Publish> {
+class _PeoplePageState extends State<PeoplePage> {
 
   ScrollController _controller = new ScrollController();
 
@@ -21,9 +21,11 @@ class _PublishState extends State<Publish> {
                 // MENU BAR ----------------------------------------------------------
                 
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                searchTab(context),
-                // Board  ------------------------------------------------------------
-                board(context),
+                ourMission(context),
+                // About Us - INTRODUCTION -------------------------------------------
+                articleShort(context),
+                // Meet Our People ---------------------------------------------------
+                articleLong(context),
               ],
             ),
           ),
@@ -33,21 +35,30 @@ class _PublishState extends State<Publish> {
   }
 }
 
-Container searchTab(BuildContext context) {
+Container ourMission(BuildContext context) {
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("search Tab"),
+    child: Text("Our Mission"),
   );
 }
 
-Container board(BuildContext context) {
+Container articleShort(BuildContext context) {
 
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Board"),
+    child: Text("Subtitle1"),
+  );
+}
+
+Container articleLong(BuildContext context) {
+  var md = MediaQuery.of(context).size; 
+
+  return Container(
+    margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
+    child: Text("Subtitle2"),
   );
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Paper extends StatefulWidget {
+class PaperPage extends StatefulWidget {
   @override
-  _PaperState createState() => _PaperState();
+  _PaperPageState createState() => _PaperPageState();
 }
 
-class _PaperState extends State<Paper> {
+class _PaperPageState extends State<PaperPage> {
 
   ScrollController _controller = new ScrollController();
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // pages
-import 'package:yonsei_financial_tech/pages/contents/content.dart';
+import 'package:yonsei_financial_tech/pages/people/people.dart';
 import 'package:yonsei_financial_tech/pages/home/home.dart';
-import 'package:yonsei_financial_tech/pages/publishment/publish.dart';
+import 'package:yonsei_financial_tech/pages/project/project.dart';
 import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
 // routes
 import './routes.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(
           BouncingScrollWrapper.builder(context, widget),
-          maxWidth: 1200,
+          maxWidth: double.infinity,
           minWidth: 450,
           defaultScale: true,
           breakpoints: [
@@ -34,13 +34,13 @@ class MyApp extends StatelessWidget {
         return Routes.fadeThrough(settings, (context) {
           switch (settings.name) {
             case Routes.home:
-              return Home();
-            case Routes.content:
-              return Content();
+              return HomePage();
+            case Routes.people:
+              return PeoplePage();
+            case Routes.project:
+              return ProjectPage();
             case Routes.paper:
-              return Paper();
-            case Routes.publish:
-              return Publish();
+              return PaperPage();
             default:
               return SizedBox.shrink();
           }

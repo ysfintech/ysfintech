@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Content extends StatefulWidget {
+class ProjectPage extends StatefulWidget {
   @override
-  _ContentState createState() => _ContentState();
+  _ProjectPageState createState() => _ProjectPageState();
 }
 
-class _ContentState extends State<Content> {
+class _ProjectPageState extends State<ProjectPage> {
 
   ScrollController _controller = new ScrollController();
 
@@ -21,11 +21,9 @@ class _ContentState extends State<Content> {
                 // MENU BAR ----------------------------------------------------------
                 
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                ourMission(context),
-                // About Us - INTRODUCTION -------------------------------------------
-                articleShort(context),
-                // Meet Our People ---------------------------------------------------
-                articleLong(context),
+                searchTab(context),
+                // Board  ------------------------------------------------------------
+                board(context),
               ],
             ),
           ),
@@ -35,30 +33,21 @@ class _ContentState extends State<Content> {
   }
 }
 
-Container ourMission(BuildContext context) {
+Container searchTab(BuildContext context) {
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Our Mission"),
+    child: Text("search Tab"),
   );
 }
 
-Container articleShort(BuildContext context) {
+Container board(BuildContext context) {
 
   var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Subtitle1"),
-  );
-}
-
-Container articleLong(BuildContext context) {
-  var md = MediaQuery.of(context).size; 
-
-  return Container(
-    margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Subtitle2"),
+    child: Text("Board"),
   );
 }
