@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yonsei_financial_tech/components/blog.dart';
 
 class PeoplePage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _PeoplePageState extends State<PeoplePage> {
             child: Column(
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
-                
+                MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 ourMission(context),
                 // About Us - INTRODUCTION -------------------------------------------

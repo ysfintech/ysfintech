@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yonsei_financial_tech/components/blog.dart';
 
 class ProjectPage extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _ProjectPageState extends State<ProjectPage> {
             child: Column(
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
-                
+                MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 searchTab(context),
                 // Board  ------------------------------------------------------------

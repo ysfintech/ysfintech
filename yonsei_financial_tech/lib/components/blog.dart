@@ -309,92 +309,86 @@ class ListItem extends StatelessWidget {
 class MenuBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 30),
-          child: Row(
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => Navigator.popUntil(
-                    context, ModalRoute.withName(Navigator.defaultRouteName)),
-                child: Text("MINIMAL",
-                    style: GoogleFonts.montserrat(
-                        color: textPrimary,
-                        fontSize: 30,
-                        letterSpacing: 3,
-                        fontWeight: FontWeight.w500)),
-              ),
-              Flexible(
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: Wrap(
-                    children: <Widget>[
-                      FlatButton(
-                        onPressed: () => Navigator.popUntil(context,
-                            ModalRoute.withName(Navigator.defaultRouteName)),
-                        child: Text(
-                          "HOME",
-                          style: buttonTextStyle,
-                        ),
-                        splashColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          "PORTFOLIO",
-                          style: buttonTextStyle,
-                        ),
-                        splashColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      FlatButton(
-                        onPressed: () =>
-                            Navigator.pushNamed(context, Routes.home),
-                        child: Text(
-                          "STYLE",
-                          style: buttonTextStyle,
-                        ),
-                        splashColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          "ABOUT",
-                          style: buttonTextStyle,
-                        ),
-                        splashColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Text(
-                          "CONTACT",
-                          style: buttonTextStyle,
-                        ),
-                        splashColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                      ),
-                    ],
+    return Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              // color: Colors.white,
+              child: Row(
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () => Navigator.popUntil(context,
+                        ModalRoute.withName(Navigator.defaultRouteName)),
+                    child: Image(
+                      image: AssetImage('images/yonsei.jpg'),
+                      width: 150,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
+                  Flexible(
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      child: Wrap(
+                        spacing: 30,
+                        children: <Widget>[
+                          TextButton(
+                              onPressed: () => Navigator.popUntil(
+                                  context,
+                                  ModalRoute.withName(
+                                      Navigator.defaultRouteName)),
+                              child: Text(
+                                "Introduction",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, Routes.people),
+                              child: Text(
+                                "People",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, Routes.project),
+                              child: Text(
+                                "Project",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, Routes.paper),
+                              child: Text(
+                                "Working Paper",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent)))
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Container(
-            height: 1,
-            margin: EdgeInsets.only(bottom: 30),
-            color: Color(0xFFEEEEEE)),
-      ],
-    );
+            ),
+            Container(
+                // under line bar
+                height: 1,
+                // margin: EdgeInsets.only(bottom: 30),
+                color: Color(0xFFEEEEEE)),
+          ],
+        ));
   }
 }
