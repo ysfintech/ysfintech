@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yonsei_financial_tech/components/color.dart';
@@ -24,4 +25,23 @@ TextStyle buttonTextStyle = GoogleFonts.montserrat(
     textStyle: TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
 
 // Advanced
-// TODO: Add additional text styles.
+TextStyle titleIntroductionTextStyle = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        fontSize: 40, color: Colors.white, fontWeight: FontWeight.w800));
+
+TextStyle articleTitleTextStyle({Color color}) {
+  return TextStyle(
+      fontSize: 28,
+      color: color != null ? color : Colors.white,
+      fontWeight: FontWeight.w700);
+}
+
+TextStyle articleContentTextStyle({Color color}) {
+  return TextStyle(
+    fontSize: 22,
+    color: color != null ? color : ligthGray,
+  );
+}
+
+TextStyle imageDescTextStyle = GoogleFonts.montserrat(
+    textStyle: TextStyle(fontSize: 12, color: ligthGray));

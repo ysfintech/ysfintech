@@ -7,293 +7,18 @@ import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
 import 'package:yonsei_financial_tech/routes.dart';
 
-class ImageWrapper extends StatelessWidget {
-  final String image;
-
-  const ImageWrapper({Key key, this.image}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    //TODO Listen to inherited widget width updates.
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 24),
-      child: Image.asset(
-        image,
-        width: width,
-        height: width / 1.618,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-}
-
-class TagWrapper extends StatelessWidget {
-  final List<Tag> tags;
-
-  const TagWrapper({Key key, this.tags = const []}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        margin: paddingBottom24,
-        child: Wrap(
-          spacing: 8,
-          runSpacing: 0,
-          children: <Widget>[...tags],
-        ));
-  }
-}
-
-class Tag extends StatelessWidget {
-  final String tag;
-
-  const Tag({Key key, this.tag}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RawMaterialButton(
-      onPressed: () {},
-      child: Text(
-        tag,
-        style: GoogleFonts.openSans(color: Colors.white, fontSize: 14),
-      ),
-      fillColor: Color(0xFF242424),
-      padding: EdgeInsets.symmetric(horizontal: 16),
-      elevation: 0,
-      hoverElevation: 0,
-      hoverColor: Color(0xFFC7C7C7),
-      highlightElevation: 0,
-      focusElevation: 0,
-    );
-  }
-}
-
-class ReadMoreButton extends StatelessWidget {
-  final Function onPressed;
-
-  const ReadMoreButton({Key key, this.onPressed}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    bool hover = false;
-    return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-      return MouseRegion(
-        onHover: (event) => setState(() => hover = true),
-        onExit: (event) => setState(() => hover = false),
-        child: OutlineButton(
-          onPressed: onPressed as void Function(),
-          highlightedBorderColor: textPrimary,
-          hoverColor: textPrimary,
-          borderSide: BorderSide(color: textPrimary, width: 2),
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Text(
-            "READ MORE",
-            style: GoogleFonts.montserrat(
-              textStyle: TextStyle(
-                  fontSize: 14,
-                  color: hover ? Colors.white : textPrimary,
-                  letterSpacing: 1),
-            ),
-          ),
-        ),
-      );
-    });
-  }
-}
-
 const Widget divider = Divider(color: Color(0xFFEEEEEE), thickness: 1);
-Widget dividerSmall = Container(
-  width: 40,
-  decoration: BoxDecoration(
-    border: Border(
-      bottom: BorderSide(
-        color: Color(0xFFA0A0A0),
-        width: 1,
-      ),
-    ),
-  ),
-);
-
-List<Widget> authorSection({String imageUrl, String name, String bio}) {
-  return [
-    divider,
-    Container(
-      padding: EdgeInsets.symmetric(vertical: 40),
-      child: Row(
-        children: <Widget>[
-          if (imageUrl != null)
-            Container(
-              margin: EdgeInsets.only(right: 25),
-              child: Material(
-                shape: CircleBorder(),
-                clipBehavior: Clip.hardEdge,
-                color: Colors.transparent,
-                child: Image.asset(
-                  imageUrl,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-          Expanded(
-            child: Column(
-              children: <Widget>[
-                if (name != null)
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextHeadlineSecondary(text: name),
-                  ),
-                if (bio != null)
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      bio,
-                      style: bodyTextStyle,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ),
-    divider,
-  ];
-}
-
-class PostNavigation extends StatelessWidget {
-  // TODO Get PostID from Global Routing Singleton.
-  // Example: String currentPage = RouteController.of(context).currentPage;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(
-              Icons.keyboard_arrow_left,
-              size: 25,
-              color: textSecondary,
-            ),
-            Text("PREVIOUS POST", style: buttonTextStyle),
-          ],
-        ),
-        Spacer(),
-        Row(
-          children: <Widget>[
-            Text("NEXT POST", style: buttonTextStyle),
-            Icon(
-              Icons.keyboard_arrow_right,
-              size: 25,
-              color: textSecondary,
-            ),
-          ],
-        )
-      ],
-    );
-  }
-}
-
-class ListNavigation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Icon(
-              Icons.keyboard_arrow_left,
-              size: 25,
-              color: textSecondary,
-            ),
-            Text("NEWER POSTS", style: buttonTextStyle),
-          ],
-        ),
-        Spacer(),
-        Row(
-          children: <Widget>[
-            Text("OLDER POSTS", style: buttonTextStyle),
-            Icon(
-              Icons.keyboard_arrow_right,
-              size: 25,
-              color: textSecondary,
-            ),
-          ],
-        )
-      ],
-    );
-  }
-}
 
 class Footer extends StatelessWidget {
   // TODO Add additional footer components (i.e. about, links, logos).
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 40),
+      padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
-        alignment: Alignment.centerRight,
-        child: TextBody(text: "Copyright © 2020"),
+        alignment: Alignment.center,
+        child: TextBody(text: "Copyright © 2020 Seunghwanly Kim-kwan-woo"),
       ),
-    );
-  }
-}
-
-class ListItem extends StatelessWidget {
-  // TODO replace with Post item model.
-  final String title;
-  final String imageUrl;
-  final String description;
-
-  const ListItem({Key key, this.title, this.imageUrl, this.description})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        if (imageUrl != null)
-          Container(
-            child: ImageWrapper(
-              image: imageUrl,
-            ),
-          ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            margin: marginBottom12,
-            child: Text(
-              title,
-              style: headlineTextStyle,
-            ),
-          ),
-        ),
-        if (description != null)
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              margin: marginBottom12,
-              child: Text(
-                description,
-                style: bodyTextStyle,
-              ),
-            ),
-          ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            margin: marginBottom24,
-            child: ReadMoreButton(
-              onPressed: () => Navigator.pushNamed(context, Routes.home),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -410,5 +135,204 @@ class MenuBar extends StatelessWidget {
                 color: Color(0xFFEEEEEE)),
           ],
         ));
+  }
+}
+
+// Article
+class Article extends StatelessWidget {
+  final Color backgroundColor;
+  final String imagePath;
+  final String imageDesc;
+  final String content;
+  final String title;
+  final bool isImageRight;
+
+  Article(this.isImageRight,
+      {this.title,
+      this.backgroundColor,
+      this.imagePath,
+      this.content,
+      this.imageDesc});
+
+  @override
+  Widget build(BuildContext context) {
+    final md = MediaQuery.of(context).size;
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(
+          width: md.width,
+          height: 100,
+        ),
+        Container(
+          width: md.width,
+          height: 80,
+          margin: marginHorizontal(md.width),
+          child: Text('Introduction', style: headlineTextStyle),
+        ),
+        md.width > 1600
+            ? Container(
+                margin: marginHorizontal(md.width),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 4,
+                      child: Text(
+                        content,
+                        style: bodyTextStyle,
+                      ),
+                    ),
+                    Expanded(child: SizedBox(), flex: 1),
+                    Expanded(
+                        flex: 4,
+                        child: ClipRect(
+                            child: Container(
+                          child: Image(
+                              image: AssetImage(imagePath), fit: BoxFit.cover),
+                        )))
+                  ],
+                ))
+            : Column(
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: marginHorizontal(md.width),
+                      child: Text(
+                        content,
+                        style: bodyTextStyle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: md.width * 0.5,
+                      height: md.width * 0.5,
+                      child: Image(
+                          image: AssetImage(imagePath), fit: BoxFit.cover),
+                    ),
+                  )
+                ],
+              ),
+        SizedBox(
+          width: md.width,
+          height: 100,
+        ),
+      ],
+    );
+
+    // return Container(
+    //   width: double.infinity,
+    //   height: 800,
+    //   padding: EdgeInsets.symmetric(
+    //       horizontal: md.width > 700 ? md.width * 0.3 : md.width * 0.1,
+    //       vertical: md.height > 600 ? 100 : md.height * 0.146),
+    //   child: Column(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     crossAxisAlignment: CrossAxisAlignment.stretch,
+    //     children: [
+    //       Text(
+    //         title,
+    //         style: articleTitleTextStyle(color: Colors.black),
+    //       ),
+    //       isImageRight
+    //           ? Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 // article left
+    //                 Expanded(
+    //                     flex: 4,
+    //                     child: Text(
+    //                       content,
+    //                       style: articleContentTextStyle(),
+    //                     )),
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: SizedBox(),
+    //                 ),
+    //                 // image right
+    //                 Expanded(
+    //                   flex: 4,
+    //                   child: imageDesc != null
+    //                       ? Column(
+    //                           children: [
+    //                             ClipRect(
+    //                               child: Container(
+    //                                 width: 500,
+    //                                 height: 500,
+    //                                 child: Image.asset(imagePath),
+    //                               ),
+    //                             ),
+    //                             Text(
+    //                               imageDesc,
+    //                               style: imageDescTextStyle,
+    //                             ),
+    //                           ],
+    //                         )
+    //                       : ClipRect(
+    //                           child: Container(
+    //                             width: 500,
+    //                             height: 500,
+    //                             child: Image(
+    //                                 image: AssetImage(imagePath),
+    //                                 fit: BoxFit.cover),
+    //                           ),
+    //                         ),
+    //                 )
+    //               ],
+    //             )
+    //           : Row(
+    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 // image right
+    //                 Expanded(
+    //                   flex: 4,
+    //                   child: imageDesc != null
+    //                       ? Column(
+    //                           children: [
+    //                             ClipRect(
+    //                               child: Container(
+    //                                 width: 500,
+    //                                 height: 500,
+    //                                 child: Image.asset(imagePath),
+    //                               ),
+    //                             ),
+    //                             Text(
+    //                               imageDesc,
+    //                               style: imageDescTextStyle,
+    //                             ),
+    //                           ],
+    //                         )
+    //                       : ClipRect(
+    //                           child: Container(
+    //                             width: 500,
+    //                             height: 500,
+    //                             child: Image.asset(imagePath),
+    //                           ),
+    //                         ),
+    //                 ),
+    //                 Expanded(
+    //                   flex: 1,
+    //                   child: SizedBox(),
+    //                 ),
+    //                 // article right
+    //                 Expanded(
+    //                     flex: 4,
+    //                     child: Text(
+    //                       content,
+    //                       style: articleContentTextStyle(),
+    //                     )),
+    //               ],
+    //             )
+    //     ],
+    //   ),
+    // );
   }
 }
