@@ -9,7 +9,14 @@ TextStyle headlineTextStyle = GoogleFonts.montserrat(
         fontSize: 26,
         color: textPrimary,
         letterSpacing: 1.5,
-        fontWeight: FontWeight.w300));
+        fontWeight: FontWeight.w500));
+
+TextStyle headlineWhiteTextStyle = GoogleFonts.montserrat(
+    textStyle: TextStyle(
+        fontSize: 26,
+        color: Colors.white,
+        letterSpacing: 1.5,
+        fontWeight: FontWeight.w500));
 
 TextStyle headlineSecondaryTextStyle = GoogleFonts.montserrat(
     textStyle: TextStyle(
@@ -20,6 +27,9 @@ TextStyle subtitleTextStyle = GoogleFonts.openSans(
 
 TextStyle bodyTextStyle = GoogleFonts.openSans(
     textStyle: TextStyle(fontSize: 14, color: textPrimary));
+
+TextStyle bodyWhiteTextStyle = GoogleFonts.openSans(
+    textStyle: TextStyle(fontSize: 14, color: lightWhite));
 
 TextStyle buttonTextStyle = GoogleFonts.montserrat(
     textStyle: TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
