@@ -10,17 +10,8 @@ class BoardItem {
   final String writer;
   final String date;
   final int views;
-  final ItemContent content;
+  final String contentPath;
 
-  BoardItem({this.content, this.date, this.number, this.title, this.views, this.writer});
+  BoardItem({this.contentPath, this.date, this.number, this.title, this.views, this.writer});
 
-   
-
-}
-
-class ItemContent {
-  final String title;
-  final String path;
-
-  ItemContent({this.path, this.title});
 }

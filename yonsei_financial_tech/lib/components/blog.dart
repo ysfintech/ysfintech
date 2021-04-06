@@ -5,6 +5,7 @@ import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
+import 'package:yonsei_financial_tech/model/board.dart';
 import 'package:yonsei_financial_tech/routes.dart';
 
 const Widget divider = Divider(color: Color(0xFFEEEEEE), thickness: 1);
@@ -267,7 +268,10 @@ class Article extends StatelessWidget {
                   width: md.width,
                   height: 80,
                   margin: marginHorizontal(md.width),
-                  child: Text(title, style: backgroundColor != null ? headlineWhiteTextStyle : headlineTextStyle),
+                  child: Text(title,
+                      style: backgroundColor != null
+                          ? headlineWhiteTextStyle
+                          : headlineTextStyle),
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -275,7 +279,9 @@ class Article extends StatelessWidget {
                     margin: marginHorizontal(md.width),
                     child: Text(
                       content,
-                      style: backgroundColor != null ? bodyWhiteTextStyle : bodyTextStyle,
+                      style: backgroundColor != null
+                          ? bodyWhiteTextStyle
+                          : bodyTextStyle,
                     ),
                   ),
                 ),
@@ -337,18 +343,16 @@ Stack title(BuildContext context) {
   );
 }
 
+class BoardArticle extends StatefulWidget {
+  final Board board;
 
-class Board extends StatefulWidget {
-
-  final List items;
-
-  Board({this.items});
+  BoardArticle({this.board});
 
   @override
-  _BoardState createState() => _BoardState();
+  _BoardArticleState createState() => _BoardArticleState();
 }
 
-class _BoardState extends State<Board> {
+class _BoardArticleState extends State<BoardArticle> {
   @override
   Widget build(BuildContext context) {
     return Container(
