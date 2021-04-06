@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
+import 'package:yonsei_financial_tech/components/color.dart';
+import 'package:yonsei_financial_tech/components/components.dart';
 
 class PeoplePage extends StatefulWidget {
   @override
@@ -7,7 +9,6 @@ class PeoplePage extends StatefulWidget {
 }
 
 class _PeoplePageState extends State<PeoplePage> {
-
   ScrollController _controller = new ScrollController();
 
   @override
@@ -18,15 +19,17 @@ class _PeoplePageState extends State<PeoplePage> {
           SingleChildScrollView(
             controller: _controller,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
                 MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                ourMission(context),
+                backImage(context),
                 // About Us - INTRODUCTION -------------------------------------------
-                articleShort(context),
+                yonseiPeople(context),
                 // Meet Our People ---------------------------------------------------
-                articleLong(context),
+                acaExPeople(context),
               ],
             ),
           ),
@@ -36,27 +39,53 @@ class _PeoplePageState extends State<PeoplePage> {
   }
 }
 
-Container ourMission(BuildContext context) {
-  var md = MediaQuery.of(context).size;
-
+Container backImage(BuildContext context) {
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Our Mission"),
+    height: 600,
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage('images/yonsei_campus.png'),
+        fit: BoxFit.cover,
+      ),
+    ),
   );
 }
 
-Container articleShort(BuildContext context) {
-
+Container yonseiPeople(BuildContext context) {
   var md = MediaQuery.of(context).size;
-
   return Container(
-    margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
-    child: Text("Subtitle1"),
+    color: themeBlue,
+    padding: marginHorizontal(md.width * 0.6),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(
+          height: 100,
+        ),
+        Text("People", style: articleTitleTextStyle()),
+        SizedBox(
+          height: 80,
+        ),
+        Text("참여 교원", style: subtitleTextStyle),
+      ],
+    ),
   );
 }
 
-Container articleLong(BuildContext context) {
-  var md = MediaQuery.of(context).size; 
+Container acaExPeople(BuildContext context) {
+  var md = MediaQuery.of(context).size;
+
+  return Container(
+    //margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
+    child: Text(
+      "People",
+      style: articleTitleTextStyle(color: themeBlue),
+    ),
+  );
+}
+
+Container indusExPeople(BuildContext context) {
+  var md = MediaQuery.of(context).size;
 
   return Container(
     margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
