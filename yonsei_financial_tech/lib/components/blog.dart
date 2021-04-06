@@ -158,208 +158,181 @@ class Article extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final md = MediaQuery.of(context).size;
-
-    return Container(
-        color: backgroundColor != null ? backgroundColor : Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
-              width: md.width,
-              height: 100,
-            ),
-            Container(
-              width: md.width,
-              height: 80,
-              margin: marginHorizontal(md.width),
-              child: Text('Introduction', style: headlineTextStyle),
-            ),
-            md.width > 1600
-                ? Container(
+    if (imagePath != null) {
+      return Container(
+          color: backgroundColor != null ? backgroundColor : Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: md.width,
+                height: 100,
+              ),
+              Container(
+                width: md.width,
+                height: 80,
+                margin: marginHorizontal(md.width),
+                child: Text(title, style: headlineTextStyle),
+              ),
+              md.width > 1600
+                  ? Container(
+                      margin: marginHorizontal(md.width),
+                      child: isImageRight
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                    content,
+                                    style: bodyTextStyle,
+                                  ),
+                                ),
+                                Expanded(child: SizedBox(), flex: 1),
+                                Expanded(
+                                    flex: 4,
+                                    child: ClipRect(
+                                        child: Container(
+                                      child: Image(
+                                          image: AssetImage(imagePath),
+                                          fit: BoxFit.cover),
+                                    )))
+                              ],
+                            )
+                          : Row(
+                              children: [
+                                Expanded(
+                                    flex: 4,
+                                    child: ClipRect(
+                                        child: Container(
+                                      child: Image(
+                                          image: AssetImage(imagePath),
+                                          fit: BoxFit.cover),
+                                    ))),
+                                Expanded(child: SizedBox(), flex: 1),
+                                Expanded(
+                                  flex: 4,
+                                  child: Text(
+                                    content,
+                                    style: bodyTextStyle,
+                                  ),
+                                ),
+                              ],
+                            ))
+                  : Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            margin: marginHorizontal(md.width),
+                            child: Text(
+                              content,
+                              style: bodyTextStyle,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100,
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: md.width * 0.4,
+                            height: md.width * 0.4,
+                            child: Image(
+                                image: AssetImage(imagePath),
+                                fit: BoxFit.cover),
+                          ),
+                        )
+                      ],
+                    ),
+              SizedBox(
+                width: md.width,
+                height: 100,
+              ),
+            ],
+          ));
+    }
+    // image path is not null
+    else {
+      return Container(
+          color: backgroundColor != null ? backgroundColor : Colors.white,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: md.width,
+                  height: 100,
+                ),
+                Container(
+                  width: md.width,
+                  height: 80,
+                  margin: marginHorizontal(md.width),
+                  child: Text(title, style: backgroundColor != null ? headlineWhiteTextStyle : headlineTextStyle),
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
                     margin: marginHorizontal(md.width),
-                    child: isImageRight 
-                    ? Row(
-                      children: [
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            content,
-                            style: bodyTextStyle,
-                          ),
-                        ),
-                        Expanded(child: SizedBox(), flex: 1),
-                        Expanded(
-                            flex: 4,
-                            child: ClipRect(
-                                child: Container(
-                              child: Image(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.cover),
-                            )))
-                      ],
-                    )
-                    :
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 4,
-                            child: ClipRect(
-                                child: Container(
-                              child: Image(
-                                  image: AssetImage(imagePath),
-                                  fit: BoxFit.cover),
-                            ))),
-                        Expanded(child: SizedBox(), flex: 1),
-                        Expanded(
-                          flex: 4,
-                          child: Text(
-                            content,
-                            style: bodyTextStyle,
-                          ),
-                        ),
-                      ],
-                    )
-                    )
-                : Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          margin: marginHorizontal(md.width),
-                          child: Text(
-                            content,
-                            style: bodyTextStyle,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 100,
-                      ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          width: md.width * 0.4,
-                          height: md.width * 0.4,
-                          child: Image(
-                              image: AssetImage(imagePath), fit: BoxFit.cover),
-                        ),
-                      )
-                    ],
+                    child: Text(
+                      content,
+                      style: backgroundColor != null ? bodyWhiteTextStyle : bodyTextStyle,
+                    ),
                   ),
-            SizedBox(
-              width: md.width,
-              height: 100,
-            ),
-          ],
-        ));
-
-    // return Container(
-    //   width: double.infinity,
-    //   height: 800,
-    //   padding: EdgeInsets.symmetric(
-    //       horizontal: md.width > 700 ? md.width * 0.3 : md.width * 0.1,
-    //       vertical: md.height > 600 ? 100 : md.height * 0.146),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //     crossAxisAlignment: CrossAxisAlignment.stretch,
-    //     children: [
-    //       Text(
-    //         title,
-    //         style: articleTitleTextStyle(color: Colors.black),
-    //       ),
-    //       isImageRight
-    //           ? Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               children: [
-    //                 // article left
-    //                 Expanded(
-    //                     flex: 4,
-    //                     child: Text(
-    //                       content,
-    //                       style: articleContentTextStyle(),
-    //                     )),
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: SizedBox(),
-    //                 ),
-    //                 // image right
-    //                 Expanded(
-    //                   flex: 4,
-    //                   child: imageDesc != null
-    //                       ? Column(
-    //                           children: [
-    //                             ClipRect(
-    //                               child: Container(
-    //                                 width: 500,
-    //                                 height: 500,
-    //                                 child: Image.asset(imagePath),
-    //                               ),
-    //                             ),
-    //                             Text(
-    //                               imageDesc,
-    //                               style: imageDescTextStyle,
-    //                             ),
-    //                           ],
-    //                         )
-    //                       : ClipRect(
-    //                           child: Container(
-    //                             width: 500,
-    //                             height: 500,
-    //                             child: Image(
-    //                                 image: AssetImage(imagePath),
-    //                                 fit: BoxFit.cover),
-    //                           ),
-    //                         ),
-    //                 )
-    //               ],
-    //             )
-    //           : Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               children: [
-    //                 // image right
-    //                 Expanded(
-    //                   flex: 4,
-    //                   child: imageDesc != null
-    //                       ? Column(
-    //                           children: [
-    //                             ClipRect(
-    //                               child: Container(
-    //                                 width: 500,
-    //                                 height: 500,
-    //                                 child: Image.asset(imagePath),
-    //                               ),
-    //                             ),
-    //                             Text(
-    //                               imageDesc,
-    //                               style: imageDescTextStyle,
-    //                             ),
-    //                           ],
-    //                         )
-    //                       : ClipRect(
-    //                           child: Container(
-    //                             width: 500,
-    //                             height: 500,
-    //                             child: Image.asset(imagePath),
-    //                           ),
-    //                         ),
-    //                 ),
-    //                 Expanded(
-    //                   flex: 1,
-    //                   child: SizedBox(),
-    //                 ),
-    //                 // article right
-    //                 Expanded(
-    //                     flex: 4,
-    //                     child: Text(
-    //                       content,
-    //                       style: articleContentTextStyle(),
-    //                     )),
-    //               ],
-    //             )
-    //     ],
-    //   ),
-    // );
+                ),
+                SizedBox(
+                  width: md.width,
+                  height: 100,
+                ),
+              ]));
+    }
   }
+}
+
+Stack title(BuildContext context) {
+  var md = MediaQuery.of(context).size;
+  // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
+  return Stack(
+    children: <Widget>[
+      Container(
+          // height: md.height * 0.58,
+          height: 600,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('images/introBackground.jpeg'),
+            fit: BoxFit.cover,
+          ))),
+      Positioned(
+        left: md.width > 700 ? 150 : 0,
+        top: 150,
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                color: themeBlue,
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset.fromDirection(3.0),
+                      blurRadius: 10.0,
+                      spreadRadius: 3.0)
+                ]),
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(
+                horizontal: md.width > 540 ? 25 : 0, vertical: 60),
+            width: md.width > 450 ? 520 : 400,
+            height: md.height > 400 ? 300 : 240,
+            child: RichText(
+              text: TextSpan(children: <TextSpan>[
+                TextSpan(
+                    text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
+                TextSpan(
+                    text: '\n에 오신 것을 환영합니다',
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: lightWhite)),
+              ]),
+            )),
+      ),
+    ],
+  );
 }
