@@ -73,16 +73,6 @@ class MenuBar extends StatelessWidget {
                                   overlayColor: MaterialStateColor.resolveWith(
                                       (states) => Colors.transparent))),
                           TextButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, Routes.education),
-                              child: Text(
-                                "Education",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.people),
                               child: Text(
@@ -121,7 +111,17 @@ class MenuBar extends StatelessWidget {
                               ),
                               style: ButtonStyle(
                                   overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent)))
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () => Navigator.pushNamed(
+                                  context, Routes.education),
+                              child: Text(
+                                "Education",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
                         ],
                       ),
                     ),
@@ -267,7 +267,10 @@ class Article extends StatelessWidget {
                   width: md.width,
                   height: 80,
                   margin: marginHorizontal(md.width),
-                  child: Text(title, style: backgroundColor != null ? headlineWhiteTextStyle : headlineTextStyle),
+                  child: Text(title,
+                      style: backgroundColor != null
+                          ? headlineWhiteTextStyle
+                          : headlineTextStyle),
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -275,7 +278,9 @@ class Article extends StatelessWidget {
                     margin: marginHorizontal(md.width),
                     child: Text(
                       content,
-                      style: backgroundColor != null ? bodyWhiteTextStyle : bodyTextStyle,
+                      style: backgroundColor != null
+                          ? bodyWhiteTextStyle
+                          : bodyTextStyle,
                     ),
                   ),
                 ),
@@ -337,9 +342,7 @@ Stack title(BuildContext context) {
   );
 }
 
-
 class Board extends StatefulWidget {
-
   final List items;
 
   Board({this.items});
@@ -351,8 +354,6 @@ class Board extends StatefulWidget {
 class _BoardState extends State<Board> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }
