@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
+// extension
+import 'package:yonsei_financial_tech/extensions/hover.dart';
+// components
 import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
-import 'package:yonsei_financial_tech/model/board.dart';
+// route
 import 'package:yonsei_financial_tech/routes.dart';
 
 const Widget divider = Divider(color: Color(0xFFEEEEEE), thickness: 1);
@@ -466,14 +468,19 @@ class _BoardArticleState extends State<BoardArticle> {
                                 style: bodyTextStyle,
                                 textAlign: TextAlign.center,
                               )),
-                          // title
+                          // title -> only clickable
                           Expanded(
                               flex: 3,
-                              child: Text(
-                                widget.board[index - 1]['title'].toString(),
-                                style: bodyTextStyle,
-                                textAlign: TextAlign.center,
-                              )),
+                              child: Hover(
+                                  onTap: () => showDialog(
+                                      context: context,
+                                      builder: (_) =>
+                                          AlertDialog(title: Text("OK!"))),
+                                  child: Text(
+                                    widget.board[index - 1]['title'].toString(),
+                                    style: bodyTextStyle,
+                                    textAlign: TextAlign.center,
+                                  ))),
                           // writer
                           Expanded(
                               flex: 1,

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
-import 'package:yonsei_financial_tech/firebase/fetch.dart';
-import 'package:yonsei_financial_tech/model/board.dart';
 
 class PaperPage extends StatefulWidget {
   @override
@@ -31,8 +29,6 @@ class _PaperPageState extends State<PaperPage> {
                   if (snapshot.hasError) {
                     return Center(child: Text('500 - error'));
                   } else if (!snapshot.hasData) {
-                    print(snapshot.connectionState);
-
                     return Column(
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
@@ -43,8 +39,6 @@ class _PaperPageState extends State<PaperPage> {
                     );
                   } else {
                     // data
-                    print(snapshot.data.size.toString());
-
                     List<Map<String,dynamic>> data = [];
 
                     snapshot.data.docs.forEach((element) {
