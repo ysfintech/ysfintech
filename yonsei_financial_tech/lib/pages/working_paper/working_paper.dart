@@ -51,13 +51,6 @@ class _PaperPageState extends State<PaperPage> {
                       data.add(element.data());
                     });
 
-                    // snapshot.data.docs.map((DocumentSnapshot doc) {
-                    //   data.add(doc.data());
-                    //   print('is there ?' + doc.exists.toString());
-                    // });
-
-                    print(data);
-
                     return Column(
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
@@ -65,7 +58,7 @@ class _PaperPageState extends State<PaperPage> {
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         // Board  ------------------------------------------------------------
-                        //BoardArticle(board: data)
+                        BoardArticle(board: data)
                       ],
                     );
                   }

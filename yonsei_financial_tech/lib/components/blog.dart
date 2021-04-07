@@ -344,7 +344,7 @@ Stack title(BuildContext context) {
 }
 
 class BoardArticle extends StatefulWidget {
-  final Board board;
+  final List<Map<String, dynamic>> board;
 
   BoardArticle({this.board});
 
@@ -368,13 +368,6 @@ class _BoardArticleState extends State<BoardArticle> {
   @override
   Widget build(BuildContext context) {
     final md = MediaQuery.of(context).size;
-    Board board;
-
-    @override
-    void initState() {
-      super.initState();
-      board = widget.board;
-    }
 
     return Container(
       child: Column(
@@ -393,7 +386,8 @@ class _BoardArticleState extends State<BoardArticle> {
           ),
 
           ListView.builder(
-            itemCount: board.list.length + 1,
+            shrinkWrap: true,
+            itemCount: widget.board.length + 1,
             itemBuilder: (BuildContext context, int index) {
               if (index == 0) {
                 return Align(
@@ -401,6 +395,7 @@ class _BoardArticleState extends State<BoardArticle> {
                   child: Container(
                     color: themeBlue,
                     margin: marginHorizontal(md.width),
+                    padding: paddingH20V20,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -408,28 +403,43 @@ class _BoardArticleState extends State<BoardArticle> {
                         // no
                         Expanded(
                             flex: 1,
-                            child: makeSmallTitle('번호', context,
-                                color: Colors.white, fontSize: 28)),
+                            child: Text(
+                              '번호',
+                              style: subtitleWhiteTextStyle,
+                              textAlign: TextAlign.center,
+                            )),
                         // title
                         Expanded(
                             flex: 3,
-                            child: makeSmallTitle('제목', context,
-                                color: Colors.white, fontSize: 28)),
+                            child: Text(
+                              '제목',
+                              style: subtitleWhiteTextStyle,
+                              textAlign: TextAlign.center,
+                            )),
                         // writer
                         Expanded(
                             flex: 1,
-                            child: makeSmallTitle('작성자', context,
-                                color: Colors.white, fontSize: 28)),
+                            child: Text(
+                              '작성자',
+                              style: subtitleWhiteTextStyle,
+                              textAlign: TextAlign.center,
+                            )),
                         // date
                         Expanded(
                             flex: 1,
-                            child: makeSmallTitle('날짜', context,
-                                color: Colors.white, fontSize: 28)),
+                            child: Text(
+                              '날짜',
+                              style: subtitleWhiteTextStyle,
+                              textAlign: TextAlign.center,
+                            )),
                         // view
                         Expanded(
                             flex: 1,
-                            child: makeSmallTitle('조회수', context,
-                                color: Colors.white, fontSize: 28)),
+                            child: Text(
+                              '조회수',
+                              style: subtitleWhiteTextStyle,
+                              textAlign: TextAlign.center,
+                            )),
                       ],
                     ),
                   ),
@@ -443,6 +453,7 @@ class _BoardArticleState extends State<BoardArticle> {
                     // post
                     Container(
                       margin: marginHorizontal(md.width),
+                      padding: paddingH20V20,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -451,42 +462,50 @@ class _BoardArticleState extends State<BoardArticle> {
                           Expanded(
                               flex: 1,
                               child: Text(
-                                board.list[index - 1].number.toString(),
+                                widget.board[index - 1]['number'].toString(),
                                 style: bodyTextStyle,
+                                textAlign: TextAlign.center,
                               )),
                           // title
                           Expanded(
                               flex: 3,
                               child: Text(
-                                board.list[index - 1].title,
+                                widget.board[index - 1]['title'].toString(),
                                 style: bodyTextStyle,
+                                textAlign: TextAlign.center,
                               )),
                           // writer
                           Expanded(
                               flex: 1,
                               child: Text(
-                                board.list[index - 1].writer,
+                                widget.board[index - 1]['writer'].toString(),
                                 style: bodyTextStyle,
+                                textAlign: TextAlign.center,
                               )),
                           // date
                           Expanded(
                               flex: 1,
                               child: Text(
-                                board.list[index - 1].date,
+                                widget.board[index - 1]['date'].toString(),
                                 style: bodyTextStyle,
+                                textAlign: TextAlign.center,
                               )),
                           // view
                           Expanded(
                               flex: 1,
                               child: Text(
-                                board.list[index - 1].view.toString(),
+                                widget.board[index - 1]['view'].toString(),
                                 style: bodyTextStyle,
+                                textAlign: TextAlign.center,
                               )),
                         ],
                       ),
                     ),
                     // divider
-                    divider
+                    Container(
+                      margin: marginHorizontal(md.width),
+                      child: divider,
+                    )
                   ],
                 ),
               );

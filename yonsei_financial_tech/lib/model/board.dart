@@ -3,10 +3,9 @@ class Board {
 
   Board({this.list});
 
-  factory Board.fromJson(Map<String, dynamic> json) {
-    var list = json as List;
+  factory Board.fromJson(List<Map<String, dynamic>> json) {
     List<BoardItem> boardList =
-        list.map((element) => BoardItem.fromJson(element)).toList();
+        json.map((element) => BoardItem.fromJson(element)).toList();
 
     return Board(list: boardList);
   }
