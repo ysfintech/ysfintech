@@ -64,10 +64,8 @@ class MenuBar extends StatelessWidget {
                         spacing: 30,
                         children: <Widget>[
                           TextButton(
-                              onPressed: () => Navigator.popUntil(
-                                  context,
-                                  ModalRoute.withName(
-                                      Navigator.defaultRouteName)),
+                              onPressed: () => Navigator.pushNamed(
+                                  context, Routes.home),
                               child: Text(
                                 "Introduction",
                                 style: buttonTextStyle,
@@ -177,7 +175,7 @@ class Article extends StatelessWidget {
                 margin: marginHorizontal(md.width),
                 child: Text(title, style: headlineTextStyle),
               ),
-              md.width > 1600
+              md.width > 1200
                   ? Container(
                       margin: marginHorizontal(md.width),
                       child: isImageRight
@@ -300,10 +298,11 @@ Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
+    alignment: AlignmentDirectional.centerStart,
     children: <Widget>[
       Container(
           // height: md.height * 0.58,
-          height: 600,
+          height: 400,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/introBackground.jpeg'),
@@ -311,7 +310,6 @@ Stack title(BuildContext context) {
           ))),
       Positioned(
         left: md.width > 700 ? 150 : 0,
-        top: 150,
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -383,7 +381,7 @@ class _BoardArticleState extends State<BoardArticle> {
           Container(
             width: md.width,
             height: 80,
-            margin: marginHorizontal(md.width),
+            margin: marginHorizontal(md.width * 0.5),
             child: Text('Board', style: headlineTextStyle),
           ),
 
@@ -396,7 +394,7 @@ class _BoardArticleState extends State<BoardArticle> {
                   alignment: Alignment.center,
                   child: Container(
                     color: themeBlue,
-                    margin: marginHorizontal(md.width),
+                    margin: marginHorizontal(md.width * 0.5),
                     padding: paddingH20V20,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -454,7 +452,7 @@ class _BoardArticleState extends State<BoardArticle> {
                   children: <Widget>[
                     // post
                     Container(
-                      margin: marginHorizontal(md.width),
+                      margin: marginHorizontal(md.width * 0.5),
                       padding: paddingH20V20,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
