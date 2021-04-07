@@ -343,17 +343,10 @@ Stack title(BuildContext context) {
   );
 }
 
-<<<<<<< HEAD
 class BoardArticle extends StatefulWidget {
   final Board board;
 
   BoardArticle({this.board});
-=======
-class Board extends StatefulWidget {
-  final List items;
-
-  Board({this.items});
->>>>>>> people
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
