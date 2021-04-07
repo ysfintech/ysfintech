@@ -353,10 +353,152 @@ class BoardArticle extends StatefulWidget {
 }
 
 class _BoardArticleState extends State<BoardArticle> {
+/*
+ *  Board -> List<BoardItem> list;
+ *  BoardItem {
+ *    int number
+ *    String title
+ *    String writer
+ *    String date
+ *    int views
+ *    String contentPath
+ *  }
+ */
+
   @override
   Widget build(BuildContext context) {
+    final md = MediaQuery.of(context).size;
+    Board board;
+
+    @override
+    void initState() {
+      super.initState();
+      board = widget.board;
+    }
+
     return Container(
-      
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            // head space
+            width: md.width,
+            height: 100,
+          ),
+          // Board ------------------------------------------------
+          Container(
+            width: md.width,
+            height: 80,
+            margin: marginHorizontal(md.width),
+            child: Text('Board', style: headlineTextStyle),
+          ),
+
+          ListView.builder(
+            itemCount: board.list.length + 1,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0) {
+                return Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    color: themeBlue,
+                    margin: marginHorizontal(md.width),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        // no
+                        Expanded(
+                            flex: 1,
+                            child: makeSmallTitle('번호', context,
+                                color: Colors.white, fontSize: 28)),
+                        // title
+                        Expanded(
+                            flex: 3,
+                            child: makeSmallTitle('제목', context,
+                                color: Colors.white, fontSize: 28)),
+                        // writer
+                        Expanded(
+                            flex: 1,
+                            child: makeSmallTitle('작성자', context,
+                                color: Colors.white, fontSize: 28)),
+                        // date
+                        Expanded(
+                            flex: 1,
+                            child: makeSmallTitle('날짜', context,
+                                color: Colors.white, fontSize: 28)),
+                        // view
+                        Expanded(
+                            flex: 1,
+                            child: makeSmallTitle('조회수', context,
+                                color: Colors.white, fontSize: 28)),
+                      ],
+                    ),
+                  ),
+                );
+              }
+              // posts
+              return Align(
+                alignment: Alignment.center,
+                child: Column(
+                  children: <Widget>[
+                    // post
+                    Container(
+                      margin: marginHorizontal(md.width),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          // no
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                board.list[index - 1].number.toString(),
+                                style: bodyTextStyle,
+                              )),
+                          // title
+                          Expanded(
+                              flex: 3,
+                              child: Text(
+                                board.list[index - 1].title,
+                                style: bodyTextStyle,
+                              )),
+                          // writer
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                board.list[index - 1].writer,
+                                style: bodyTextStyle,
+                              )),
+                          // date
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                board.list[index - 1].date,
+                                style: bodyTextStyle,
+                              )),
+                          // view
+                          Expanded(
+                              flex: 1,
+                              child: Text(
+                                board.list[index - 1].view.toString(),
+                                style: bodyTextStyle,
+                              )),
+                        ],
+                      ),
+                    ),
+                    // divider
+                    divider
+                  ],
+                ),
+              );
+            },
+          ),
+          SizedBox(
+            // footer space
+            width: md.width,
+            height: 100,
+          ),
+        ],
+      ),
     );
   }
 }

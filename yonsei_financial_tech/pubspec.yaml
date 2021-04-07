@@ -24,6 +24,8 @@ dependencies:
   responsive_framework: ^0.1.0
   animations: ^2.0.0
   google_fonts: ^2.0.0
+  firebase_core: "^1.0.3"
+  cloud_firestore: ^1.0.4
 
   flutter:
     sdk: flutter
