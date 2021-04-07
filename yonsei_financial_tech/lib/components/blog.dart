@@ -74,16 +74,6 @@ class MenuBar extends StatelessWidget {
                                   overlayColor: MaterialStateColor.resolveWith(
                                       (states) => Colors.transparent))),
                           TextButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, Routes.education),
-                              child: Text(
-                                "Education",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.people),
                               child: Text(
@@ -122,7 +112,17 @@ class MenuBar extends StatelessWidget {
                               ),
                               style: ButtonStyle(
                                   overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent)))
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () => Navigator.pushNamed(
+                                  context, Routes.education),
+                              child: Text(
+                                "Education",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
                         ],
                       ),
                     ),
@@ -343,10 +343,17 @@ Stack title(BuildContext context) {
   );
 }
 
+<<<<<<< HEAD
 class BoardArticle extends StatefulWidget {
   final Board board;
 
   BoardArticle({this.board});
+=======
+class Board extends StatefulWidget {
+  final List items;
+
+  Board({this.items});
+>>>>>>> people
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
@@ -355,8 +362,6 @@ class BoardArticle extends StatefulWidget {
 class _BoardArticleState extends State<BoardArticle> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-    );
+    return Container();
   }
 }

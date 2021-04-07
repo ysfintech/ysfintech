@@ -37,8 +37,6 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case Routes.home:
               return HomePage();
-            case Routes.education:
-              return EduPage();
             case Routes.people:
               return PeoplePage();
             case Routes.project:
@@ -47,15 +45,15 @@ class MyApp extends StatelessWidget {
               return PaperPage();
             case Routes.publish:
               return PublishPage();
+            case Routes.education:
+              return EduPage();
             default:
               return SizedBox.shrink();
           }
         });
       },
       // theme: Theme.of(context).copyWith(platform: TargetPlatform.macOS),
-      theme: ThemeData(
-        fontFamily: 'Yonsei'
-      ),
+      theme: ThemeData(fontFamily: 'Yonsei'),
       debugShowCheckedModeBanner: false,
     );
   }
