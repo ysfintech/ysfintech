@@ -23,7 +23,10 @@ TextStyle headlineSecondaryTextStyle = GoogleFonts.montserrat(
         fontSize: 20, color: textPrimary, fontWeight: FontWeight.w300));
 
 TextStyle subtitleTextStyle = GoogleFonts.openSans(
-    textStyle: TextStyle(fontSize: 14, color: textSecondary, letterSpacing: 1));
+    textStyle: TextStyle(fontSize: 16, color: textSecondary, letterSpacing: 1));
+
+TextStyle subtitleWhiteTextStyle = GoogleFonts.openSans(
+    textStyle: TextStyle(fontSize: 16, color: Colors.white, letterSpacing: 1));
 
 TextStyle bodyTextStyle = GoogleFonts.openSans(
     textStyle: TextStyle(fontSize: 14, color: textPrimary));

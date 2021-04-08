@@ -16,3 +16,6 @@ EdgeInsets marginH3V2(double width) {
 // Padding
 const EdgeInsets paddingBottom24 = EdgeInsets.only(bottom: 24);
 const EdgeInsets paddingTop100 = EdgeInsets.only(top: 100);
+const EdgeInsets paddingHorizontal20 = EdgeInsets.symmetric(horizontal: 20);
+const EdgeInsets paddingH20V20 = EdgeInsets.symmetric(horizontal: 20, vertical: 20);
+

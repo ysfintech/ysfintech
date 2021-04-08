@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:google_fonts/google_fonts.dart';
+// extension
+import 'package:yonsei_financial_tech/extensions/hover.dart';
+// components
 import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
-import 'package:yonsei_financial_tech/model/board.dart';
+// route
 import 'package:yonsei_financial_tech/routes.dart';
 
 const Widget divider = Divider(color: Color(0xFFEEEEEE), thickness: 1);
@@ -62,10 +64,8 @@ class MenuBar extends StatelessWidget {
                         spacing: 30,
                         children: <Widget>[
                           TextButton(
-                              onPressed: () => Navigator.popUntil(
-                                  context,
-                                  ModalRoute.withName(
-                                      Navigator.defaultRouteName)),
+                              onPressed: () =>
+                                  Navigator.pushNamed(context, Routes.home),
                               child: Text(
                                 "Introduction",
                                 style: buttonTextStyle,
@@ -175,7 +175,7 @@ class Article extends StatelessWidget {
                 margin: marginHorizontal(md.width),
                 child: Text(title, style: headlineTextStyle),
               ),
-              md.width > 1600
+              md.width > 1200
                   ? Container(
                       margin: marginHorizontal(md.width),
                       child: isImageRight
@@ -298,10 +298,11 @@ Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
+    alignment: AlignmentDirectional.centerStart,
     children: <Widget>[
       Container(
           // height: md.height * 0.58,
-          height: 600,
+          height: 400,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/introBackground.jpeg'),
@@ -309,7 +310,6 @@ Stack title(BuildContext context) {
           ))),
       Positioned(
         left: md.width > 700 ? 150 : 0,
-        top: 150,
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -344,7 +344,7 @@ Stack title(BuildContext context) {
 }
 
 class BoardArticle extends StatefulWidget {
-  final Board board;
+  final List<Map<String, dynamic>> board;
 
   BoardArticle({this.board});
 
@@ -353,8 +353,192 @@ class BoardArticle extends StatefulWidget {
 }
 
 class _BoardArticleState extends State<BoardArticle> {
+/*
+ *  Board -> List<BoardItem> list;
+ *  BoardItem {
+ *    int number
+ *    String title
+ *    String writer
+ *    String date
+ *    int views
+ *    String contentPath
+ *  }
+ */
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final md = MediaQuery.of(context).size;
+
+    print(widget.board);
+
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            // head space
+            width: md.width,
+            height: 100,
+          ),
+          // Board ------------------------------------------------
+          Container(
+            width: md.width,
+            height: 80,
+            margin: marginHorizontal(md.width * 0.5),
+            child: Text('Board', style: headlineTextStyle),
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              color: themeBlue,
+              margin: marginHorizontal(md.width * 0.5),
+              padding: paddingH20V20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // no
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '번호',
+                        style: subtitleWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // title
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        '제목',
+                        style: subtitleWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // writer
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '작성자',
+                        style: subtitleWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // date
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '날짜',
+                        style: subtitleWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // view
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '조회수',
+                        style: subtitleWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                ],
+              ),
+            ),
+          ),
+          widget.board.length != 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.board.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    // posts
+                    return Align(
+                      alignment: Alignment.center,
+                      child: Column(
+                        children: <Widget>[
+                          // post
+                          Container(
+                            margin: marginHorizontal(md.width * 0.5),
+                            padding: paddingH20V20,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                // no
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      widget.board[index]['number'].toString(),
+                                      style: bodyTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )),
+                                // title -> only clickable
+                                Expanded(
+                                    flex: 3,
+                                    child: Hover(
+                                        onTap: () => showDialog(
+                                            context: context,
+                                            builder: (_) => AlertDialog(
+                                                title: Text("OK!"))),
+                                        child: Text(
+                                          widget.board[index]['title']
+                                              .toString(),
+                                          style: bodyTextStyle,
+                                          textAlign: TextAlign.center,
+                                        ))),
+                                // writer
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      widget.board[index]['writer'].toString(),
+                                      style: bodyTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )),
+                                // date
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      widget.board[index]['date'].toString(),
+                                      style: bodyTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )),
+                                // view
+                                Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                      widget.board[index]['view'].toString(),
+                                      style: bodyTextStyle,
+                                      textAlign: TextAlign.center,
+                                    )),
+                              ],
+                            ),
+                          ),
+                          // divider
+                          Container(
+                            margin: marginHorizontal(md.width),
+                            child: divider,
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                )
+              : Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Text('정보가 없습니다.', style: headlineSecondaryTextStyle),
+                      SizedBox(
+                        height: 100,
+                      ),
+                    ],
+                  ),
+                ),
+          SizedBox(
+            // footer space
+            width: md.width,
+            height: 100,
+          ),
+        ],
+      ),
+    );
   }
 }
