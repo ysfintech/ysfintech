@@ -34,18 +34,22 @@ class _PaperPageState extends State<PaperPage> {
       filterText = title;
     });
   }
-
-  Future<void> add() {
-    for (int i = 2; i < 15; ++i) {
-      papers.add({
-        'number': i,
-        'title': 'test-' + i.toString(),
-        'writer': 'test-writer',
-        'date': '21.04.08',
-        'view': Random().nextInt(50)
-      }).then((value) => print('completed'));
-    }
-  }
+  // FOR TESTING
+  // Future<void> add() {
+  //   for (int i = 2; i < 15; ++i) {
+  //     papers.add({
+  //       'number': i,
+  //       'title': 'test-' + i.toString(),
+  //       'writer': 'test-writer',
+  //       'date': '21.04.08',
+  //       'view': Random().nextInt(50)
+  //     }).then((value) => print('completed'));
+  //   }
+  // }
+  // TextButton(
+  //                         onPressed: add,
+  //                         child: Text("ADD!!!"),
+  //                       ),
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,14 @@ class _PaperPageState extends State<PaperPage> {
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
-                        CircularProgressIndicator(),
+                        Container(
+                          color: Colors.white,
+                          width: double.infinity,
+                          height: 400,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                         Footer()
                       ],
                     );
@@ -92,10 +103,6 @@ class _PaperPageState extends State<PaperPage> {
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
-                         TextButton(
-                          onPressed: add,
-                          child: Text("ADD!!!"),
-                        ),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         filterText.length != 0
@@ -145,7 +152,6 @@ class _PaperPageState extends State<PaperPage> {
                         // Board  ------------------------------------------------------------
                         BoardArticle(board: data),
                         Footer(),
-                       
                       ],
                     );
                   }
