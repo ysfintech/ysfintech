@@ -18,7 +18,7 @@ class _PaperPageState extends State<PaperPage> {
   var fetchedData;
 
   // filter
-  var filterText;
+  var filterText = '';
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _PaperPageState extends State<PaperPage> {
                     List<Map<String, dynamic>> data = [];
                     // add filtering
                     snapshot.data.docs.forEach((element) {
-                      if (filterText == null) {
+                      if (filterText.length == 0) {
                         data.add(element.data());
                       } else {
                         if (element
@@ -78,6 +78,36 @@ class _PaperPageState extends State<PaperPage> {
                         MenuBar(),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
+                        filterText.length != 0
+                            ? Align(
+                                alignment: Alignment.topRight,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width *
+                                              0.15, vertical: 20),
+                                      color: themeBlue.withOpacity(0.7),
+                                      alignment: Alignment.centerRight,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          Text("'"+filterText+"'" + ' 관련 검색 결과 초기화', style: subtitleWhiteTextStyle,),
+                                          TextButton.icon(
+                                              onPressed: () {
+                                                setState(() {
+                                                  filterText = '';
+                                                });
+                                              },
+                                              icon: Icon(Icons.close_rounded, color: Colors.white, size: 22),
+                                              label: Text('')),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
                         // Board  ------------------------------------------------------------
                         BoardArticle(board: data),
                         Footer()
