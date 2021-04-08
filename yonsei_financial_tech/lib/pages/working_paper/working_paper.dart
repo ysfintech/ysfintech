@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +25,7 @@ class _PaperPageState extends State<PaperPage> {
   @override
   void initState() {
     super.initState();
-    fetchedData = papers.get();
+    fetchedData = papers.orderBy('number').get();
   }
 
   // search action
@@ -32,6 +34,22 @@ class _PaperPageState extends State<PaperPage> {
       filterText = title;
     });
   }
+  // FOR TESTING
+  // Future<void> add() {
+  //   for (int i = 2; i < 15; ++i) {
+  //     papers.add({
+  //       'number': i,
+  //       'title': 'test-' + i.toString(),
+  //       'writer': 'test-writer',
+  //       'date': '21.04.08',
+  //       'view': Random().nextInt(50)
+  //     }).then((value) => print('completed'));
+  //   }
+  // }
+  // TextButton(
+  //                         onPressed: add,
+  //                         child: Text("ADD!!!"),
+  //                       ),
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +69,14 @@ class _PaperPageState extends State<PaperPage> {
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
-                        CircularProgressIndicator(),
+                        Container(
+                          color: Colors.white,
+                          width: double.infinity,
+                          height: 400,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
                         Footer()
                       ],
                     );
@@ -71,6 +96,8 @@ class _PaperPageState extends State<PaperPage> {
                         }
                       }
                     });
+                    // reverse data
+                    data = data.reversed.toList();
 
                     return Column(
                       children: <Widget>[
@@ -82,24 +109,38 @@ class _PaperPageState extends State<PaperPage> {
                             ? Align(
                                 alignment: Alignment.topRight,
                                 child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
                                   children: <Widget>[
                                     Container(
-                                      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width *
-                                              0.15, vertical: 20),
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.15,
+                                          vertical: 20),
                                       color: themeBlue.withOpacity(0.7),
                                       alignment: Alignment.centerRight,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: <Widget>[
-                                          Text("'"+filterText+"'" + ' 관련 검색 결과 초기화', style: subtitleWhiteTextStyle,),
+                                          Text(
+                                            "'" +
+                                                filterText +
+                                                "'" +
+                                                ' 관련 검색 결과 초기화',
+                                            style: subtitleWhiteTextStyle,
+                                          ),
                                           TextButton.icon(
                                               onPressed: () {
                                                 setState(() {
                                                   filterText = '';
                                                 });
                                               },
-                                              icon: Icon(Icons.close_rounded, color: Colors.white, size: 22),
+                                              icon: Icon(Icons.close_rounded,
+                                                  color: Colors.white,
+                                                  size: 22),
                                               label: Text('')),
                                         ],
                                       ),
@@ -110,7 +151,7 @@ class _PaperPageState extends State<PaperPage> {
                             : SizedBox(),
                         // Board  ------------------------------------------------------------
                         BoardArticle(board: data),
-                        Footer()
+                        Footer(),
                       ],
                     );
                   }
@@ -136,7 +177,7 @@ class _PaperPageState extends State<PaperPage> {
                 image: DecorationImage(
               image: AssetImage('images/workingpaper.jpg'),
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.7), BlendMode.dstATop),
+                  Colors.black.withOpacity(0.5), BlendMode.darken),
               fit: BoxFit.cover,
             ))),
         Container(
@@ -216,6 +257,8 @@ class _PaperPageState extends State<PaperPage> {
                     Expanded(
                         flex: 5,
                         child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 20),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -228,13 +271,25 @@ class _PaperPageState extends State<PaperPage> {
                               borderRadius: BorderRadius.circular(20.0)),
                           child: TextFormField(
                               controller: textEditingController,
-                              onChanged: (value) =>
-                                  textEditingController.text = value,
+                              onChanged: (value) {
+                                textEditingController.text = value;
+                                // setting cursor position
+                                textEditingController.selection =
+                                    TextSelection.fromPosition(TextPosition(
+                                        offset:
+                                            textEditingController.text.length));
+                              },
                               cursorColor: Colors.blue[400],
                               cursorWidth: 4.0,
-                              cursorHeight: 10,
-                              decoration:
-                                  InputDecoration(border: InputBorder.none)),
+                              cursorHeight: 20,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '검색할 제목을 입력해주세요.',
+                                  labelStyle: GoogleFonts.montserrat(
+                                      color: Colors.black87,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0))),
                         )),
                     Expanded(
                       flex: 1,
@@ -243,7 +298,8 @@ class _PaperPageState extends State<PaperPage> {
                     Expanded(
                         flex: 4,
                         child: ElevatedButton(
-                          onPressed: () => print('search'),
+                          onPressed: () =>
+                              searchWithTitle(textEditingController.text),
                           style: ElevatedButton.styleFrom(
                               primary: themeBlue,
                               padding: EdgeInsets.symmetric(
@@ -260,6 +316,13 @@ class _PaperPageState extends State<PaperPage> {
                         ))
                   ],
                 ),
+        ),
+        // title
+        Positioned(
+          top: 50.0,
+          left: 100.0,
+          child: Text('Working Paper',
+              style: articleTitleTextStyle(color: Colors.white)),
         )
       ],
     );

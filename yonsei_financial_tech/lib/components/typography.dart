@@ -26,7 +26,7 @@ TextStyle subtitleTextStyle = GoogleFonts.openSans(
     textStyle: TextStyle(fontSize: 16, color: textSecondary, letterSpacing: 1));
 
 TextStyle subtitleWhiteTextStyle = GoogleFonts.openSans(
-    textStyle: TextStyle(fontSize: 16, color: Colors.white, letterSpacing: 1));
+    textStyle: TextStyle(fontSize: 16, color: Colors.white, letterSpacing: 1, fontWeight: FontWeight.bold));
 
 TextStyle bodyTextStyle = GoogleFonts.openSans(
     textStyle: TextStyle(fontSize: 14, color: textPrimary));
