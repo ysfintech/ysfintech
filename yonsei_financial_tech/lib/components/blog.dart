@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 // extension
 import 'package:yonsei_financial_tech/extensions/hover.dart';
@@ -21,7 +22,7 @@ class Footer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
         alignment: Alignment.center,
-        child: TextBody(text: "Copyright © 2020 Seunghwanly Kim-kwan-woo"),
+        child: TextBody(text: "Copyright © 2021 Seunghwanly Kim-kwan-woo"),
       ),
     );
   }
@@ -365,11 +366,32 @@ class _BoardArticleState extends State<BoardArticle> {
  *  }
  */
 
+  int selectedPageIndex = 1;
+  /*
+   *  Range to show in list = [ selectedPageIndex * 10, selectedPageIndex * 10 + 1, ... , selectedPageIndex * 10 + 9 ]
+   *  10 items in row
+   *  onPageChanged () => change range of index 
+   *    [ selectedPageIndex * 10 + 0 to selectedPageIndex * 10 + 9 ]
+   * 
+   *  widget.board.length / 10 => page index max
+   */
+  // page index list
+  List<int> pageList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // set widget.board.length -> page index
+    int maxPage =
+        widget.board.length > 10 ? (widget.board.length / 10).floor() + 1 : 1;
+    for (int i = 1; i <= maxPage; ++i) {
+      pageList.add(i);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final md = MediaQuery.of(context).size;
-
-    print(widget.board);
 
     return Container(
       color: Colors.white,
@@ -444,78 +466,97 @@ class _BoardArticleState extends State<BoardArticle> {
           widget.board.length != 0
               ? ListView.builder(
                   shrinkWrap: true,
-                  itemCount: widget.board.length,
+                  itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
-                    // posts
-                    return Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: <Widget>[
-                          // post
-                          Container(
-                            margin: marginHorizontal(md.width * 0.5),
-                            padding: paddingH20V20,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                // no
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      widget.board[index]['number'].toString(),
-                                      style: bodyTextStyle,
-                                      textAlign: TextAlign.center,
-                                    )),
-                                // title -> only clickable
-                                Expanded(
-                                    flex: 3,
-                                    child: Hover(
-                                        onTap: () => showDialog(
-                                            context: context,
-                                            builder: (_) => AlertDialog(
-                                                title: Text("OK!"))),
-                                        child: Text(
-                                          widget.board[index]['title']
-                                              .toString(),
-                                          style: bodyTextStyle,
-                                          textAlign: TextAlign.center,
-                                        ))),
-                                // writer
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      widget.board[index]['writer'].toString(),
-                                      style: bodyTextStyle,
-                                      textAlign: TextAlign.center,
-                                    )),
-                                // date
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      widget.board[index]['date'].toString(),
-                                      style: bodyTextStyle,
-                                      textAlign: TextAlign.center,
-                                    )),
-                                // view
-                                Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      widget.board[index]['view'].toString(),
-                                      style: bodyTextStyle,
-                                      textAlign: TextAlign.center,
-                                    )),
-                              ],
+                    if ((selectedPageIndex - 1) * 10 + (index + 1) <=
+                        widget.board.length) {
+                      // posts
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: <Widget>[
+                            // post
+                            Container(
+                              margin: marginHorizontal(md.width * 0.5),
+                              padding: paddingH20V20,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  // no
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['number']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // title -> only clickable
+                                  Expanded(
+                                      flex: 3,
+                                      child: Hover(
+                                          onTap: () => showDialog(
+                                              context: context,
+                                              builder: (_) => AlertDialog(
+                                                  title: Text("OK!"))),
+                                          child: Text(
+                                            widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['title']
+                                                .toString(),
+                                            style: bodyTextStyle,
+                                            textAlign: TextAlign.center,
+                                          ))),
+                                  // writer
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['writer']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // date
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['date']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // view
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['view']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                ],
+                              ),
                             ),
-                          ),
-                          // divider
-                          Container(
-                            margin: marginHorizontal(md.width),
-                            child: divider,
-                          )
-                        ],
-                      ),
-                    );
+                            // divider
+                            Container(
+                              margin: marginHorizontal(md.width * 0.5),
+                              child: divider,
+                            )
+                          ],
+                        ),
+                      );
+                    }
                   },
                 )
               : Align(
@@ -532,6 +573,78 @@ class _BoardArticleState extends State<BoardArticle> {
                     ],
                   ),
                 ),
+          // page Index
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: 400,
+              padding: paddingH20V20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // left
+                  TextButton(
+                    child: Icon(
+                      Icons.arrow_left_rounded,
+                      size: 24,
+                      color: ligthGray,
+                    ),
+                    onPressed: () => print('left'),
+                  ),
+                  // page index
+                  Container(
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.center,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: new NeverScrollableScrollPhysics(),
+                        itemCount: pageList.length < 5 ? pageList.length : 5,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 40,
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selectedPageIndex =
+                                      ((selectedPageIndex / 5).floor() * 5 +
+                                          (index + 1));
+                                });
+                              },
+                              child: Text(
+                                ((selectedPageIndex / 5).floor() * 5 +
+                                        (index + 1))
+                                    .toString(),
+                                style: TextStyle(
+                                    color:
+                                        ((selectedPageIndex / 5).floor() * 5 +
+                                                    (index + 1)) ==
+                                                selectedPageIndex
+                                            ? themeBlue
+                                            : ligthGray,
+                                    fontWeight:
+                                        ((selectedPageIndex / 5).floor() * 5 +
+                                                    (index + 1)) ==
+                                                selectedPageIndex
+                                            ? FontWeight.bold
+                                            : FontWeight.normal),
+                              ),
+                            ),
+                          );
+                        },
+                      )),
+                  // right
+                  TextButton(
+                    child: Icon(Icons.arrow_right_rounded,
+                        size: 24, color: ligthGray),
+                    onPressed: () => print('right'),
+                  )
+                ],
+              ),
+            ),
+          ),
           SizedBox(
             // footer space
             width: md.width,
