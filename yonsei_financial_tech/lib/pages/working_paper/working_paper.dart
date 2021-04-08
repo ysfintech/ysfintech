@@ -15,6 +15,24 @@ class _PaperPageState extends State<PaperPage> {
 
   CollectionReference papers = FirebaseFirestore.instance.collection('paper');
 
+  var fetchedData;
+
+  // filter
+  var filterText;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchedData = papers.get();
+  }
+
+  // search action
+  void searchWithTitle(String title) {
+    setState(() {
+      filterText = title;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +41,7 @@ class _PaperPageState extends State<PaperPage> {
           SingleChildScrollView(
               controller: _controller,
               child: FutureBuilder<QuerySnapshot>(
-                future: papers.get(),
+                future: fetchedData,
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
@@ -40,9 +58,18 @@ class _PaperPageState extends State<PaperPage> {
                   } else {
                     // data
                     List<Map<String, dynamic>> data = [];
-
+                    // add filtering
                     snapshot.data.docs.forEach((element) {
-                      data.add(element.data());
+                      if (filterText == null) {
+                        data.add(element.data());
+                      } else {
+                        if (element
+                            .data()['title']
+                            .toString()
+                            .contains(filterText)) {
+                          data.add(element.data());
+                        }
+                      }
                     });
 
                     return Column(
@@ -52,7 +79,8 @@ class _PaperPageState extends State<PaperPage> {
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         // Board  ------------------------------------------------------------
-                        BoardArticle(board: data)
+                        BoardArticle(board: data),
+                        Footer()
                       ],
                     );
                   }
@@ -77,6 +105,8 @@ class _PaperPageState extends State<PaperPage> {
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: AssetImage('images/workingpaper.jpg'),
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.7), BlendMode.dstATop),
               fit: BoxFit.cover,
             ))),
         Container(
@@ -90,6 +120,8 @@ class _PaperPageState extends State<PaperPage> {
                     Expanded(
                         flex: 7,
                         child: Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 20),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               boxShadow: [
@@ -102,12 +134,25 @@ class _PaperPageState extends State<PaperPage> {
                               borderRadius: BorderRadius.circular(20.0)),
                           child: TextFormField(
                               controller: textEditingController,
-                              onChanged: (value) =>
-                                  textEditingController.text = value,
+                              onChanged: (value) {
+                                textEditingController.text = value;
+                                // setting cursor position
+                                textEditingController.selection =
+                                    TextSelection.fromPosition(TextPosition(
+                                        offset:
+                                            textEditingController.text.length));
+                              },
                               cursorColor: Colors.blue[400],
                               cursorWidth: 4.0,
-                              cursorHeight: 10,
-                              decoration: InputDecoration(border: InputBorder.none)),
+                              cursorHeight: 20,
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: '검색할 제목을 입력해주세요.',
+                                  labelStyle: GoogleFonts.montserrat(
+                                      color: Colors.black87,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1.0))),
                         )),
                     Expanded(
                       flex: 1,
@@ -116,7 +161,8 @@ class _PaperPageState extends State<PaperPage> {
                     Expanded(
                         flex: 2,
                         child: ElevatedButton(
-                          onPressed: () => print('search'),
+                          onPressed: () =>
+                              searchWithTitle(textEditingController.text),
                           style: ElevatedButton.styleFrom(
                               primary: themeBlue,
                               padding: EdgeInsets.symmetric(
@@ -124,15 +170,12 @@ class _PaperPageState extends State<PaperPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text(
-                            "검색",
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.0
-                            )
-                          ),
+                          child: Text("검색",
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.0)),
                         ))
                   ],
                 )
@@ -160,7 +203,8 @@ class _PaperPageState extends State<PaperPage> {
                               cursorColor: Colors.blue[400],
                               cursorWidth: 4.0,
                               cursorHeight: 10,
-                              decoration: InputDecoration(border: InputBorder.none)),
+                              decoration:
+                                  InputDecoration(border: InputBorder.none)),
                         )),
                     Expanded(
                       flex: 1,
@@ -177,15 +221,12 @@ class _PaperPageState extends State<PaperPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text(
-                            "검색",
-                            style: GoogleFonts.montserrat(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.0
-                            )
-                          ),
+                          child: Text("검색",
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1.0)),
                         ))
                   ],
                 ),
