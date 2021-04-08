@@ -31,15 +31,18 @@ TextStyle subtitleWhiteTextStyle = GoogleFonts.openSans(
 TextStyle bodyTextStyle = GoogleFonts.openSans(
     textStyle: TextStyle(fontSize: 14, color: textPrimary));
 
-TextStyle bodyWhiteTextStyle = GoogleFonts.openSans(
-    textStyle: TextStyle(fontSize: 14, color: lightWhite));
+TextStyle bodyWhiteTextStyle =
+    GoogleFonts.openSans(textStyle: TextStyle(fontSize: 14, color: lightWhite));
 
 TextStyle buttonTextStyle = GoogleFonts.montserrat(
     textStyle: TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
 
 // Advanced
-TextStyle titleIntroductionTextStyle =
-    TextStyle(fontSize: 40, color: Colors.white, fontWeight: FontWeight.w800, fontFamily: 'Yonsei');
+TextStyle titleIntroductionTextStyle = TextStyle(
+    fontSize: 40,
+    color: Colors.white,
+    fontWeight: FontWeight.w800,
+    fontFamily: 'Yonsei');
 
 TextStyle articleTitleTextStyle({Color color}) {
   return TextStyle(

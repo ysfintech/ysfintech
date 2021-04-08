@@ -74,16 +74,6 @@ class MenuBar extends StatelessWidget {
                                   overlayColor: MaterialStateColor.resolveWith(
                                       (states) => Colors.transparent))),
                           TextButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, Routes.education),
-                              child: Text(
-                                "Education",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.people),
                               child: Text(
@@ -122,7 +112,17 @@ class MenuBar extends StatelessWidget {
                               ),
                               style: ButtonStyle(
                                   overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent)))
+                                      (states) => Colors.transparent))),
+                          TextButton(
+                              onPressed: () => Navigator.pushNamed(
+                                  context, Routes.education),
+                              child: Text(
+                                "Education",
+                                style: buttonTextStyle,
+                              ),
+                              style: ButtonStyle(
+                                  overlayColor: MaterialStateColor.resolveWith(
+                                      (states) => Colors.transparent))),
                         ],
                       ),
                     ),
