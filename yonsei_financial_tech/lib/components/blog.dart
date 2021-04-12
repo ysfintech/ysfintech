@@ -144,23 +144,27 @@ class MenuBar extends StatelessWidget {
 // Article
 class Article extends StatelessWidget {
   final Color backgroundColor;
-  final String imagePath;
+  final Image image;
   final String imageDesc;
+  final String period;
+  final String from;
   final String content;
   final String title;
   final bool isImageRight;
 
   Article(this.isImageRight,
       {this.title,
+      this.period,
+      this.from,
       this.backgroundColor,
-      this.imagePath,
+      this.image,
       this.content,
       this.imageDesc});
 
   @override
   Widget build(BuildContext context) {
     final md = MediaQuery.of(context).size;
-    if (imagePath != null) {
+    if (image != null) {
       return Container(
           color: backgroundColor != null ? backgroundColor : Colors.white,
           child: Column(
@@ -172,10 +176,52 @@ class Article extends StatelessWidget {
               ),
               Container(
                 width: md.width,
-                height: 80,
+                height: 40,
                 margin: marginHorizontal(md.width),
-                child: Text(title, style: headlineTextStyle),
+                child: Text(title,
+                    style: backgroundColor == Colors.white
+                        ? headlineTextStyle
+                        : headlineWhiteTextStyle,
+                    softWrap: true),
               ),
+              period != null && from != null
+                  ? Container(
+                      width: md.width,
+                      height: 80,
+                      margin: marginHorizontal(md.width),
+                      child: md.width > 1200
+                          ? Row(
+                              children: <Text>[
+                                Text(period,
+                                    style: backgroundColor == Colors.white
+                                        ? headlineSecondaryTextStyle
+                                        : headlineSecondaryWhiteTextStyle),
+                                Text(
+                                  ",  " + from,
+                                  style: backgroundColor == Colors.white
+                                      ? headlineSecondaryTextStyle
+                                      : headlineSecondaryWhiteTextStyle,
+                                  softWrap: true,
+                                )
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Text>[
+                                Text(period,
+                                    style: backgroundColor == Colors.white
+                                        ? headlineSecondaryTextStyle
+                                        : headlineSecondaryWhiteTextStyle),
+                                Text(
+                                  ",  " + from,
+                                  style: backgroundColor == Colors.white
+                                      ? headlineSecondaryTextStyle
+                                      : headlineSecondaryWhiteTextStyle,
+                                  softWrap: true,
+                                )
+                              ],
+                            ))
+                  : SizedBox(),
               md.width > 1200
                   ? Container(
                       margin: marginHorizontal(md.width),
@@ -186,36 +232,58 @@ class Article extends StatelessWidget {
                                   flex: 4,
                                   child: Text(
                                     content,
-                                    style: bodyTextStyle,
+                                    style: backgroundColor == Colors.white
+                                        ? bodyTextStyle
+                                        : bodyWhiteTextStyle,
                                   ),
                                 ),
                                 Expanded(child: SizedBox(), flex: 1),
                                 Expanded(
                                     flex: 4,
-                                    child: ClipRect(
-                                        child: Container(
-                                      child: Image(
-                                          image: AssetImage(imagePath),
-                                          fit: BoxFit.cover),
-                                    )))
+                                    child: Column(
+                                      children: <Widget>[
+                                        ClipRect(
+                                            child: Container(
+                                          child: image,
+                                        )),
+                                        SizedBox(height: 20),
+                                        Text(imageDesc,
+                                            style:
+                                                backgroundColor == Colors.white
+                                                    ? imageDescTextStyle
+                                                    : imageDescTexWhitetStyle,
+                                            softWrap: true)
+                                      ],
+                                    ))
                               ],
                             )
                           : Row(
                               children: [
                                 Expanded(
                                     flex: 4,
-                                    child: ClipRect(
-                                        child: Container(
-                                      child: Image(
-                                          image: AssetImage(imagePath),
-                                          fit: BoxFit.cover),
-                                    ))),
+                                    child: Column(
+                                      children: <Widget>[
+                                        ClipRect(
+                                            child: Container(
+                                          child: image,
+                                        )),
+                                        SizedBox(height: 20),
+                                        Text(imageDesc,
+                                            style:
+                                                backgroundColor == Colors.white
+                                                    ? imageDescTextStyle
+                                                    : imageDescTexWhitetStyle,
+                                            softWrap: true)
+                                      ],
+                                    )),
                                 Expanded(child: SizedBox(), flex: 1),
                                 Expanded(
                                   flex: 4,
                                   child: Text(
                                     content,
-                                    style: bodyTextStyle,
+                                    style: backgroundColor == Colors.white
+                                        ? bodyTextStyle
+                                        : bodyWhiteTextStyle,
                                   ),
                                 ),
                               ],
@@ -228,7 +296,9 @@ class Article extends StatelessWidget {
                             margin: marginHorizontal(md.width),
                             child: Text(
                               content,
-                              style: bodyTextStyle,
+                              style: backgroundColor == Colors.white
+                                  ? bodyTextStyle
+                                  : bodyWhiteTextStyle,
                             ),
                           ),
                         ),
@@ -236,15 +306,26 @@ class Article extends StatelessWidget {
                           height: 100,
                         ),
                         Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: md.width * 0.4,
-                            height: md.width * 0.4,
-                            child: Image(
-                                image: AssetImage(imagePath),
-                                fit: BoxFit.cover),
-                          ),
-                        )
+                            alignment: Alignment.center,
+                            child: Column(children: <Widget>[
+                              Container(
+                                width: md.width * 0.4,
+                                height: md.width * 0.4,
+                                child: image,
+                              ),
+                              SizedBox(height: 20),
+                              Container(
+                                width: md.width * 0.4,
+                                height: md.width * 0.4,
+                                child: Text(
+                                  imageDesc,
+                                  style: backgroundColor == Colors.white
+                                      ? imageDescTextStyle
+                                      : imageDescTexWhitetStyle,
+                                  softWrap: true,
+                                ),
+                              ),
+                            ]))
                       ],
                     ),
               SizedBox(
@@ -609,7 +690,8 @@ class _BoardArticleState extends State<BoardArticle> {
                         setState(() {
                           pageListRow -= 1;
                           print(pageListRow);
-                          selectedPageIndex = pageList[pageListRow][pageList[pageListRow].length - 1];
+                          selectedPageIndex = pageList[pageListRow]
+                              [pageList[pageListRow].length - 1];
                         });
                       }
                     },

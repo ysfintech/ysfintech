@@ -20,7 +20,11 @@ TextStyle headlineWhiteTextStyle = GoogleFonts.notoSerif(
 
 TextStyle headlineSecondaryTextStyle = GoogleFonts.notoSerif(
     textStyle: TextStyle(
-        fontSize: 20, color: textPrimary, fontWeight: FontWeight.w300));
+        fontSize: 20, color: textPrimary, fontWeight: FontWeight.w400));
+
+TextStyle headlineSecondaryWhiteTextStyle = GoogleFonts.notoSerif(
+    textStyle: TextStyle(
+        fontSize: 20, color: lightWhite, fontWeight: FontWeight.w400));
 
 TextStyle subtitleTextStyle = GoogleFonts.notoSerif(
     textStyle: TextStyle(fontSize: 16, color: textSecondary, letterSpacing: 1));
@@ -63,3 +67,6 @@ TextStyle articleContentTextStyle({Color color}) {
 
 TextStyle imageDescTextStyle = GoogleFonts.notoSerif(
     textStyle: TextStyle(fontSize: 12, color: ligthGray));
+
+TextStyle imageDescTexWhitetStyle = GoogleFonts.notoSerif(
+    textStyle: TextStyle(fontSize: 12, color: lightWhite));
