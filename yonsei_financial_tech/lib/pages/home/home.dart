@@ -1,7 +1,10 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
-import 'package:yonsei_financial_tech/components/color.dart';
+// firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +13,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ScrollController _controller = new ScrollController();
+
+  // fire store
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference intro =
+      FirebaseFirestore.instance.collection('introduction');
+  // data
+  var fetchedData;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchedData = intro.get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +43,35 @@ class _HomePageState extends State<HomePage> {
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 title(context),
                 // About Us - INTRODUCTION -------------------------------------------
-                Article(
-                  true,
-                  title: 'Introduction',
-                  imagePath: 'images/fintech2.jpeg',
-                  content:
-                      '본 연구센터는 금융 시장의 제반 이슈들에 대한 재무이론 기반 분석과 중장기적 금융 정책 수립을 위한 연구를 수행한다. 이를 위해, 금융 및 공학 등 관련 분야의 교내외 전문 연구자와 교수진이 참여한다. \n\n 주요 연구주제는 인공지능, 핀테크, 암호화폐 등 차세대 기술 및 사회변화를 반영한 금융 및 경제 분야의 최신 주제들로 구성하여 가까운 미래 트렌드를 반영할 예정이다. 연구 결과물들은 최상위 수준 국제학술지 등에 발표하며, 정책적 시사점을 토대로 실제 금융 정책에도 응용이 가능할 것으로 전망된다.',
-                  backgroundColor: Colors.white,
+                FutureBuilder<QuerySnapshot>(
+                  future: fetchedData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('500 - error'));
+                    } else if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      /**
+                       *  개행 문자를 포함해서 return 하기 
+                       */
+                      List<String> contentArray = snapshot.data.docs[0].data()['content'].toString().split('<br>');
+                      String content() {
+                        StringBuffer sb =new StringBuffer();
+                        for(String item in contentArray) {
+                          sb.write(item + '\n\n');
+                        }
+                        return sb.toString();
+                      }
+
+                      return Article(
+                        false,
+                        title: snapshot.data.docs[0].data()['title'],
+                        content: content(),
+                      );
+                    }
+                  },
                 ),
                 // FOOTER ------------------------------------------------------------
                 Footer()
@@ -45,5 +83,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-

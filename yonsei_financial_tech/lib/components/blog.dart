@@ -299,21 +299,22 @@ Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
-    alignment: AlignmentDirectional.centerStart,
+    alignment: AlignmentDirectional.center,
     children: <Widget>[
       Container(
           // height: md.height * 0.58,
-          height: 400,
+          height: 600,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
       Positioned(
-        left: md.width > 700 ? 150 : 0,
+        // left: md.width > 700 ? 150 : 0,
+        left: md.width > 800 ? md.width / 2 - 520 : md.width > 450 ? 0 : md.width / 2 - 400,
         child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                //borderRadius: BorderRadius.all(Radius.circular(20.0)),
                 color: themeBlue,
                 boxShadow: [
                   BoxShadow(
