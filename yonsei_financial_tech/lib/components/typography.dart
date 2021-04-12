@@ -23,16 +23,24 @@ TextStyle headlineSecondaryTextStyle = GoogleFonts.notoSerif(
         fontSize: 20, color: textPrimary, fontWeight: FontWeight.w300));
 
 TextStyle subtitleTextStyle = GoogleFonts.notoSerif(
-    textStyle: TextStyle(fontSize: 16, color: textSecondary, letterSpacing: 1));
+    textStyle: TextStyle(
+        fontSize: 16,
+        color: textSecondary,
+        letterSpacing: 1,
+        fontWeight: FontWeight.bold));
 
 TextStyle subtitleWhiteTextStyle = GoogleFonts.notoSerif(
-    textStyle: TextStyle(fontSize: 16, color: Colors.white, letterSpacing: 1, fontWeight: FontWeight.bold));
+    textStyle: TextStyle(
+        fontSize: 16,
+        color: Colors.white,
+        letterSpacing: 1,
+        fontWeight: FontWeight.bold));
 
 TextStyle bodyTextStyle = GoogleFonts.notoSerif(
     textStyle: TextStyle(fontSize: 14, color: textPrimary));
 
-TextStyle bodyWhiteTextStyle =
-    GoogleFonts.notoSerif(textStyle: TextStyle(fontSize: 14, color: lightWhite));
+TextStyle bodyWhiteTextStyle = GoogleFonts.notoSerif(
+    textStyle: TextStyle(fontSize: 14, color: lightWhite));
 
 TextStyle buttonTextStyle = GoogleFonts.notoSerif(
     textStyle: TextStyle(fontSize: 14, color: textPrimary, letterSpacing: 1));
@@ -43,8 +51,7 @@ TextStyle titleIntroductionTextStyle = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.w800,
     // fontFamily: 'Yonsei'
-    fontFamily: GoogleFonts.notoSerif().fontFamily
-    );
+    fontFamily: GoogleFonts.notoSerif().fontFamily);
 
 TextStyle articleTitleTextStyle({Color color}) {
   return TextStyle(
@@ -61,5 +68,5 @@ TextStyle articleContentTextStyle({Color color}) {
   );
 }
 
-TextStyle imageDescTextStyle = GoogleFonts.notoSerif(
-    textStyle: TextStyle(fontSize: 12, color: ligthGray));
+TextStyle imageDescTextStyle =
+    GoogleFonts.notoSerif(textStyle: TextStyle(fontSize: 12, color: ligthGray));
