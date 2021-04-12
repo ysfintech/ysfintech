@@ -35,21 +35,18 @@ class _PaperPageState extends State<PaperPage> {
     });
   }
   // FOR TESTING
-  // Future<void> add() {
-  //   for (int i = 2; i < 15; ++i) {
-  //     papers.add({
-  //       'number': i,
-  //       'title': 'test-' + i.toString(),
-  //       'writer': 'test-writer',
-  //       'date': '21.04.08',
-  //       'view': Random().nextInt(50)
-  //     }).then((value) => print('completed'));
-  //   }
-  // }
-  // TextButton(
-  //                         onPressed: add,
-  //                         child: Text("ADD!!!"),
-  //                       ),
+  Future<void> add() {
+    for (int i = 15; i < 70; ++i) {
+      papers.add({
+        'number': i,
+        'title': 'test-' + i.toString(),
+        'writer': 'test-writer',
+        'date': '21.04.12',
+        'view': Random().nextInt(50)
+      }).then((value) => print('completed'));
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +100,10 @@ class _PaperPageState extends State<PaperPage> {
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
+                        TextButton(
+                          onPressed: add,
+                          child: Text("ADD!!!"),
+                        ),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         filterText.length != 0
@@ -219,7 +220,7 @@ class _PaperPageState extends State<PaperPage> {
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: '검색할 제목을 입력해주세요.',
-                                  labelStyle: GoogleFonts.montserrat(
+                                  labelStyle: GoogleFonts.nanumGothicCoding(
                                       color: Colors.black87,
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -242,7 +243,7 @@ class _PaperPageState extends State<PaperPage> {
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
                           child: Text("검색",
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.nanumGothicCoding(
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -285,7 +286,7 @@ class _PaperPageState extends State<PaperPage> {
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: '검색할 제목을 입력해주세요.',
-                                  labelStyle: GoogleFonts.montserrat(
+                                  labelStyle: GoogleFonts.nanumGothicCoding(
                                       color: Colors.black87,
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -308,7 +309,7 @@ class _PaperPageState extends State<PaperPage> {
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
                           child: Text("검색",
-                              style: GoogleFonts.montserrat(
+                              style: GoogleFonts.nanumGothicCoding(
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,

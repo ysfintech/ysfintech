@@ -311,7 +311,11 @@ Stack title(BuildContext context) {
           ))),
       Positioned(
         // left: md.width > 700 ? 150 : 0,
-        left: md.width > 800 ? md.width / 2 - 520 : md.width > 450 ? 0 : md.width / 2 - 400,
+        left: md.width > 800
+            ? md.width / 2 - 520
+            : md.width > 450
+                ? 0
+                : md.width / 2 - 400,
         child: Container(
             decoration: BoxDecoration(
                 //borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -366,7 +370,6 @@ class _BoardArticleState extends State<BoardArticle> {
  *    String contentPath
  *  }
  */
-
   int selectedPageIndex = 1;
   /*
    *  Range to show in list = [ selectedPageIndex * 10, selectedPageIndex * 10 + 1, ... , selectedPageIndex * 10 + 9 ]
@@ -377,17 +380,27 @@ class _BoardArticleState extends State<BoardArticle> {
    *  widget.board.length / 10 => page index max
    */
   // page index list
-  List<int> pageList = [];
+  List<List<int>> pageList = [];
+  int pageListRow = 0;
 
   @override
   void initState() {
     super.initState();
+    print(widget.board.length / 10);
     // set widget.board.length -> page index
     int maxPage =
-        widget.board.length > 10 ? (widget.board.length / 10).floor() + 1 : 1;
+        widget.board.length / 10 > 1 ? (widget.board.length / 10).ceil() : 1;
+
+    List<int> temp = [];
     for (int i = 1; i <= maxPage; ++i) {
-      pageList.add(i);
+      if (i % 5 == 1 && i > 1) {
+        pageList.add(temp);
+        temp = [];
+      }
+      temp.add(i);
     }
+    pageList.add(temp);
+    print(pageList);
   }
 
   @override
@@ -591,7 +604,15 @@ class _BoardArticleState extends State<BoardArticle> {
                       size: 24,
                       color: ligthGray,
                     ),
-                    onPressed: () => print('left'),
+                    onPressed: () {
+                      if (pageListRow > 0) {
+                        setState(() {
+                          pageListRow -= 1;
+                          print(pageListRow);
+                          selectedPageIndex = pageList[pageListRow][pageList[pageListRow].length - 1];
+                        });
+                      }
+                    },
                   ),
                   // page index
                   Container(
@@ -602,7 +623,7 @@ class _BoardArticleState extends State<BoardArticle> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         physics: new NeverScrollableScrollPhysics(),
-                        itemCount: pageList.length < 5 ? pageList.length : 5,
+                        itemCount: pageList[pageListRow].length,
                         itemBuilder: (context, index) {
                           return Container(
                             width: 40,
@@ -610,27 +631,20 @@ class _BoardArticleState extends State<BoardArticle> {
                               onPressed: () {
                                 setState(() {
                                   selectedPageIndex =
-                                      ((selectedPageIndex / 5).floor() * 5 +
-                                          (index + 1));
+                                      pageList[pageListRow][index];
                                 });
                               },
                               child: Text(
-                                ((selectedPageIndex / 5).floor() * 5 +
-                                        (index + 1))
-                                    .toString(),
+                                pageList[pageListRow][index].toString(),
                                 style: TextStyle(
-                                    color:
-                                        ((selectedPageIndex / 5).floor() * 5 +
-                                                    (index + 1)) ==
-                                                selectedPageIndex
-                                            ? themeBlue
-                                            : ligthGray,
-                                    fontWeight:
-                                        ((selectedPageIndex / 5).floor() * 5 +
-                                                    (index + 1)) ==
-                                                selectedPageIndex
-                                            ? FontWeight.bold
-                                            : FontWeight.normal),
+                                    color: pageList[pageListRow][index] ==
+                                            selectedPageIndex
+                                        ? themeBlue
+                                        : ligthGray,
+                                    fontWeight: pageList[pageListRow][index] ==
+                                            selectedPageIndex
+                                        ? FontWeight.bold
+                                        : FontWeight.normal),
                               ),
                             ),
                           );
@@ -640,7 +654,14 @@ class _BoardArticleState extends State<BoardArticle> {
                   TextButton(
                     child: Icon(Icons.arrow_right_rounded,
                         size: 24, color: ligthGray),
-                    onPressed: () => print('right'),
+                    onPressed: () {
+                      if (pageListRow < pageList.length) {
+                        setState(() {
+                          pageListRow += 1;
+                          selectedPageIndex = pageList[pageListRow][0];
+                        });
+                      }
+                    },
                   )
                 ],
               ),
