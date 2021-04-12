@@ -35,17 +35,17 @@ class _PaperPageState extends State<PaperPage> {
     });
   }
   // FOR TESTING
-  Future<void> add() {
-    for (int i = 15; i < 70; ++i) {
-      papers.add({
-        'number': i,
-        'title': 'test-' + i.toString(),
-        'writer': 'test-writer',
-        'date': '21.04.12',
-        'view': Random().nextInt(50)
-      }).then((value) => print('completed'));
-    }
-  }
+  // Future<void> add() {
+  //   for (int i = 15; i < 70; ++i) {
+  //     papers.add({
+  //       'number': i,
+  //       'title': 'test-' + i.toString(),
+  //       'writer': 'test-writer',
+  //       'date': '21.04.12',
+  //       'view': Random().nextInt(50)
+  //     }).then((value) => print('completed'));
+  //   }
+  // }
   
 
   @override
@@ -100,10 +100,10 @@ class _PaperPageState extends State<PaperPage> {
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
-                        TextButton(
-                          onPressed: add,
-                          child: Text("ADD!!!"),
-                        ),
+                        // TextButton(
+                        //   onPressed: add,
+                        //   child: Text("ADD!!!"),
+                        // ),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         filterText.length != 0
@@ -131,7 +131,7 @@ class _PaperPageState extends State<PaperPage> {
                                                 filterText +
                                                 "'" +
                                                 ' 관련 검색 결과 초기화',
-                                            style: subtitleWhiteTextStyle,
+                                            style: h3WhiteTextStyle,
                                           ),
                                           TextButton.icon(
                                               onPressed: () {

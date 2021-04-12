@@ -31,7 +31,7 @@ class TextBodySecondary extends StatelessWidget {
       margin: marginBottom24,
       child: Text(
         text,
-        style: subtitleTextStyle,
+        style: h3TextStyle,
       ),
     );
   }
@@ -48,7 +48,7 @@ class TextHeadlineSecondary extends StatelessWidget {
       margin: marginBottom12,
       child: Text(
         text,
-        style: headlineSecondaryTextStyle,
+        style: h2TextStyle,
       ),
     );
   }

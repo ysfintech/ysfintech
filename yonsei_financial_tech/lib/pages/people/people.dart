@@ -66,7 +66,7 @@ Container yonseiPeople(BuildContext context) {
         SizedBox(
           height: 80,
         ),
-        Text("참여 교원", style: subtitleTextStyle),
+        Text("참여 교원", style: h3TextStyle),
       ],
     ),
   );

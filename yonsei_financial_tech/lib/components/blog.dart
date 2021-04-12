@@ -180,8 +180,8 @@ class Article extends StatelessWidget {
                 margin: marginHorizontal(md.width),
                 child: Text(title,
                     style: backgroundColor == Colors.white
-                        ? headlineTextStyle
-                        : headlineWhiteTextStyle,
+                        ? h2TextStyle
+                        : h2WhiteTextStyle,
                     softWrap: true),
               ),
               period != null && from != null
@@ -194,13 +194,13 @@ class Article extends StatelessWidget {
                               children: <Text>[
                                 Text(period,
                                     style: backgroundColor == Colors.white
-                                        ? headlineSecondaryTextStyle
-                                        : headlineSecondaryWhiteTextStyle),
+                                        ? h3TextStyle
+                                        : h3WhiteTextStyle),
                                 Text(
                                   ",  " + from,
                                   style: backgroundColor == Colors.white
-                                      ? headlineSecondaryTextStyle
-                                      : headlineSecondaryWhiteTextStyle,
+                                      ? h3TextStyle
+                                      : h3WhiteTextStyle,
                                   softWrap: true,
                                 )
                               ],
@@ -210,13 +210,13 @@ class Article extends StatelessWidget {
                               children: <Text>[
                                 Text(period,
                                     style: backgroundColor == Colors.white
-                                        ? headlineSecondaryTextStyle
-                                        : headlineSecondaryWhiteTextStyle),
+                                        ? h3TextStyle
+                                        : h3WhiteTextStyle),
                                 Text(
                                   ",  " + from,
                                   style: backgroundColor == Colors.white
-                                      ? headlineSecondaryTextStyle
-                                      : headlineSecondaryWhiteTextStyle,
+                                      ? h3TextStyle
+                                      : h3WhiteTextStyle,
                                   softWrap: true,
                                 )
                               ],
@@ -352,8 +352,8 @@ class Article extends StatelessWidget {
                   margin: marginHorizontal(md.width),
                   child: Text(title,
                       style: backgroundColor != null
-                          ? headlineWhiteTextStyle
-                          : headlineTextStyle),
+                          ? h2WhiteTextStyle
+                          : h2TextStyle),
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -502,7 +502,7 @@ class _BoardArticleState extends State<BoardArticle> {
             width: md.width,
             height: 80,
             margin: marginHorizontal(md.width * 0.5),
-            child: Text('Board', style: headlineTextStyle),
+            child: Text('Board', style: h1TextStyle),
           ),
           Align(
             alignment: Alignment.center,
@@ -519,7 +519,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '번호',
-                        style: subtitleWhiteTextStyle,
+                        style: h3WhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // title
@@ -527,7 +527,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 3,
                       child: Text(
                         '제목',
-                        style: subtitleWhiteTextStyle,
+                        style: h3WhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // writer
@@ -535,7 +535,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '작성자',
-                        style: subtitleWhiteTextStyle,
+                        style: h3WhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // date
@@ -543,7 +543,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '날짜',
-                        style: subtitleWhiteTextStyle,
+                        style: h3WhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // view
@@ -551,7 +551,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '조회수',
-                        style: subtitleWhiteTextStyle,
+                        style: h3WhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                 ],
@@ -661,7 +661,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       SizedBox(
                         height: 100,
                       ),
-                      Text('정보가 없습니다.', style: headlineSecondaryTextStyle),
+                      Text('정보가 없습니다.', style: h2TextStyle),
                       SizedBox(
                         height: 100,
                       ),

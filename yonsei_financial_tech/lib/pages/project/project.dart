@@ -56,8 +56,8 @@ class _ProjectPageState extends State<ProjectPage> {
                       Container(
                         margin: marginHorizontal(size.width),
                         child: Text(
-                          'Projects',
-                          style: headlineTextStyle,
+                          'Project',
+                          style: h1TextStyle,
                         ),
                       ),
                       SizedBox(height: 100),

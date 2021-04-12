@@ -128,7 +128,7 @@ ScrollController _controller = new ScrollController();
                                                 filterText +
                                                 "'" +
                                                 ' 관련 검색 결과 초기화',
-                                            style: subtitleWhiteTextStyle,
+                                            style: h3WhiteTextStyle,
                                           ),
                                           TextButton.icon(
                                               onPressed: () {
