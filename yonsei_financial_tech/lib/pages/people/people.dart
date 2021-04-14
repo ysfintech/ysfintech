@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/person.dart';
+import 'package:yonsei_financial_tech/pages/people/people_firebase.dart';
 
 class PeoplePage extends StatefulWidget {
   @override
@@ -10,32 +12,25 @@ class PeoplePage extends StatefulWidget {
 }
 
 class _PeoplePageState extends State<PeoplePage> {
-  List<Person> _people = [
-    Person.fromMap({
-      'name': '안광원',
-      'major': '연세대학교 산업공학과',
-      'img': 'images/fintech2.jpeg',
-      'field': '거시경제, 자산가격 결정이론, 경제물리'
-    }),
-    Person.fromMap({
-      'name': '박태영',
-      'major': '연세대학교 응용통계학과',
-      'img': 'images/fintech2.jpeg',
-      'field': '데이터 사이언스, 베이지안 통계학'
-    }),
-    Person.fromMap({
-      'name': '장수령',
-      'major': '연세대학교 경영학과',
-      'img': 'images/fintech2.jpeg',
-      'field': '소비자-기업 행동모델, 빅데이터 분석'
-    }),
-    Person.fromMap({
-      'name': '장한울',
-      'major': '연세대학교 산업공학과 및 투자정보공학과',
-      'img': 'images/fintech2.jpeg',
-      'field': '부동산 경제, 도시계획, 거시경제'
-    }),
-  ];
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference peo_yonsei =
+      FirebaseFirestore.instance.collection("people_yonsei");
+  CollectionReference peo_aca =
+      FirebaseFirestore.instance.collection("people_aca");
+  CollectionReference peo_indus =
+      FirebaseFirestore.instance.collection("people_indus");
+
+  var fetchedData_yonsei;
+  var fetchedData_aca;
+  var fetchedData_indus;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchedData_yonsei = peo_yonsei.orderBy("number").get();
+    fetchedData_aca = peo_aca.orderBy("number").get();
+    fetchedData_indus = peo_indus.orderBy("number").get();
+  }
 
   ScrollController _controller = new ScrollController();
   @override
@@ -54,10 +49,51 @@ class _PeoplePageState extends State<PeoplePage> {
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 backImage(context),
                 // About Us - INTRODUCTION -------------------------------------------
-                yonseiPeople(context, _people),
-                // Meet Our People ---------------------------------------------------
-                acaExPeople(context, _people),
-                indusExPeople(context, _people),
+                FutureBuilder<QuerySnapshot>(
+                    future: fetchedData_yonsei,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('500 - error'));
+                      } else if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        List<Map<String, dynamic>> _yonsei_people = [];
+                        snapshot.data.docs.forEach((element) {
+                          _yonsei_people.add(element.data());
+                        });
+                        return yonseiPeople(context, _yonsei_people);
+                      }
+                    }),
+                FutureBuilder<QuerySnapshot>(
+                    future: fetchedData_aca,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('500 - error'));
+                      } else if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        List<Map<String, dynamic>> _aca_people = [];
+                        snapshot.data.docs.forEach((element) {
+                          _aca_people.add(element.data());
+                        });
+                        return acaExPeople(context, _aca_people);
+                      }
+                    }),
+                FutureBuilder<QuerySnapshot>(
+                    future: fetchedData_indus,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('500 - error'));
+                      } else if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      } else {
+                        List<Map<String, dynamic>> _indus_people = [];
+                        snapshot.data.docs.forEach((element) {
+                          _indus_people.add(element.data());
+                        });
+                        return indusExPeople(context, _indus_people);
+                      }
+                    }),
                 Footer(),
               ],
             ),
@@ -80,7 +116,7 @@ Container backImage(BuildContext context) {
   );
 }
 
-Container yonseiPeople(BuildContext context, List<Person> _people) {
+Container yonseiPeople(BuildContext context, List _people) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: themeBlue,
@@ -105,7 +141,7 @@ Container yonseiPeople(BuildContext context, List<Person> _people) {
   );
 }
 
-Container acaExPeople(BuildContext context, List<Person> _people) {
+Container acaExPeople(BuildContext context, List _people) {
   var md = MediaQuery.of(context).size;
 
   return Container(
@@ -126,7 +162,7 @@ Container acaExPeople(BuildContext context, List<Person> _people) {
   );
 }
 
-Container indusExPeople(BuildContext context, List<Person> _people) {
+Container indusExPeople(BuildContext context, List _people) {
   var md = MediaQuery.of(context).size;
 
   return Container(
@@ -148,8 +184,7 @@ Container indusExPeople(BuildContext context, List<Person> _people) {
   );
 }
 
-Widget _peopleList(
-    BuildContext context, List<Person> _people, bool isBackWhite) {
+Widget _peopleList(BuildContext context, List _people, bool isBackWhite) {
   var md = MediaQuery.of(context).size;
   return GridView.builder(
       shrinkWrap: true,
@@ -163,7 +198,7 @@ Widget _peopleList(
         return Container(
           child: Column(
             children: <Widget>[
-              Text(_people[index].name,
+              Text(_people[index]["name"],
                   style: isBackWhite ? h3TextStyle : h3WhiteTextStyle),
               SizedBox(
                 height: 20.0,
@@ -174,18 +209,19 @@ Widget _peopleList(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(200)),
                   image: DecorationImage(
-                      fit: BoxFit.fill, image: AssetImage(_people[index].img)),
+                      fit: BoxFit.fill,
+                      image: AssetImage("images/fintech2.jpeg")),
                 ),
               ),
               SizedBox(
                 height: 15.0,
               ),
-              Text(_people[index].major,
+              Text(_people[index]["major"],
                   style: isBackWhite ? bodyTextStyle : bodyWhiteTextStyle),
               SizedBox(
                 height: 15.0,
               ),
-              Text(_people[index].field,
+              Text(_people[index]["field"],
                   style: isBackWhite ? bodyTextStyle : bodyWhiteTextStyle),
             ],
           ),
