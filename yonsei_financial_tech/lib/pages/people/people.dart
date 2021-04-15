@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/color.dart';
@@ -58,10 +59,13 @@ class _PeoplePageState extends State<PeoplePage> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         List<Map<String, dynamic>> _yonsei_people = [];
+                        List<String> _yonsei_id = [];
                         snapshot.data.docs.forEach((element) {
                           _yonsei_people.add(element.data());
+                          _yonsei_id.add(element.id);
                         });
-                        return yonseiPeople(context, _yonsei_people);
+                        return yonseiPeople(
+                            context, _yonsei_people, _yonsei_id);
                       }
                     }),
                 FutureBuilder<QuerySnapshot>(
@@ -73,10 +77,12 @@ class _PeoplePageState extends State<PeoplePage> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         List<Map<String, dynamic>> _aca_people = [];
+                        List<String> _aca_id = [];
                         snapshot.data.docs.forEach((element) {
                           _aca_people.add(element.data());
+                          _aca_id.add(element.id);
                         });
-                        return acaExPeople(context, _aca_people);
+                        return acaExPeople(context, _aca_people, _aca_id);
                       }
                     }),
                 FutureBuilder<QuerySnapshot>(
@@ -88,10 +94,12 @@ class _PeoplePageState extends State<PeoplePage> {
                         return Center(child: CircularProgressIndicator());
                       } else {
                         List<Map<String, dynamic>> _indus_people = [];
+                        List<String> _indus_id = [];
                         snapshot.data.docs.forEach((element) {
                           _indus_people.add(element.data());
+                          _indus_id.add(element.id);
                         });
-                        return indusExPeople(context, _indus_people);
+                        return indusExPeople(context, _indus_people, _indus_id);
                       }
                     }),
                 Footer(),
@@ -116,7 +124,7 @@ Container backImage(BuildContext context) {
   );
 }
 
-Container yonseiPeople(BuildContext context, List _people) {
+Container yonseiPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: themeBlue,
@@ -135,13 +143,13 @@ Container yonseiPeople(BuildContext context, List _people) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, false),
+        _peopleList(context, _people, false, _id),
       ],
     ),
   );
 }
 
-Container acaExPeople(BuildContext context, List _people) {
+Container acaExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
 
   return Container(
@@ -156,13 +164,13 @@ Container acaExPeople(BuildContext context, List _people) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, true),
+        _peopleList(context, _people, true, _id),
       ],
     ),
   );
 }
 
-Container indusExPeople(BuildContext context, List _people) {
+Container indusExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
 
   return Container(
@@ -178,14 +186,32 @@ Container indusExPeople(BuildContext context, List _people) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, false),
+        _peopleList(context, _people, false, _id),
       ],
     ),
   );
 }
 
-Widget _peopleList(BuildContext context, List _people, bool isBackWhite) {
+Widget _peopleList(
+    BuildContext context, List _people, bool isBackWhite, List _id) {
   var md = MediaQuery.of(context).size;
+  // firebase storage
+  Future<String> downloadURL_jpg(_id) async {
+    String downloadURL = '';
+    downloadURL = await FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/people/' + _id + '.jpg')
+        .getDownloadURL();
+    return downloadURL;
+  }
+
+  Future<String> downloadURL_png(_id) async {
+    String downloadURL = '';
+    downloadURL = await FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/people/' + _id + '.png')
+        .getDownloadURL();
+    return downloadURL;
+  }
+
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -195,7 +221,7 @@ Widget _peopleList(BuildContext context, List _people, bool isBackWhite) {
       ),
       itemCount: _people.length,
       itemBuilder: (BuildContext context, int index) {
-        return Container(
+        return GridTile(
           child: Column(
             children: <Widget>[
               Text(_people[index]["name"],
@@ -203,16 +229,33 @@ Widget _peopleList(BuildContext context, List _people, bool isBackWhite) {
               SizedBox(
                 height: 20.0,
               ),
-              Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(200)),
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: AssetImage("images/fintech2.jpeg")),
-                ),
-              ),
+              FutureBuilder(
+                  future: downloadURL_jpg(_id[index]),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return FutureBuilder(
+                          future: downloadURL_png(_id[index]),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Center(child: Text('500 - error'));
+                            } else if (!snapshot.hasData) {
+                              return Center(child: CircularProgressIndicator());
+                            } else {
+                              return CircleAvatar(
+                                radius: 120.0,
+                                backgroundImage: NetworkImage(snapshot.data),
+                              );
+                            }
+                          });
+                    } else if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return CircleAvatar(
+                        radius: 120.0,
+                        backgroundImage: NetworkImage(snapshot.data),
+                      );
+                    }
+                  }),
               SizedBox(
                 height: 15.0,
               ),
