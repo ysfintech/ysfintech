@@ -115,7 +115,7 @@ Container title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: Colors.white,
-    padding: marginHorizontal(md.width * 0.3),
+    padding: marginHorizontal(md.width * 0.4),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -136,7 +136,7 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.3),
+    padding: marginHorizontal(md.width * 0.4),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -161,7 +161,7 @@ Container acaExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
 
   return Container(
-    padding: marginHorizontal(md.width * 0.3),
+    padding: marginHorizontal(md.width * 0.4),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -183,7 +183,7 @@ Container indusExPeople(BuildContext context, List _people, List _id) {
 
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.3),
+    padding: marginHorizontal(md.width * 0.4),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -223,10 +223,10 @@ Widget _peopleList(
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 520,
+        maxCrossAxisExtent: 500,
         crossAxisSpacing: 30,
-        mainAxisSpacing: 30,
-        childAspectRatio: 0.75,
+        mainAxisSpacing: 0,
+        childAspectRatio: 0.7,
       ),
       itemCount: _people.length,
       itemBuilder: (BuildContext context, int index) {
