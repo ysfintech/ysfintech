@@ -5,7 +5,6 @@ import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/person.dart';
-import 'package:yonsei_financial_tech/pages/people/people_firebase.dart';
 
 class PeoplePage extends StatefulWidget {
   @override
@@ -48,7 +47,7 @@ class _PeoplePageState extends State<PeoplePage> {
                 // MENU BAR ----------------------------------------------------------
                 MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
-                backImage(context),
+                title(context),
                 // About Us - INTRODUCTION -------------------------------------------
                 FutureBuilder<QuerySnapshot>(
                     future: fetchedData_yonsei,
@@ -112,14 +111,23 @@ class _PeoplePageState extends State<PeoplePage> {
   }
 }
 
-Container backImage(BuildContext context) {
+Container title(BuildContext context) {
+  var md = MediaQuery.of(context).size;
   return Container(
-    height: 600,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('images/introBackground.jpeg'),
-        fit: BoxFit.cover,
-      ),
+    color: Colors.white,
+    padding: marginHorizontal(md.width * 0.3),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 100),
+        Container(
+          child: Text(
+            'People',
+            style: h1TextStyle,
+          ),
+        ),
+        SizedBox(height: 100),
+      ],
     ),
   );
 }
@@ -128,17 +136,17 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width * 0.3),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         SizedBox(
           height: 100,
         ),
-        Text("People", style: h2WhiteTextStyle),
-        SizedBox(
-          height: 80,
-        ),
+        // Text("People", style: h2WhiteTextStyle),
+        // SizedBox(
+        //   height: 80,
+        // ),
         Text("참여 전임교원", style: h3WhiteTextStyle),
         SizedBox(
           height: 80,
@@ -153,7 +161,7 @@ Container acaExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
 
   return Container(
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width * 0.3),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -175,7 +183,7 @@ Container indusExPeople(BuildContext context, List _people, List _id) {
 
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width * 0.3),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -215,9 +223,10 @@ Widget _peopleList(
   return GridView.builder(
       shrinkWrap: true,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 500,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 50,
+        maxCrossAxisExtent: 520,
+        crossAxisSpacing: 30,
+        mainAxisSpacing: 30,
+        childAspectRatio: 0.75,
       ),
       itemCount: _people.length,
       itemBuilder: (BuildContext context, int index) {
@@ -242,7 +251,7 @@ Widget _peopleList(
                               return Center(child: CircularProgressIndicator());
                             } else {
                               return CircleAvatar(
-                                radius: 120.0,
+                                radius: 100.0,
                                 backgroundImage: NetworkImage(snapshot.data),
                               );
                             }
@@ -251,7 +260,7 @@ Widget _peopleList(
                       return Center(child: CircularProgressIndicator());
                     } else {
                       return CircleAvatar(
-                        radius: 120.0,
+                        radius: 100.0,
                         backgroundImage: NetworkImage(snapshot.data),
                       );
                     }
