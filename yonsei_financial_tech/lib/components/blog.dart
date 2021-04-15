@@ -8,6 +8,7 @@ import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
+import 'package:yonsei_financial_tech/pages/board_detail.dart';
 // route
 import 'package:yonsei_financial_tech/routes.dart';
 
@@ -158,7 +159,7 @@ class Article extends StatelessWidget {
       this.from,
       this.backgroundColor,
       this.image,
-      this.content,
+      @required this.content,
       this.imageDesc});
 
   @override
@@ -174,7 +175,8 @@ class Article extends StatelessWidget {
                 width: md.width,
                 height: 100,
               ),
-              Container(
+              title != null 
+              ? Container(
                 width: md.width,
                 height: 40,
                 margin: marginHorizontal(md.width),
@@ -183,7 +185,8 @@ class Article extends StatelessWidget {
                         ? h2TextStyle
                         : h2WhiteTextStyle,
                     softWrap: true),
-              ),
+              )
+              : SizedBox(),
               period != null && from != null
                   ? Container(
                       width: md.width,
@@ -335,7 +338,7 @@ class Article extends StatelessWidget {
             ],
           ));
     }
-    // image path is not null
+    // image path is null : below
     else {
       return Container(
           color: backgroundColor != null ? backgroundColor : Colors.white,
@@ -346,7 +349,8 @@ class Article extends StatelessWidget {
                   width: md.width,
                   height: 100,
                 ),
-                Container(
+                title != null
+                ? Container(
                   width: md.width,
                   height: 80,
                   margin: marginHorizontal(md.width),
@@ -354,7 +358,8 @@ class Article extends StatelessWidget {
                       style: backgroundColor != null
                           ? h2WhiteTextStyle
                           : h2TextStyle),
-                ),
+                )
+                : SizedBox(),
                 Align(
                   alignment: Alignment.center,
                   child: Container(
@@ -594,10 +599,11 @@ class _BoardArticleState extends State<BoardArticle> {
                                   Expanded(
                                       flex: 3,
                                       child: Hover(
-                                          onTap: () => showDialog(
-                                              context: context,
-                                              builder: (_) => AlertDialog(
-                                                  title: Text("OK!"))),
+                                          onTap: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      BoardDetail())),
                                           child: Text(
                                             widget.board[
                                                     (selectedPageIndex - 1) *
