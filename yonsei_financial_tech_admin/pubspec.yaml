@@ -1,4 +1,4 @@
-name: the_basics
+name: ysfintech_admin
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -17,6 +17,11 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  firebase_core: "^1.0.3"
+  cloud_firestore: ^1.0.4
+  firebase_storage: ^8.0.3
+  flutter_markdown: ^0.6.1
+  
   flutter:
     sdk: flutter
 
