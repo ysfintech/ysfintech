@@ -5,6 +5,8 @@ import 'package:ysfintech_admin/screens/forms/form.dart';
 import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/project/project_screen.dart';
+import 'package:ysfintech_admin/screens/info/info.dart';
+import 'package:ysfintech_admin/screens/people/people.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
@@ -84,8 +86,8 @@ class HomeScreenState extends State<HomeScreen>
               physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               children: [
-                IntroScreen(),
-                FormMaterial(),
+                IntroPage(),
+                PeoplePage(),
                 ProjectScreen(),
                 PaperScreen(),
                 HeroAnimation(),
@@ -103,49 +105,58 @@ class HomeScreenState extends State<HomeScreen>
   Widget listDrawerItems(bool drawerStatus) {
     return ListView(
       children: <Widget>[
-        listItemNavigator(drawerStatus, pageIndex: 0, title: "Introduction &\n Education", icon: Icons.info_rounded),
-        listItemNavigator(drawerStatus, pageIndex: 1, title: "People", icon: Icons.people_alt_rounded),
-        listItemNavigator(drawerStatus, pageIndex: 2, title: "Project", icon: Icons.science_rounded),
-        listItemNavigator(drawerStatus, pageIndex: 3, title: "Working Paper", icon: Icons.library_books_rounded),
-        listItemNavigator(drawerStatus, pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 0,
+            title: "Introduction &\n Education",
+            icon: Icons.info_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 1, title: "People", icon: Icons.people_alt_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 2, title: "Project", icon: Icons.science_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 3,
+            title: "Working Paper",
+            icon: Icons.library_books_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),
       ],
     );
   }
 
-  TextButton listItemNavigator(bool drawerStatus, {
-   @required int pageIndex, @required String title, IconData icon
-  }) {
+  TextButton listItemNavigator(bool drawerStatus,
+      {@required int pageIndex, @required String title, IconData icon}) {
     return TextButton(
-          style: TextButton.styleFrom(
-            primary: tabController.index == pageIndex ? ligthGray : Colors.white,
-          ),
-          onPressed: () {
-            print(tabController.index);
-            tabController.animateTo(pageIndex);
-            drawerStatus ? Navigator.pop(context) : print("");
-          },
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                Icon(
-                  icon != null ? icon : Icons.description_rounded,
-                  size: 24,
-                  color: tabController.index == pageIndex ? Colors.black : ligthGray,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  title,
-                  style: tabController.index == pageIndex ? h3TextStyle : bodyTextStyle,
-                ),
-              ]),
+      style: TextButton.styleFrom(
+        primary: tabController.index == pageIndex ? ligthGray : Colors.white,
+      ),
+      onPressed: () {
+        print(tabController.index);
+        tabController.animateTo(pageIndex);
+        drawerStatus ? Navigator.pop(context) : print("");
+      },
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Icon(
+              icon != null ? icon : Icons.description_rounded,
+              size: 24,
+              color:
+                  tabController.index == pageIndex ? Colors.black : ligthGray,
             ),
-          ),
-        );
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              title,
+              style: tabController.index == pageIndex
+                  ? h3TextStyle
+                  : bodyTextStyle,
+            ),
+          ]),
+        ),
+      ),
+    );
   }
 }
