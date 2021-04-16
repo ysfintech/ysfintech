@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 
 // 2021/04/15 added
@@ -119,11 +120,12 @@ class BoardDetailArticle extends StatelessWidget {
             // ARTICLE
             Align(
               alignment: Alignment.center,
-              child: Article(
-                false, // no Image condition
-                content: "content",
-                backgroundColor: Colors.white,
-              ),
+              // child: Article(
+              //   false, // no Image condition
+              //   content: "content",
+              //   backgroundColor: Colors.white,
+              // ),
+              child: MarkdownContent(),
             ),
             Align(
               alignment: Alignment.center,
@@ -133,5 +135,22 @@ class BoardDetailArticle extends StatelessWidget {
             ),
           ],
         ));
+  }
+}
+
+class MarkdownContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+     return Container(
+        width: size.width,
+        color: Colors.white,
+        padding: marginHorizontal(size.width * 0.5),
+        child: Column(
+          children: <Widget>[
+            Markdown(data: '### THIS IS MARKDOWN \n #### h4h4h4', shrinkWrap: true)
+          ],
+        )
+     );
   }
 }
