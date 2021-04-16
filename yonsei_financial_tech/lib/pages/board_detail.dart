@@ -47,10 +47,17 @@ class BoardDetailArticle extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
         width: size.width,
+        color: Colors.white,
         padding: marginHorizontal(size.width * 0.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                height: 100,
+              ),
+            ),
             Align(
               alignment: Alignment.topLeft,
               child: Row(
@@ -60,13 +67,19 @@ class BoardDetailArticle extends StatelessWidget {
                       iconSize: 30,
                       onPressed: () => Navigator.pop(context)),
                   SizedBox(
-                    width: 50,
+                    width: 10,
                   ),
                   Text(
                     "뒤로가기",
                     style: bodyTextStyle,
                   )
                 ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                height: 100,
               ),
             ),
             Align(
@@ -87,6 +100,7 @@ class BoardDetailArticle extends StatelessWidget {
                         // DATE | VIEW
                         children: <Widget>[
                           Text('date', style: bodyTextStyle),
+                          SizedBox(width: 10,),
                           Text('view', style: bodyTextStyle),
                         ],
                       ),
@@ -96,14 +110,27 @@ class BoardDetailArticle extends StatelessWidget {
                 ],
               ),
             ),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                height: 100,
+              ),
+            ),
             // ARTICLE
             Align(
               alignment: Alignment.center,
               child: Article(
                 false, // no Image condition
                 content: "content",
+                backgroundColor: Colors.white,
               ),
-            )
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                height: 100,
+              ),
+            ),
           ],
         ));
   }

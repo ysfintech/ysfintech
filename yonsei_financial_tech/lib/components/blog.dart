@@ -164,6 +164,7 @@ class Article extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final md = MediaQuery.of(context).size;
     if (image != null) {
       return Container(
@@ -175,18 +176,22 @@ class Article extends StatelessWidget {
                 width: md.width,
                 height: 100,
               ),
-              title != null 
-              ? Container(
-                width: md.width,
-                height: 40,
-                margin: marginHorizontal(md.width),
-                child: Text(title,
-                    style: backgroundColor == Colors.white
-                        ? h2TextStyle
-                        : h2WhiteTextStyle,
-                    softWrap: true),
-              )
-              : SizedBox(),
+              title != null
+                  ? Container(
+                      width: md.width,
+                      height: md.width > 800
+                          ? title.length > 40
+                              ? (title.length - 40) * 4.0
+                              : 40
+                          : title.length * 3.0,
+                      margin: marginHorizontal(md.width),
+                      child: Text(title,
+                          style: backgroundColor == Colors.white
+                              ? h2TextStyle
+                              : h2WhiteTextStyle,
+                          softWrap: true),
+                    )
+                  : SizedBox(),
               period != null && from != null
                   ? Container(
                       width: md.width,
@@ -350,16 +355,17 @@ class Article extends StatelessWidget {
                   height: 100,
                 ),
                 title != null
-                ? Container(
-                  width: md.width,
-                  height: 80,
-                  margin: marginHorizontal(md.width),
-                  child: Text(title,
-                      style: backgroundColor != null
-                          ? h2WhiteTextStyle
-                          : h2TextStyle),
-                )
-                : SizedBox(),
+                    ? Container(
+                        width: md.width,
+                        height:
+                            title.length > 40 ? (title.length - 40) * 4.0 : 40,
+                        margin: marginHorizontal(md.width),
+                        child: Text(title,
+                            style: backgroundColor != null
+                                ? h2WhiteTextStyle
+                                : h2TextStyle),
+                      )
+                    : SizedBox(),
                 Align(
                   alignment: Alignment.center,
                   child: Container(
