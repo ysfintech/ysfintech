@@ -89,8 +89,7 @@ class _PostState extends State<Post> {
                             date: DateTime.now().year.toString().substring(2,4) + '.' + (DateTime.now().month.toString().length == 1 ? '0'+DateTime.now().month.toString() : DateTime.now().month.toString()) +'.'+ (DateTime.now().day.toString().length == 1 ? '0'+DateTime.now().day.toString() : DateTime.now().day.toString()) ,
                             id: widget.id,
                             view: 0,
-                            content: '''
-                            ${content.text}
+                            content: '''${content.text}
                             '''
                           );
                           setState(() {

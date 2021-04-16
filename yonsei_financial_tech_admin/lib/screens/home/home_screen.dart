@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/board/paper_screen.dart';
-import 'package:ysfintech_admin/screens/dashboard/dashboard.dart';
-import 'package:ysfintech_admin/screens/forms/form.dart';
 import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/project/project_screen.dart';
-import 'package:ysfintech_admin/screens/info/info.dart';
 import 'package:ysfintech_admin/screens/people/people.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
@@ -86,7 +83,7 @@ class HomeScreenState extends State<HomeScreen>
               physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               children: [
-                IntroPage(),
+                IntroScreen(),
                 PeoplePage(),
                 ProjectScreen(),
                 PaperScreen(),
