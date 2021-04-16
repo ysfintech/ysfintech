@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ysfintech_admin/screens/people/add_person.dart';
+import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
-class PeoplePage extends StatefulWidget {
+class PeopleScreen extends StatefulWidget {
   @override
-  _PeoplePageState createState() => _PeoplePageState();
+  _PeopleScreenState createState() => _PeopleScreenState();
 }
 
-class _PeoplePageState extends State<PeoplePage> {
+class _PeopleScreenState extends State<PeopleScreen> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference peo_yonsei =
       FirebaseFirestore.instance.collection("people_yonsei");
@@ -35,9 +38,17 @@ class _PeoplePageState extends State<PeoplePage> {
     var md = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
         controller: _controller,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            addPerson(context),
+            Divider(
+              color: Colors.black,
+            ),
+            SizedBox(height: 50.0),
+            Text("Edit Person", style: h2TextStyle),
             FutureBuilder<QuerySnapshot>(
                 future: fetchedData_yonsei,
                 builder: (context, snapshot) {
@@ -56,12 +67,8 @@ class _PeoplePageState extends State<PeoplePage> {
                   }
                 }),
             SizedBox(height: 50.0),
-            Container(
-              padding:
-                  EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
-              child: Divider(
-                color: Colors.grey,
-              ),
+            Divider(
+              color: Colors.grey,
             ),
             FutureBuilder<QuerySnapshot>(
                 future: fetchedData_aca,
@@ -81,12 +88,8 @@ class _PeoplePageState extends State<PeoplePage> {
                   }
                 }),
             SizedBox(height: 50.0),
-            Container(
-              padding:
-                  EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
-              child: Divider(
-                color: Colors.grey,
-              ),
+            Divider(
+              color: Colors.grey,
             ),
             FutureBuilder<QuerySnapshot>(
                 future: fetchedData_indus,
@@ -112,10 +115,25 @@ class _PeoplePageState extends State<PeoplePage> {
   }
 }
 
+Container addPerson(BuildContext context) {
+  var md = MediaQuery.of(context).size;
+  return Container(
+    //padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 50.0),
+        AddPerson(),
+      ],
+    ),
+  );
+}
+
 Container yonseiPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
   return Container(
-    padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
+    //padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -134,9 +152,8 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
 
 Container acaExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
-
   return Container(
-    padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
+    //padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -155,9 +172,8 @@ Container acaExPeople(BuildContext context, List _people, List _id) {
 
 Container indusExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
-
   return Container(
-    padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
+    //padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -243,6 +259,42 @@ Widget _peopleList(BuildContext context, List _people, List _id) {
                     Text("전문분야: " + _people[index]["field"],
                         style: h3TextStyle),
                   ]),
+              SizedBox(
+                width: 30.0,
+              ),
+              Column(children: <Widget>[
+                ElevatedButton.icon(
+                  //onPressed: _pickImage,
+                  icon: Icon(Icons.edit, size: 18, color: Colors.white),
+                  label: Text('Update', style: TextStyle(color: Colors.white)),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed))
+                          return themeBlue;
+                        return themeBlue; // Use the component's default.
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                ElevatedButton.icon(
+                  //onPressed: _pickImage,
+                  icon: Icon(Icons.delete, size: 18, color: Colors.white),
+                  label: Text('Delete', style: TextStyle(color: Colors.white)),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                        if (states.contains(MaterialState.pressed))
+                          return themeBlue;
+                        return themeBlue; // Use the component's default.
+                      },
+                    ),
+                  ),
+                ),
+              ]),
             ],
           ),
         ),
