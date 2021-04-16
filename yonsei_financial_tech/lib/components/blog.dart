@@ -8,6 +8,7 @@ import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/spacing.dart';
 import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
+import 'package:yonsei_financial_tech/model/board.dart';
 import 'package:yonsei_financial_tech/pages/board_detail.dart';
 // route
 import 'package:yonsei_financial_tech/routes.dart';
@@ -164,7 +165,6 @@ class Article extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
     final md = MediaQuery.of(context).size;
     if (image != null) {
       return Container(
@@ -609,7 +609,24 @@ class _BoardArticleState extends State<BoardArticle> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BoardDetail())),
+                                                      BoardDetail(
+                                                        data: BoardItem(
+                                                            title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                ['title'],
+                                                            writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                ['writer'],
+                                                            number: widget.board[
+                                                                    (selectedPageIndex - 1) * 10 +
+                                                                        (index)]
+                                                                ['number'],
+                                                            date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                ['date'],
+                                                            view: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                ['view'],
+                                                            content:
+                                                                widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                    ['content']),
+                                                      ))),
                                           child: Text(
                                             widget.board[
                                                     (selectedPageIndex - 1) *

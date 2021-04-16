@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
+import 'package:yonsei_financial_tech/model/board.dart';
 
 // 2021/04/15 added
 class BoardDetail extends StatefulWidget {
+  final BoardItem data;
+  BoardDetail({@required this.data});
+
   @override
   _BoardDetailState createState() => _BoardDetailState();
 }
@@ -31,7 +35,7 @@ class _BoardDetailState extends State<BoardDetail> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         MenuBar(),
-                        BoardDetailArticle(),
+                        BoardDetailArticle(data: widget.data),
                         Footer(),
                       ]))),
         ],
@@ -41,7 +45,8 @@ class _BoardDetailState extends State<BoardDetail> {
 }
 
 class BoardDetailArticle extends StatelessWidget {
-  const BoardDetailArticle({Key key}) : super(key: key);
+  final BoardItem data;
+  BoardDetailArticle({@required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -86,30 +91,60 @@ class BoardDetailArticle extends StatelessWidget {
             Align(
               // TITLE | DATE | VIEW_ WRITER
               alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  // TITLE
-                  Text('title', style: h1TextStyle),
-                  // DATE | VIEW |_WRITER
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Row(
-                        // DATE | VIEW
-                        children: <Widget>[
-                          Text('date', style: bodyTextStyle),
-                          SizedBox(width: 10,),
-                          Text('view', style: bodyTextStyle),
-                        ],
-                      ),
-                      Text('writer', style: bodyTextStyle)
-                    ],
-                  )
-                ],
-              ),
+              child: size.width > 800
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        // TITLE
+                        Text(data.title, style: h1TextStyle),
+                        // DATE | VIEW |_WRITER
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Row(
+                              // DATE | VIEW
+                              children: <Widget>[
+                                Text('작성일자  ' + data.date,
+                                    style: bodyTextStyle),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text('조회수 ' + data.view.toString(),
+                                    style: bodyTextStyle),
+                              ],
+                            ),
+                            Text('작성자 ' + data.writer, style: bodyTextStyle)
+                          ],
+                        )
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        // TITLE
+                        Text(data.title, style: h1TextStyle),
+                        SizedBox(height: 50,),
+                        // DATE | VIEW |_WRITER
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          // DATE | VIEW
+                          children: <Widget>[
+                            Text('작성일자  ' + data.date, style: bodyTextStyle),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('작성자 ' + data.writer, style: bodyTextStyle),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('조회수 ' + data.view.toString(),
+                                style: bodyTextStyle),
+                          ],
+                        ),
+                      ],
+                    ),
             ),
             Align(
               alignment: Alignment.center,
@@ -125,7 +160,7 @@ class BoardDetailArticle extends StatelessWidget {
               //   content: "content",
               //   backgroundColor: Colors.white,
               // ),
-              child: MarkdownContent(),
+              child: MarkdownContent(data: data.content),
             ),
             Align(
               alignment: Alignment.center,
@@ -138,19 +173,40 @@ class BoardDetailArticle extends StatelessWidget {
   }
 }
 
-class MarkdownContent extends StatelessWidget {
+class MarkdownContent extends StatefulWidget {
+  final String data;
+  MarkdownContent({@required this.data});
+  @override
+  _MarkdownContentState createState() => _MarkdownContentState();
+}
+
+class _MarkdownContentState extends State<MarkdownContent> {
+  ScrollController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      controller = new ScrollController();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-     return Container(
+    return Container(
         width: size.width,
         color: Colors.white,
-        padding: marginHorizontal(size.width * 0.5),
         child: Column(
           children: <Widget>[
-            Markdown(data: '### THIS IS MARKDOWN \n #### h4h4h4', shrinkWrap: true)
+            Markdown(
+              controller: controller,
+              selectable: true,
+              shrinkWrap: true,
+              data: widget.data,
+              styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
+            )
           ],
-        )
-     );
+        ));
   }
 }

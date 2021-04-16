@@ -17,10 +17,10 @@ class BoardItem {
   final String writer;
   final String date;
   final int view;
-  final String contentPath;
+  final String content;
 
   BoardItem(
-      {this.contentPath,
+      {this.content,
       this.date,
       this.number,
       this.title,
@@ -34,6 +34,6 @@ class BoardItem {
         writer: json['writer'],
         date: json['date'],
         view: json['view'],
-        contentPath: json['contentPath']);
+        content: json['content']);
   }
 }
