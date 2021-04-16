@@ -41,7 +41,7 @@ class HomeScreenState extends State<HomeScreen>
               Container(
                 margin: EdgeInsets.only(left: 32),
                 child: Text(
-                  "Admin Material",
+                  "YSFINTECH Admin ",
                   style: TextStyle(
                     fontSize: 24,
                     color: Colors.white,
