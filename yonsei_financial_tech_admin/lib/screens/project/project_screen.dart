@@ -27,6 +27,12 @@ class _ProjectScreenState extends State<ProjectScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return FutureBuilder(
@@ -77,7 +83,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         // childAspectRatio: size.width > 800 ? 3 / 4 : 1 / 6,
                         // crossAxisCount: size.width > 800 ? 2 : 1,
-                        childAspectRatio: 4/3,
+                        childAspectRatio: 4 / 3,
                         crossAxisCount: 1),
                     itemCount: snapshot.data.docs.length,
                     reverse: true,
