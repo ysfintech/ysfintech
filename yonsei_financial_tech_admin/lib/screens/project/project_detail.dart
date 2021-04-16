@@ -230,16 +230,17 @@ class _ProjectDetailState extends State<ProjectDetail> {
               setState(() {
                 // save to firebase
                 if (_editable) {
-                  updateDocument(widget.pathID, new Project(
-                    title: title.text,
-                    content: content.text,
-                    from: from.text,
-                    period: period.text,
-                    imageDesc: imageDesc.text
-                  )).then((value) =>
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content:
-                              Text('${title.text}의 내용이 수정되었습니다.'))));
+                  updateDocument(
+                          widget.pathID,
+                          new Project(
+                              title: title.text,
+                              content: content.text,
+                              from: from.text,
+                              period: period.text,
+                              imageDesc: imageDesc.text))
+                      .then((value) => ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(
+                              content: Text('${title.text}의 내용이 수정되었습니다.'))));
                 }
                 _editable = !_editable;
               });
