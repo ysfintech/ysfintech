@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       '/home': (BuildContext context) => HomeScreen(),
     };
     return MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/home',
       routes: routes,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

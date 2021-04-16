@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/dashboard/dashboard.dart';
 import 'package:ysfintech_admin/screens/forms/form.dart';
 import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
+import 'package:ysfintech_admin/utils/color.dart';
+import 'package:ysfintech_admin/utils/typography.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -40,61 +42,14 @@ class HomeScreenState extends State<HomeScreen>
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(left: 32),
-                child: Text(
-                  "YSFINTECH Admin ",
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'HelveticaNeue',
-                  ),
-                ),
+                child: Text("YSFINTECH Admin ", style: h1WhiteTextStyle),
               ),
             ]),
         actions: <Widget>[
-          InkWell(
-            onTap: () {
-              print("download");
-            },
-            child: Container(
-              margin: EdgeInsets.all(12),
-              padding: EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.white,
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Icon(
-                    Icons.cloud_download,
-                    color: Colors.black,
-                    size: 22,
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    "Download Now",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.black,
-                      fontFamily: 'HelveticaNeue',
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(width: 32),
-          Container(child: Icon(Icons.web)),
-          SizedBox(width: 32),
-          Container(child: Icon(Icons.account_circle)),
-          SizedBox(width: 32),
           Container(
             child: IconButton(
               padding: EdgeInsets.all(0),
-              icon: Icon(Icons.exit_to_app),
+              icon: Icon(Icons.exit_to_app_rounded),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -102,13 +57,16 @@ class HomeScreenState extends State<HomeScreen>
           ),
           SizedBox(width: 32),
         ],
-        backgroundColor: Colors.blue,
+        backgroundColor: themeBlue,
         // automaticallyImplyLeading: false,
       ),
       body: Row(
         children: <Widget>[
           MediaQuery.of(context).size.width < 1300
-              ? Container()
+              ? Container(
+                  height: 40,
+                  color: Colors.red,
+                )
               : Card(
                   elevation: 2.0,
                   child: Container(
@@ -143,36 +101,39 @@ class HomeScreenState extends State<HomeScreen>
   Widget listDrawerItems(bool drawerStatus) {
     return ListView(
       children: <Widget>[
-        FlatButton(
-          color: tabController.index == 0 ? Colors.grey[100] : Colors.white,
-          //color: Colors.grey[100],
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: tabController.index == 0 ? ligthGray : Colors.white,
+          ),
           onPressed: () {
             tabController.animateTo(0);
             drawerStatus ? Navigator.pop(context) : print("");
           },
-
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
               padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
               child: Row(children: [
-                Icon(Icons.dashboard),
+                Icon(
+                  Icons.dashboard,
+                  size: 24,
+                  color: tabController.index == 0 ? Colors.black : ligthGray,
+                ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
                   "Dashboard",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'HelveticaNeue',
-                  ),
+                  style: tabController.index == 0 ? h2TextStyle : h3TextStyle,
                 ),
               ]),
             ),
           ),
         ),
-        FlatButton(
-          color: tabController.index == 1 ? Colors.grey[100] : Colors.white,
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: tabController.index == 1 ? ligthGray : Colors.white,
+          ),
           onPressed: () {
             print(tabController.index);
             tabController.animateTo(1);
@@ -183,23 +144,26 @@ class HomeScreenState extends State<HomeScreen>
             child: Container(
               padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
               child: Row(children: [
-                Icon(Icons.exit_to_app),
+                Icon(
+                  Icons.format_bold_rounded,
+                  size: 24,
+                  color: tabController.index == 1 ? Colors.black : ligthGray,
+                ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
                   "Forms",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'HelveticaNeue',
-                  ),
+                  style: tabController.index == 1 ? h2TextStyle : h3TextStyle,
                 ),
               ]),
             ),
           ),
         ),
-        FlatButton(
-          color: tabController.index == 2 ? Colors.grey[100] : Colors.white,
+        TextButton(
+          style: TextButton.styleFrom(
+            primary: tabController.index == 2 ? ligthGray : Colors.white,
+          ),
           onPressed: () {
             tabController.animateTo(2);
             drawerStatus ? Navigator.pop(context) : print("");
@@ -209,16 +173,17 @@ class HomeScreenState extends State<HomeScreen>
             child: Container(
               padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
               child: Row(children: [
-                Icon(Icons.category),
+                Icon(
+                  Icons.category_rounded,
+                  size: 24,
+                  color: tabController.index == 2 ? Colors.black : ligthGray,
+                ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
                   "Hero",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontFamily: 'HelveticaNeue',
-                  ),
+                  style: tabController.index == 2 ? h2TextStyle : h3TextStyle,
                 ),
               ]),
             ),
