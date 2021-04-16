@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 
 // HEAD LINE 1
-TextStyle h1TextStyle = GoogleFonts.notoSerif(
+TextStyle h1TextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 30,
         color: textPrimary,
         letterSpacing: 1.5,
         fontWeight: FontWeight.w700));
 
-TextStyle h1WhiteTextStyle = GoogleFonts.notoSerif(
+TextStyle h1WhiteTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 30,
         color: Colors.white,
@@ -19,7 +19,7 @@ TextStyle h1WhiteTextStyle = GoogleFonts.notoSerif(
         fontWeight: FontWeight.w700));
 
 // HEAD LINE 2
-TextStyle h2TextStyle = GoogleFonts.notoSerif(
+TextStyle h2TextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
   fontSize: 24,
   color: textPrimary,
@@ -27,7 +27,7 @@ TextStyle h2TextStyle = GoogleFonts.notoSerif(
   letterSpacing: 1,
 ));
 
-TextStyle h2WhiteTextStyle = GoogleFonts.notoSerif(
+TextStyle h2WhiteTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
   fontSize: 24,
   color: lightWhite,
@@ -36,14 +36,14 @@ TextStyle h2WhiteTextStyle = GoogleFonts.notoSerif(
 ));
 
 // HEAD LINE 3
-TextStyle h3TextStyle = GoogleFonts.notoSerif(
+TextStyle h3TextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 20,
         color: textSecondary,
         letterSpacing: 1,
         fontWeight: FontWeight.w500));
 
-TextStyle h3WhiteTextStyle = GoogleFonts.notoSerif(
+TextStyle h3WhiteTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 20,
         color: lightWhite,
@@ -51,16 +51,16 @@ TextStyle h3WhiteTextStyle = GoogleFonts.notoSerif(
         fontWeight: FontWeight.w500));
 
 // CONTENT
-TextStyle bodyTextStyle = GoogleFonts.notoSerif(
+TextStyle bodyTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 16, color: textPrimary, fontWeight: FontWeight.w400));
 
-TextStyle bodyWhiteTextStyle = GoogleFonts.notoSerif(
+TextStyle bodyWhiteTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 16, color: lightWhite, fontWeight: FontWeight.w400));
 
 // button
-TextStyle buttonTextStyle = GoogleFonts.notoSerif(
+TextStyle buttonTextStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(
         fontSize: 14,
         color: textPrimary,
@@ -69,9 +69,9 @@ TextStyle buttonTextStyle = GoogleFonts.notoSerif(
 
 // image DESC
 TextStyle imageDescTextStyle =
-    GoogleFonts.notoSerif(textStyle: TextStyle(fontSize: 12, color: ligthGray));
+    GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 12, color: ligthGray));
 
-TextStyle imageDescTexWhitetStyle = GoogleFonts.notoSerif(
+TextStyle imageDescTexWhitetStyle = GoogleFonts.notoSans(
     textStyle: TextStyle(fontSize: 12, color: lightWhite));
 
 // Advanced
@@ -80,19 +80,4 @@ TextStyle titleIntroductionTextStyle = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.w800,
     // fontFamily: 'Yonsei'
-    fontFamily: GoogleFonts.notoSerif().fontFamily);
-
-TextStyle articleTitleTextStyle({Color color}) {
-  return TextStyle(
-      fontSize: 28,
-      color: color != null ? color : Colors.white,
-      fontFamily: 'Yonsei',
-      fontWeight: FontWeight.w800);
-}
-
-TextStyle articleContentTextStyle({Color color}) {
-  return TextStyle(
-    fontSize: 22,
-    color: color != null ? color : ligthGray,
-  );
-}
+    fontFamily: GoogleFonts.notoSans().fontFamily);

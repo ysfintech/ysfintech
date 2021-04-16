@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/dashboard/dashboard.dart';
 import 'package:ysfintech_admin/screens/forms/form.dart';
 import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
+import 'package:ysfintech_admin/screens/info/info.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
@@ -17,7 +18,7 @@ class HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(vsync: this, length: 3, initialIndex: 0)
+    tabController = new TabController(vsync: this, length: 5, initialIndex: 0)
       ..addListener(() {
         setState(() {
           active = tabController.index;
@@ -42,7 +43,7 @@ class HomeScreenState extends State<HomeScreen>
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(left: 32),
-                child: Text("YSFINTECH Admin ", style: h1WhiteTextStyle),
+                child: Text("YSFINTECH Admin ", style: h2WhiteTextStyle),
               ),
             ]),
         actions: <Widget>[
@@ -63,10 +64,7 @@ class HomeScreenState extends State<HomeScreen>
       body: Row(
         children: <Widget>[
           MediaQuery.of(context).size.width < 1300
-              ? Container(
-                  height: 40,
-                  color: Colors.red,
-                )
+              ? Container()
               : Card(
                   elevation: 2.0,
                   child: Container(
@@ -84,8 +82,10 @@ class HomeScreenState extends State<HomeScreen>
               physics: NeverScrollableScrollPhysics(),
               controller: tabController,
               children: [
-                Dashboard(),
+                IntroPage(),
                 FormMaterial(),
+                FormMaterial(),
+                HeroAnimation(),
                 HeroAnimation(),
               ],
             ),
@@ -101,95 +101,49 @@ class HomeScreenState extends State<HomeScreen>
   Widget listDrawerItems(bool drawerStatus) {
     return ListView(
       children: <Widget>[
-        TextButton(
+        listItemNavigator(drawerStatus, pageIndex: 0, title: "Introduction &\n Education", icon: Icons.info_rounded),
+        listItemNavigator(drawerStatus, pageIndex: 1, title: "People", icon: Icons.people_alt_rounded),
+        listItemNavigator(drawerStatus, pageIndex: 2, title: "Project", icon: Icons.science_rounded),
+        listItemNavigator(drawerStatus, pageIndex: 3, title: "Working Paper", icon: Icons.library_books_rounded),
+        listItemNavigator(drawerStatus, pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),
+      ],
+    );
+  }
+
+  TextButton listItemNavigator(bool drawerStatus, {
+   @required int pageIndex, @required String title, IconData icon
+  }) {
+    return TextButton(
           style: TextButton.styleFrom(
-            primary: tabController.index == 0 ? ligthGray : Colors.white,
-          ),
-          onPressed: () {
-            tabController.animateTo(0);
-            drawerStatus ? Navigator.pop(context) : print("");
-          },
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
-              child: Row(children: [
-                Icon(
-                  Icons.dashboard,
-                  size: 24,
-                  color: tabController.index == 0 ? Colors.black : ligthGray,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Dashboard",
-                  style: tabController.index == 0 ? h2TextStyle : h3TextStyle,
-                ),
-              ]),
-            ),
-          ),
-        ),
-        TextButton(
-          style: TextButton.styleFrom(
-            primary: tabController.index == 1 ? ligthGray : Colors.white,
+            primary: tabController.index == pageIndex ? ligthGray : Colors.white,
           ),
           onPressed: () {
             print(tabController.index);
-            tabController.animateTo(1);
+            tabController.animateTo(pageIndex);
             drawerStatus ? Navigator.pop(context) : print("");
           },
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
-              child: Row(children: [
+              padding: EdgeInsets.all(20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
                 Icon(
-                  Icons.format_bold_rounded,
+                  icon != null ? icon : Icons.description_rounded,
                   size: 24,
-                  color: tabController.index == 1 ? Colors.black : ligthGray,
+                  color: tabController.index == pageIndex ? Colors.black : ligthGray,
                 ),
                 SizedBox(
                   width: 8,
                 ),
                 Text(
-                  "Forms",
-                  style: tabController.index == 1 ? h2TextStyle : h3TextStyle,
+                  title,
+                  style: tabController.index == pageIndex ? h3TextStyle : bodyTextStyle,
                 ),
               ]),
             ),
           ),
-        ),
-        TextButton(
-          style: TextButton.styleFrom(
-            primary: tabController.index == 2 ? ligthGray : Colors.white,
-          ),
-          onPressed: () {
-            tabController.animateTo(2);
-            drawerStatus ? Navigator.pop(context) : print("");
-          },
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
-              child: Row(children: [
-                Icon(
-                  Icons.category_rounded,
-                  size: 24,
-                  color: tabController.index == 2 ? Colors.black : ligthGray,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Hero",
-                  style: tabController.index == 2 ? h2TextStyle : h3TextStyle,
-                ),
-              ]),
-            ),
-          ),
-        ),
-      ],
-    );
+        );
   }
 }
