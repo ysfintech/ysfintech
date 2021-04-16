@@ -13,12 +13,12 @@ String convertString(list) {
   return sb.toString();
 }
 
-class IntroPage extends StatefulWidget {
+class IntroScreen extends StatefulWidget {
   @override
-  _IntroPageState createState() => _IntroPageState();
+  _IntroScreenState createState() => _IntroScreenState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class _IntroScreenState extends State<IntroScreen> {
   // firebase firestore
   CollectionReference intro =
       FirebaseFirestore.instance.collection('introduction');
