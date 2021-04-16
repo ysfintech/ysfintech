@@ -97,7 +97,6 @@ class _ItemEditorState extends State<ItemEditor> {
               setState(() {
                 // save to firebase
                 if (_editable) {
-                  print(_titleController.text);
                   updateDocument(_titleController.text, widget.id,
                           content: _contentController.text)
                       .then((value) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('${_titleController.text}의 내용이 수정되었습니다.'))));
