@@ -1,4 +1,4 @@
-# the_basics
+# yonsei_financial_tech_admin
 
 A new Flutter project.
 
