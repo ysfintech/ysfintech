@@ -6,13 +6,12 @@
       "**/.*",
       "**/node_modules/**"
     ],
-    "rewrites": [{
-    "source": "/public/**",
-    "destination": "/public.html"
-  },
-  {
-    "source": "**",
-    "destination": "/index.html"
-  }]
+  "appAssociation": "AUTO",  // required for Dynamic Links (default is AUTO if not specified)
+
+  // Add the "rewrites" attribute within "hosting"
+  "rewrites": [ {
+    "source": "/**",  // the Dynamic Links start with "https://CUSTOM_DOMAIN/"
+    "dynamicLinks": true
+  } ]
   }
 }
