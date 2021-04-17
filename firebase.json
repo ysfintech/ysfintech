@@ -6,12 +6,24 @@
       "**/.*",
       "**/node_modules/**"
     ],
-  "appAssociation": "AUTO",  // required for Dynamic Links (default is AUTO if not specified)
-
-  // Add the "rewrites" attribute within "hosting"
-  "rewrites": [ {
-    "source": "/**",  // the Dynamic Links start with "https://CUSTOM_DOMAIN/"
-    "dynamicLinks": true
-  } ]
+    "headers": [ {
+      "source": "**/*.@(eot|otf|ttf|ttc|woff|font.css)",
+      "headers": [ {
+        "key": "Access-Control-Allow-Origin",
+        "value": "*"
+      } ]
+    }, {
+      "source": "**/*.@(jpg|jpeg|gif|png)",
+      "headers": [ {
+        "key": "Cache-Control",
+        "value": "max-age=7200"
+      } ]
+    }, {
+      "source": "404.html",
+      "headers": [ {
+        "key": "Cache-Control",
+        "value": "max-age=300"
+      } ]
+    } ],
   }
 }
