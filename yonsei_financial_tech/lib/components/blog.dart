@@ -596,7 +596,7 @@ class _BoardArticleState extends State<BoardArticle> {
                                       child: Text(
                                         widget.board[
                                                 (selectedPageIndex - 1) * 10 +
-                                                    (index)]['number']
+                                                    (index)]['id']
                                             .toString(),
                                         style: bodyTextStyle,
                                         textAlign: TextAlign.center,

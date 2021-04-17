@@ -25,7 +25,7 @@ class _PaperPageState extends State<PaperPage> {
   @override
   void initState() {
     super.initState();
-    fetchedData = papers.orderBy('number').get();
+    fetchedData = papers.orderBy('id').get();
   }
 
   // search action
