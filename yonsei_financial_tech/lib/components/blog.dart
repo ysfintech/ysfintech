@@ -54,11 +54,12 @@ class MenuBar extends StatelessWidget {
                   GestureDetector(
                     onTap: () => Navigator.popUntil(context,
                         ModalRoute.withName(Navigator.defaultRouteName)),
-                    child: Image(
-                      image: AssetImage('images/yonsei.jpg'),
-                      width: 150,
-                      fit: BoxFit.cover,
-                    ),
+                    // child: Image(
+                    //   image: AssetImage('assets/images/yonsei.jpg'),
+                    //   width: 150,
+                    //   fit: BoxFit.cover,
+                    // ),
+                    child: Image.asset('assets/images/yonsei.jpg', width: 150, fit: BoxFit.cover)
                   ),
                   Flexible(
                     child: Container(
