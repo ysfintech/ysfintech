@@ -52,15 +52,15 @@ class MenuBar extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => Navigator.popUntil(context,
-                        ModalRoute.withName(Navigator.defaultRouteName)),
-                    // child: Image(
-                    //   image: AssetImage('assets/images/yonsei.jpg'),
-                    //   width: 150,
-                    //   fit: BoxFit.cover,
-                    // ),
-                    child: Image.asset('assets/images/yonsei.jpg', width: 150, fit: BoxFit.cover)
-                  ),
+                      onTap: () => Navigator.popUntil(context,
+                          ModalRoute.withName(Navigator.defaultRouteName)),
+                      // child: Image(
+                      //   image: AssetImage('assets/images/yonsei.jpg'),
+                      //   width: 150,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      child: Image.asset('assets/images/yonsei.jpg',
+                          width: 150, fit: BoxFit.cover)),
                   Flexible(
                     child: Container(
                       alignment: Alignment.centerRight,
@@ -392,7 +392,7 @@ Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
-    alignment: AlignmentDirectional.center,
+    alignment: Alignment.centerLeft,
     children: <Widget>[
       Container(
           // height: md.height * 0.58,
@@ -402,42 +402,35 @@ Stack title(BuildContext context) {
             image: AssetImage('images/introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
-      Positioned(
-        // left: md.width > 700 ? 150 : 0,
-        left: md.width > 800
-            ? md.width / 2 - 520
-            : md.width > 450
-                ? 0
-                : md.width / 2 - 400,
-        child: Container(
-            decoration: BoxDecoration(
-                //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                color: themeBlue,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset.fromDirection(3.0),
-                      blurRadius: 10.0,
-                      spreadRadius: 3.0)
-                ]),
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(
-                horizontal: md.width > 540 ? 25 : 0, vertical: 60),
-            width: md.width > 450 ? 520 : 400,
-            height: md.height > 400 ? 300 : 240,
-            child: RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                    text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
-                TextSpan(
-                    text: '\n에 오신 것을 환영합니다',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: lightWhite)),
+      Container(
+        margin: EdgeInsets.only(left: 
+        md.width > 800 ? md.width * 0.1 : md.width / 20),
+          decoration: BoxDecoration(
+              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: themeBlue,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset.fromDirection(3.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 3.0)
               ]),
-            )),
-      ),
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(
+              horizontal: md.width > 540 ? 25 : 0, vertical: 60),
+          width: md.width > 450 ? 520 : 400,
+          height: md.height > 400 ? 300 : 240,
+          child: RichText(
+            text: TextSpan(children: <TextSpan>[
+              TextSpan(text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
+              TextSpan(
+                  text: '\n에 오신 것을 환영합니다',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: lightWhite)),
+            ]),
+          )),
     ],
   );
 }
