@@ -64,6 +64,7 @@ flutter:
     - assets/images/yonsei.jpg
     - assets/images/workingpaper.jpg
     - assets/images/publication.jpg
+    - assets/images/yonsei_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
