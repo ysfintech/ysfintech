@@ -33,6 +33,7 @@ dependencies:
   cloud_firestore: ^1.0.4
   firebase_storage: ^8.0.3
   flutter_markdown: ^0.6.1
+  url_launcher: ^6.0.3
 
   flutter:
     sdk: flutter

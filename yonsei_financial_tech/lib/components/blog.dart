@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 // extension
 import 'package:yonsei_financial_tech/extensions/hover.dart';
 // components
@@ -51,18 +52,32 @@ class MenuBar extends StatelessWidget {
               // color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
-                      onTap: () => Navigator.popUntil(context,
-                          ModalRoute.withName(Navigator.defaultRouteName)),
+                  Flexible(
                       child: Row(
-                        children: <Widget>[
-                          Image.asset('images/yonsei.jpg',
-                              height: 80, fit: BoxFit.fitHeight),
-                          SizedBox(width: 10,),
-                          Image.asset('images/yonsei_logo.png',
-                              height: 80, fit: BoxFit.fitHeight),
-                        ],
-                      )),
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () async => await canLaunch(
+                                'https://www.yonsei.ac.kr/sc/index.jsp')
+                            .then((canRun) {
+                          canRun
+                              ? launch('https://www.yonsei.ac.kr/sc/index.jsp',
+                                  enableJavaScript: true)
+                              : throw 'Could not launch';
+                        }),
+                        child: Image.asset('images/yonsei.jpg',
+                            height: 80, fit: BoxFit.fitHeight),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.popUntil(context,
+                            ModalRoute.withName(Navigator.defaultRouteName)),
+                        child: Image.asset('images/yonsei_logo.png',
+                            height: 80, fit: BoxFit.fitHeight),
+                      )
+                    ],
+                  )),
                   Flexible(
                     child: Container(
                       alignment: Alignment.centerRight,
