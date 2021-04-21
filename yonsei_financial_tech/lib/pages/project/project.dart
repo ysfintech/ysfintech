@@ -114,7 +114,6 @@ class _ProjectPageState extends State<ProjectPage> {
                                                 CircularProgressIndicator()));
                                   } else {
                                     return Article(
-                                      index % 2 == 0 ? true : false,
                                       backgroundColor: index % 2 == 0
                                           ? Colors.white
                                           : themeBlue,

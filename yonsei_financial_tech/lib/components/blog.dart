@@ -170,9 +170,8 @@ class Article extends StatelessWidget {
   final String from;
   final String content;
   final String title;
-  final bool isImageRight;
 
-  Article(this.isImageRight,
+  Article(
       {this.title,
       this.period,
       this.from,
@@ -248,116 +247,48 @@ class Article extends StatelessWidget {
                               ],
                             ))
                   : SizedBox(),
-              md.width > 1200
-                  ? Container(
+              // image and image description to center
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
                       margin: marginHorizontal(md.width),
-                      child: isImageRight
-                          ? Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    content,
-                                    style: backgroundColor == Colors.white
-                                        ? bodyTextStyle
-                                        : bodyWhiteTextStyle,
-                                  ),
-                                ),
-                                Expanded(child: SizedBox(), flex: 1),
-                                Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      children: <Widget>[
-                                        ClipRect(
-                                            child: Container(
-                                          child: image,
-                                        )),
-                                        SizedBox(height: 20),
-                                        Text(imageDesc,
-                                            style:
-                                                backgroundColor == Colors.white
-                                                    ? imageDescTextStyle
-                                                    : imageDescTexWhitetStyle,
-                                            softWrap: true)
-                                      ],
-                                    ))
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      children: <Widget>[
-                                        ClipRect(
-                                            child: Container(
-                                          child: image,
-                                        )),
-                                        SizedBox(height: 20),
-                                        Text(imageDesc,
-                                            style:
-                                                backgroundColor == Colors.white
-                                                    ? imageDescTextStyle
-                                                    : imageDescTexWhitetStyle,
-                                            softWrap: true)
-                                      ],
-                                    )),
-                                Expanded(child: SizedBox(), flex: 1),
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    content,
-                                    style: backgroundColor == Colors.white
-                                        ? bodyTextStyle
-                                        : bodyWhiteTextStyle,
-                                  ),
-                                ),
-                              ],
-                            ))
-                  : Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: marginHorizontal(md.width),
-                            child: Text(
-                              content,
-                              style: backgroundColor == Colors.white
-                                  ? bodyTextStyle
-                                  : bodyWhiteTextStyle,
-                            ),
+                      child: Text(
+                        content,
+                        style: backgroundColor == Colors.white
+                            ? bodyTextStyle
+                            : bodyWhiteTextStyle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Column(children: <Widget>[
+                        ClipRect(
+                            child: Container(
+                          child: image,
+                        )),
+                        SizedBox(height: 20),
+                        Container(
+                          width: md.width * 0.4,
+                          height: md.width * 0.12,
+                          child: Text(
+                            imageDesc,
+                            style: backgroundColor == Colors.white
+                                ? imageDescTextStyle
+                                : imageDescTexWhitetStyle,
+                            softWrap: true,
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Column(children: <Widget>[
-                              Container(
-                                width: md.width * 0.4,
-                                height: md.width * 0.4,
-                                child: image,
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                width: md.width * 0.4,
-                                height: md.width * 0.4,
-                                child: Text(
-                                  imageDesc,
-                                  style: backgroundColor == Colors.white
-                                      ? imageDescTextStyle
-                                      : imageDescTexWhitetStyle,
-                                  softWrap: true,
-                                ),
-                              ),
-                            ]))
-                      ],
-                    ),
-              SizedBox(
-                width: md.width,
-                height: 100,
-              ),
+                      ]))
+                ],
+              )
             ],
           ));
     }
