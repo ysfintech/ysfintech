@@ -33,6 +33,7 @@ dependencies:
   cloud_firestore: ^1.0.4
   firebase_storage: ^8.0.3
   flutter_markdown: ^0.6.1
+  url_launcher: ^6.0.3
 
   flutter:
     sdk: flutter
@@ -64,6 +65,7 @@ flutter:
     - assets/images/yonsei.jpg
     - assets/images/workingpaper.jpg
     - assets/images/publication.jpg
+    - assets/images/yonsei_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

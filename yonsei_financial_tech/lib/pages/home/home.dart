@@ -66,7 +66,6 @@ class _HomePageState extends State<HomePage> {
                       }
 
                       return Article(
-                        false,
                         title: snapshot.data.docs[0].data()['title'],
                         content: content(),
                       );

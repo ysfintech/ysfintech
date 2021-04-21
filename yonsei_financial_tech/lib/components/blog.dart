@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 // extension
 import 'package:yonsei_financial_tech/extensions/hover.dart';
 // components
@@ -51,16 +52,32 @@ class MenuBar extends StatelessWidget {
               // color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: () => Navigator.popUntil(context,
-                        ModalRoute.withName(Navigator.defaultRouteName)),
-                    // child: Image(
-                    //   image: AssetImage('assets/images/yonsei.jpg'),
-                    //   width: 150,
-                    //   fit: BoxFit.cover,
-                    // ),
-                    child: Image.asset('assets/images/yonsei.jpg', width: 150, fit: BoxFit.cover)
-                  ),
+                  Flexible(
+                      child: Row(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () async => await canLaunch(
+                                'https://www.yonsei.ac.kr/sc/index.jsp')
+                            .then((canRun) {
+                          canRun
+                              ? launch('https://www.yonsei.ac.kr/sc/index.jsp',
+                                  enableJavaScript: true)
+                              : throw 'Could not launch';
+                        }),
+                        child: Image.asset('images/yonsei.jpg',
+                            height: 80, fit: BoxFit.fitHeight),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () => Navigator.popUntil(context,
+                            ModalRoute.withName(Navigator.defaultRouteName)),
+                        child: Image.asset('images/yonsei_logo.png',
+                            height: 80, fit: BoxFit.fitHeight),
+                      )
+                    ],
+                  )),
                   Flexible(
                     child: Container(
                       alignment: Alignment.centerRight,
@@ -153,9 +170,8 @@ class Article extends StatelessWidget {
   final String from;
   final String content;
   final String title;
-  final bool isImageRight;
 
-  Article(this.isImageRight,
+  Article(
       {this.title,
       this.period,
       this.from,
@@ -231,116 +247,48 @@ class Article extends StatelessWidget {
                               ],
                             ))
                   : SizedBox(),
-              md.width > 1200
-                  ? Container(
+              // image and image description to center
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
                       margin: marginHorizontal(md.width),
-                      child: isImageRight
-                          ? Row(
-                              children: [
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    content,
-                                    style: backgroundColor == Colors.white
-                                        ? bodyTextStyle
-                                        : bodyWhiteTextStyle,
-                                  ),
-                                ),
-                                Expanded(child: SizedBox(), flex: 1),
-                                Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      children: <Widget>[
-                                        ClipRect(
-                                            child: Container(
-                                          child: image,
-                                        )),
-                                        SizedBox(height: 20),
-                                        Text(imageDesc,
-                                            style:
-                                                backgroundColor == Colors.white
-                                                    ? imageDescTextStyle
-                                                    : imageDescTexWhitetStyle,
-                                            softWrap: true)
-                                      ],
-                                    ))
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                Expanded(
-                                    flex: 4,
-                                    child: Column(
-                                      children: <Widget>[
-                                        ClipRect(
-                                            child: Container(
-                                          child: image,
-                                        )),
-                                        SizedBox(height: 20),
-                                        Text(imageDesc,
-                                            style:
-                                                backgroundColor == Colors.white
-                                                    ? imageDescTextStyle
-                                                    : imageDescTexWhitetStyle,
-                                            softWrap: true)
-                                      ],
-                                    )),
-                                Expanded(child: SizedBox(), flex: 1),
-                                Expanded(
-                                  flex: 4,
-                                  child: Text(
-                                    content,
-                                    style: backgroundColor == Colors.white
-                                        ? bodyTextStyle
-                                        : bodyWhiteTextStyle,
-                                  ),
-                                ),
-                              ],
-                            ))
-                  : Column(
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            margin: marginHorizontal(md.width),
-                            child: Text(
-                              content,
-                              style: backgroundColor == Colors.white
-                                  ? bodyTextStyle
-                                  : bodyWhiteTextStyle,
-                            ),
+                      child: Text(
+                        content,
+                        style: backgroundColor == Colors.white
+                            ? bodyTextStyle
+                            : bodyWhiteTextStyle,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 100,
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Column(children: <Widget>[
+                        ClipRect(
+                            child: Container(
+                          child: image,
+                        )),
+                        SizedBox(height: 20),
+                        Container(
+                          width: md.width * 0.4,
+                          height: md.width * 0.12,
+                          child: Text(
+                            imageDesc,
+                            style: backgroundColor == Colors.white
+                                ? imageDescTextStyle
+                                : imageDescTexWhitetStyle,
+                            softWrap: true,
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Column(children: <Widget>[
-                              Container(
-                                width: md.width * 0.4,
-                                height: md.width * 0.4,
-                                child: image,
-                              ),
-                              SizedBox(height: 20),
-                              Container(
-                                width: md.width * 0.4,
-                                height: md.width * 0.4,
-                                child: Text(
-                                  imageDesc,
-                                  style: backgroundColor == Colors.white
-                                      ? imageDescTextStyle
-                                      : imageDescTexWhitetStyle,
-                                  softWrap: true,
-                                ),
-                              ),
-                            ]))
-                      ],
-                    ),
-              SizedBox(
-                width: md.width,
-                height: 100,
-              ),
+                      ]))
+                ],
+              )
             ],
           ));
     }
@@ -392,7 +340,7 @@ Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
-    alignment: AlignmentDirectional.center,
+    alignment: Alignment.centerLeft,
     children: <Widget>[
       Container(
           // height: md.height * 0.58,
@@ -402,42 +350,35 @@ Stack title(BuildContext context) {
             image: AssetImage('images/introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
-      Positioned(
-        // left: md.width > 700 ? 150 : 0,
-        left: md.width > 800
-            ? md.width / 2 - 520
-            : md.width > 450
-                ? 0
-                : md.width / 2 - 400,
-        child: Container(
-            decoration: BoxDecoration(
-                //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                color: themeBlue,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset.fromDirection(3.0),
-                      blurRadius: 10.0,
-                      spreadRadius: 3.0)
-                ]),
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(
-                horizontal: md.width > 540 ? 25 : 0, vertical: 60),
-            width: md.width > 450 ? 520 : 400,
-            height: md.height > 400 ? 300 : 240,
-            child: RichText(
-              text: TextSpan(children: <TextSpan>[
-                TextSpan(
-                    text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
-                TextSpan(
-                    text: '\n에 오신 것을 환영합니다',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: lightWhite)),
+      Container(
+          margin: EdgeInsets.only(
+              left: md.width > 800 ? md.width * 0.1 : md.width / 20),
+          decoration: BoxDecoration(
+              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              color: themeBlue,
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.black26,
+                    offset: Offset.fromDirection(3.0),
+                    blurRadius: 10.0,
+                    spreadRadius: 3.0)
               ]),
-            )),
-      ),
+          alignment: Alignment.center,
+          padding: EdgeInsets.symmetric(
+              horizontal: md.width > 540 ? 25 : 0, vertical: 60),
+          width: md.width > 450 ? 520 : 400,
+          height: md.height > 400 ? 300 : 240,
+          child: RichText(
+            text: TextSpan(children: <TextSpan>[
+              TextSpan(text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
+              TextSpan(
+                  text: '\n에 오신 것을 환영합니다',
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      color: lightWhite)),
+            ]),
+          )),
     ],
   );
 }

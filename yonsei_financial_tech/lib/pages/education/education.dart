@@ -64,10 +64,8 @@ class _EduPageState extends State<EduPage> {
                       }
 
                       return Article(
-                        false,
                         title: snapshot.data.docs[0].data()['title'],
-                        content: content(),
-                        backgroundColor: themeBlue
+                        content: content()
                       );
                     }
                   },
