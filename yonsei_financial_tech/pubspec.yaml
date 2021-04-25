@@ -18,9 +18,9 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 handlers:
-- url: /.*
-  http_headers:
-    Access-Control-Allow-Origin: gs://ysfintech-homepage.appspot.com
+  - url: /.*
+    http_headers:
+      Access-Control-Allow-Origin: gs://ysfintech-homepage.appspot.com
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -34,6 +34,7 @@ dependencies:
   firebase_storage: ^8.0.3
   flutter_markdown: ^0.6.1
   url_launcher: ^6.0.3
+  image_pixels: ^2.0.0
 
   flutter:
     sdk: flutter
@@ -80,11 +81,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:
-    #   - family: Schyler
-    #     fonts:
-    #       - asset: fonts/Schyler-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/color.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
+import 'package:image_pixels/image_pixels.dart';
 import 'package:yonsei_financial_tech/model/person.dart';
 
 class PeoplePage extends StatefulWidget {
@@ -250,18 +251,36 @@ Widget _peopleList(
                             } else if (!snapshot.hasData) {
                               return Center(child: CircularProgressIndicator());
                             } else {
-                              return CircleAvatar(
-                                radius: 100.0,
-                                backgroundImage: NetworkImage(snapshot.data),
+                              return ImagePixels(
+                                imageProvider: NetworkImage(snapshot.data),
+                                defaultColor: Colors.white,
+                                builder: (context, img) => CircleAvatar(
+                                  radius: 100,
+                                  backgroundColor: img.pixelColorAtAlignment(
+                                      Alignment.centerLeft),
+                                  child: ClipOval(
+                                    child: Image.network(snapshot.data,
+                                        width: 200, height: 200),
+                                  ),
+                                ),
                               );
                             }
                           });
                     } else if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      return CircleAvatar(
-                        radius: 100.0,
-                        backgroundImage: NetworkImage(snapshot.data),
+                      return ImagePixels(
+                        imageProvider: NetworkImage(snapshot.data),
+                        defaultColor: Colors.white,
+                        builder: (context, img) => CircleAvatar(
+                          radius: 100,
+                          backgroundColor:
+                              img.pixelColorAtAlignment(Alignment.centerLeft),
+                          child: ClipOval(
+                            child: Image.network(snapshot.data,
+                                width: 200, height: 200),
+                          ),
+                        ),
                       );
                     }
                   }),
