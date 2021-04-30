@@ -343,31 +343,36 @@ Stack title(BuildContext context) {
     alignment: Alignment.centerLeft,
     children: <Widget>[
       Container(
-          // height: md.height * 0.58,
-          height: 600,
+          // height: md.height * 0.5,
+          height: 300,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
       Container(
-          margin: EdgeInsets.only(
-              left: md.width > 800 ? md.width * 0.1 : md.width / 20),
+          // margin: EdgeInsets.only(
+          //     left: md.width > 800 ? md.width * 0.1 : md.width / 20),
           decoration: BoxDecoration(
               //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              color: themeBlue,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset.fromDirection(3.0),
-                    blurRadius: 10.0,
-                    spreadRadius: 3.0)
-              ]),
-          alignment: Alignment.center,
+              // color: themeBlue,
+              color: Colors.black.withOpacity(0.2),
+              backgroundBlendMode: BlendMode.darken
+              // boxShadow: [
+              //   BoxShadow(
+              //       color: Colors.black26,
+              //       offset: Offset.fromDirection(3.0),
+              //       blurRadius: 10.0,
+              //       spreadRadius: 3.0)
+              // ]
+              ),
+          alignment: Alignment.centerLeft,
           padding: EdgeInsets.symmetric(
-              horizontal: md.width > 540 ? 25 : 0, vertical: 60),
-          width: md.width > 450 ? 520 : 400,
-          height: md.height > 400 ? 300 : 240,
+              horizontal: md.width > 540 ? 100 : 0, vertical: 20),
+          width: md.width,
+          // width: md.width > 450 ? 520 : 400,
+          // height: md.height > 400 ? 300 : 240,
+          height: 300,
           child: RichText(
             text: TextSpan(children: <TextSpan>[
               TextSpan(text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
@@ -454,14 +459,14 @@ class _BoardArticleState extends State<BoardArticle> {
           Container(
             width: md.width,
             height: 80,
-            margin: marginHorizontal(md.width * 0.5),
+            margin: marginHorizontal(md.width),
             child: Text('Board', style: h1TextStyle),
           ),
           Align(
             alignment: Alignment.center,
             child: Container(
               color: themeBlue,
-              margin: marginHorizontal(md.width * 0.5),
+              margin: marginHorizontal(md.width),
               padding: paddingH20V20,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -525,7 +530,7 @@ class _BoardArticleState extends State<BoardArticle> {
                           children: <Widget>[
                             // post
                             Container(
-                              margin: marginHorizontal(md.width * 0.5),
+                              margin: marginHorizontal(md.width),
                               padding: paddingH20V20,
                               child: Row(
                                 mainAxisAlignment:
@@ -616,7 +621,7 @@ class _BoardArticleState extends State<BoardArticle> {
                             ),
                             // divider
                             Container(
-                              margin: marginHorizontal(md.width * 0.5),
+                              margin: marginHorizontal(md.width),
                               child: divider,
                             )
                           ],
