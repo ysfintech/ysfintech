@@ -82,7 +82,6 @@ class _ProjectPageState extends State<ProjectPage> {
                           width: double.infinity,
                           alignment: Alignment.center,
                           child: ListView.builder(
-                            controller: _controller,  // same scroll controller 
                             reverse: true,
                             shrinkWrap: true,
                             itemCount: data.length,
@@ -107,13 +106,12 @@ class _ProjectPageState extends State<ProjectPage> {
                                   if (snapshot.hasError) {
                                     return Text('500 - error');
                                   } else if (!snapshot.hasData) {
-                                    // return Center(
-                                    //     child: SizedBox(
-                                    //         width: 40,
-                                    //         height: 40,
-                                    //         child:
-                                    //             CircularProgressIndicator()));
-                                    return SizedBox(); // remove indicator
+                                    return Center(
+                                        child: SizedBox(
+                                            width: 40,
+                                            height: 40,
+                                            child:
+                                                CircularProgressIndicator()));
                                   } else {
                                     return Article(
                                       backgroundColor: index % 2 == 0
@@ -127,7 +125,9 @@ class _ProjectPageState extends State<ProjectPage> {
                                       period: data[index].data()['period'],
                                       image: Image.network(
                                           snapshot.data.toString(),
-                                          width: 300,  // image in one size
+                                          headers: {
+                                            "Access-Control-Allow-Origin": "*"
+                                          },
                                           fit: BoxFit.cover),
                                     );
                                   }
