@@ -9,11 +9,12 @@ class PublishPage extends StatefulWidget {
 }
 
 class _PublishPageState extends State<PublishPage> {
-ScrollController _controller = new ScrollController();
+  ScrollController _controller = new ScrollController();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference papers = FirebaseFirestore.instance.collection('publication');
+  CollectionReference papers =
+      FirebaseFirestore.instance.collection('publication');
 
   var fetchedData;
 
@@ -23,7 +24,7 @@ ScrollController _controller = new ScrollController();
   @override
   void initState() {
     super.initState();
-    fetchedData = papers.orderBy('number').get();
+    fetchedData = papers.orderBy('id').get();
   }
 
   // search action
@@ -32,22 +33,6 @@ ScrollController _controller = new ScrollController();
       filterText = title;
     });
   }
-  // FOR TESTING
-  // Future<void> add() {
-  //   for (int i = 2; i < 15; ++i) {
-  //     papers.add({
-  //       'number': i,
-  //       'title': 'test-' + i.toString(),
-  //       'writer': 'test-writer',
-  //       'date': '21.04.08',
-  //       'view': Random().nextInt(50)
-  //     }).then((value) => print('completed'));
-  //   }
-  // }
-  // TextButton(
-  //                         onPressed: add,
-  //                         child: Text("ADD!!!"),
-  //                       ),
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +86,12 @@ ScrollController _controller = new ScrollController();
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
+                        title(context),
+                        Container(
+                          padding: paddingBottom24,
+                          color: Colors.white,
+                          child: divider,
+                        ),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         filterText.length != 0
@@ -160,26 +151,42 @@ ScrollController _controller = new ScrollController();
     );
   }
 
+  Container title(BuildContext context) {
+    var md = MediaQuery.of(context).size;
+    return Container(
+      width: md.width,
+      color: Colors.white,
+      padding: marginHorizontal(md.width),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 100),
+          Container(
+            child: Text(
+              'Publication',
+              style: h1TextStyle,
+            ),
+          ),
+          SizedBox(height: 100),
+        ],
+      ),
+    );
+  }
+
   Widget searchTab(BuildContext context) {
     var md = MediaQuery.of(context).size;
 
     TextEditingController textEditingController = new TextEditingController();
 
     return Stack(
-      alignment: AlignmentDirectional.center,
       children: <Widget>[
+       Container(
+          color: Colors.white,
+          width: md.width,
+          height: 100,
+        ),
         Container(
-            // height: md.height * 0.58,
-            height: 400,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('images/publication.jpg'),
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.5), BlendMode.darken),
-              fit: BoxFit.cover,
-            ))),
-        Container(
-          margin: marginHorizontal(md.width * 0.5),
+          margin: marginHorizontal(md.width),
           height: md.width > 600 ? 60 : 120,
           child: md.width > 600
               ? Row(
@@ -314,13 +321,6 @@ ScrollController _controller = new ScrollController();
                         ))
                   ],
                 ),
-        ),
-        // title
-        Positioned(
-          top: 50.0,
-          left: 100.0,
-          child: Text('Publication',
-              style: articleTitleTextStyle(color: Colors.white)),
         )
       ],
     );
