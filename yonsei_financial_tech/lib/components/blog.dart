@@ -118,7 +118,7 @@ class MenuBar extends StatelessWidget {
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.paper),
                               child: Text(
-                                "Working Paper",
+                                "Working Papers",
                                 style: buttonTextStyle,
                               ),
                               style: ButtonStyle(
