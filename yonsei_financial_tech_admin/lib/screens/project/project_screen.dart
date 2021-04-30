@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/screens/project/project_detail.dart';
 import 'package:ysfintech_admin/utils/color.dart';
+import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
+import 'dart:html' as html;
 
 class ProjectScreen extends StatefulWidget {
   @override
@@ -19,6 +22,9 @@ class _ProjectScreenState extends State<ProjectScreen> {
   Future<QuerySnapshot> projectData;
 
   ScrollController _controller = ScrollController();
+
+  // File
+  html.File _file;
 
   @override
   void initState() {
@@ -70,9 +76,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
-                            onPressed: () {
-                              print('addd');
-                            },
+                            onPressed: () => postDialog(context),
                           ))),
                   SizedBox(
                     height: 20,
@@ -110,5 +114,152 @@ class _ProjectScreenState extends State<ProjectScreen> {
         }
       },
     );
+  }
+
+  void postDialog(@required BuildContext context) {
+    ScrollController controller = new ScrollController();
+
+    // controller
+    TextEditingController titleController = new TextEditingController();
+    TextEditingController periodController = new TextEditingController();
+    TextEditingController fromController = new TextEditingController();
+    TextEditingController contentController = new TextEditingController();
+    TextEditingController imageDescController = new TextEditingController();
+
+    showBottomSheet(
+        backgroundColor: Colors.black45,
+        context: context,
+        builder: (context) {
+          final size = MediaQuery.of(context).size;
+          return Container(
+            color: Colors.white,
+            height: size.height,
+            width: size.width,
+            padding: paddingH20V20,
+            child: SingleChildScrollView(
+              controller: controller,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  // save and exit
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <TextButton>[
+                        TextButton.icon(
+                            onPressed: () => print('post'),
+                            icon: Icon(
+                              Icons.post_add_rounded,
+                              size: 30,
+                            ),
+                            label: Text("저장하기")),
+                        TextButton.icon(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(
+                              Icons.close,
+                              size: 30,
+                            ),
+                            label: Text("취소하기")),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // title
+                  Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: titleController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.title_rounded)),
+                      )),
+                  SizedBox(height: 20),
+                  // period
+                  Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: periodController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.calendar_today_rounded)),
+                      )),
+                  SizedBox(height: 20),
+                  // from
+                  Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: fromController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.location_on_rounded)),
+                      )),
+                  SizedBox(height: 20),
+                  // description
+                  Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: contentController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.article_rounded)),
+                      )),
+                  SizedBox(height: 20),
+                  // file upload
+                  Align(
+                      alignment: Alignment.center,
+                      child: StatefulBuilder(builder: (context, setState) => 
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(_file == null ? '이미지 업로드 및 수정' : _file.name,
+                                style: bodyTextStyle),
+                            SizedBox(width: 10),
+                            ElevatedButton(
+                              style:
+                                  ElevatedButton.styleFrom(primary: themeBlue),
+                              onPressed: () async {
+                                // 사진을 선택하는 ImagePickerWeb -> html.File 로 전환
+                                final _picked = await ImagePickerWeb.getImage(
+                                    outputType: ImageType.file);
+                                setState(() {
+                                  _file = _picked;
+                                });
+                                print(_file.name);
+                              },
+                              child: Text(" 파일 선택 ", style: bodyWhiteTextStyle),
+                            ),
+                          ]))),
+                  SizedBox(height: 20),
+                  // image desc
+                  Align(
+                      alignment: Alignment.center,
+                      child: TextFormField(
+                        controller: imageDescController,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.description_rounded)),
+                      )),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
