@@ -125,9 +125,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                       period: data[index].data()['period'],
                                       image: Image.network(
                                           snapshot.data.toString(),
-                                          headers: {
-                                            "Access-Control-Allow-Origin": "*"
-                                          },
+                                          width: 500,  // image in one size
                                           fit: BoxFit.cover),
                                     );
                                   }
