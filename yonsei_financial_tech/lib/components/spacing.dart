@@ -9,6 +9,8 @@ EdgeInsets marginHorizontal(double width) {
   return EdgeInsets.symmetric(horizontal: width * 0.2 * 0.4);
 }
 
+EdgeInsets marginH100V20 = EdgeInsets.symmetric(horizontal: 100, vertical: 20);
+
 EdgeInsets marginH3V2(double width) {
   return EdgeInsets.symmetric(horizontal: width * 0.3, vertical: width * 0.2);
 }
