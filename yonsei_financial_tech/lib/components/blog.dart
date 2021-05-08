@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -422,6 +423,21 @@ class _BoardArticleState extends State<BoardArticle> {
   List<List<int>> pageList = [];
   int pageListRow = 0;
 
+  // firebase
+  CollectionReference papers = FirebaseFirestore.instance.collection('paper');
+
+  Future<void> updateView(String docID, int updatedView) {
+    return papers
+        .doc(docID)
+        .update({'view': updatedView})
+        .then((value) => print('view updated'))
+        .catchError((onError) => print('view update failed : $onError'));
+  }
+
+  _refresh() async {
+    // setState(() { print('refreshed'); });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -545,28 +561,46 @@ class _BoardArticleState extends State<BoardArticle> {
                                   Expanded(
                                       flex: 3,
                                       child: Hover(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BoardDetail(
-                                                        data: BoardItem(
-                                                            title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['title'],
-                                                            writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['writer'],
-                                                            number: widget.board[
-                                                                    (selectedPageIndex - 1) * 10 +
-                                                                        (index)]
-                                                                ['number'],
-                                                            date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['date'],
-                                                            view: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['view'],
-                                                            content:
-                                                                widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                    ['content']),
-                                                      ))),
+                                          onTap: () {
+                                            // page route
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BoardDetail(
+                                                          data: BoardItem(
+                                                              title: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['title'],
+                                                              writer: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['writer'],
+                                                              number: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['number'],
+                                                              date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['date'],
+                                                              view:
+                                                                  widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                      ['view'],
+                                                              content: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['content']),
+                                                        ))).then(
+                                                (value) => _refresh());
+                                            // increase view
+                                            updateView(
+                                                widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['docID'],
+                                                widget.board[
+                                                        (selectedPageIndex -
+                                                                    1) *
+                                                                10 +
+                                                            (index)]['view'] +
+                                                    1);
+                                          },
                                           child: Text(
                                             widget.board[
                                                     (selectedPageIndex - 1) *

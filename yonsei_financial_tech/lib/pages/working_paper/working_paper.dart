@@ -70,13 +70,21 @@ class _PaperPageState extends State<PaperPage> {
                     // add filtering
                     snapshot.data.docs.forEach((element) {
                       if (filterText.length == 0) {
-                        data.add(element.data());
+                        Map<String, dynamic> temp = {
+                          'docID': element.id,
+                          ...element.data()
+                        };
+                        data.add(temp);
                       } else {
                         if (element
                             .data()['title']
                             .toString()
                             .contains(filterText)) {
-                          data.add(element.data());
+                          Map<String, dynamic> temp = {
+                            'docID': element.id,
+                            ...element.data()
+                          };
+                          data.add(temp);
                         }
                       }
                     });
