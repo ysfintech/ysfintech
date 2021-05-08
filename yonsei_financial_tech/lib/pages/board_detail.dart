@@ -29,6 +29,7 @@ class _BoardDetailState extends State<BoardDetail> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SizedBox(
@@ -61,13 +62,24 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
   BoardItem data;
 
   final String storageURL = "gs://ysfintech-homepage.appspot.com/paper/";
-
+  
   @override
   void initState() {
     super.initState();
     data = widget.data;
   }
 
+  String getOnlyTitle(String imagePath) {
+    String res;
+    // check it is paper or publication
+    if(imagePath.contains('gs://ysfintech-homepage.appspot.com/paper')) {
+      res = imagePath.substring('gs://ysfintech-homepage.appspot.com/paper'.length);
+    }
+    if(imagePath.contains('gs://ysfintech-homepage.appspot.com/publication')) {
+      res = imagePath.substring('gs://ysfintech-homepage.appspot.com/publication'.length);
+    }
+    return res;
+  }
 
   Future<void> downloadFile(String imagePath) async {
     // 1) set url 
@@ -97,10 +109,11 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
             Align(
               alignment: Alignment.topLeft,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
                       icon: Icon(Icons.keyboard_arrow_left_rounded),
-                      iconSize: 30,
+                      iconSize: 24,
                       onPressed: () => Navigator.pop(context)),
                   SizedBox(
                     width: 10,
@@ -163,15 +176,15 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           // DATE | VIEW
                           children: <Widget>[
-                            Text('작성일자  ' + data.date, style: bodyTextStyle),
+                            Text('작성일자 \t' + data.date, style: bodyTextStyle),
                             SizedBox(
                               width: 10,
                             ),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle),
+                            Text('작성자\t' + data.writer, style: bodyTextStyle),
                             SizedBox(
                               width: 10,
                             ),
-                            Text('조회수 ' + data.view.toString(),
+                            Text('조회수\t' + data.view.toString(),
                                 style: bodyTextStyle),
                           ],
                         ),
@@ -182,6 +195,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               alignment: Alignment.center,
               child: SizedBox(
                 height: 100,
+                child: divider,
               ),
             ),
             // ARTICLE
@@ -219,7 +233,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                             spacing: 12.0,
                             children: <Widget>[
                               Icon(Icons.file_download),
-                              Text(data.imagePath.substring(storageURL.length),
+                              Text(getOnlyTitle(data.imagePath),
                                   style: bodyTextStyle)
                             ],
                           ),
