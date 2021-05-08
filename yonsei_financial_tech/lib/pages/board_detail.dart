@@ -44,9 +44,22 @@ class _BoardDetailState extends State<BoardDetail> {
   }
 }
 
-class BoardDetailArticle extends StatelessWidget {
+class BoardDetailArticle extends StatefulWidget {
   final BoardItem data;
   BoardDetailArticle({@required this.data});
+
+  @override
+  _BoardDetailArticleState createState() => _BoardDetailArticleState();
+}
+
+class _BoardDetailArticleState extends State<BoardDetailArticle> {
+  BoardItem data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,7 +138,9 @@ class BoardDetailArticle extends StatelessWidget {
                       children: <Widget>[
                         // TITLE
                         Text(data.title, style: h1TextStyle),
-                        SizedBox(height: 50,),
+                        SizedBox(
+                          height: 50,
+                        ),
                         // DATE | VIEW |_WRITER
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,

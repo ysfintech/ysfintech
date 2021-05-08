@@ -391,8 +391,10 @@ Stack title(BuildContext context) {
 
 class BoardArticle extends StatefulWidget {
   final List<Map<String, dynamic>> board;
+  final String storage;
+  final Function onRefresh;
 
-  BoardArticle({this.board});
+  BoardArticle({this.board, this.storage, this.onRefresh});
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
@@ -425,23 +427,29 @@ class _BoardArticleState extends State<BoardArticle> {
 
   // firebase
   CollectionReference papers = FirebaseFirestore.instance.collection('paper');
+  CollectionReference publications =
+      FirebaseFirestore.instance.collection('publication');
 
   Future<void> updateView(String docID, int updatedView) {
-    return papers
-        .doc(docID)
-        .update({'view': updatedView})
-        .then((value) => print('view updated'))
-        .catchError((onError) => print('view update failed : $onError'));
-  }
-
-  _refresh() async {
-    // setState(() { print('refreshed'); });
+    if (widget.storage == 'paper') {
+      return papers
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    } else {
+      return publications
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    print(widget.board.length / 10);
+    // print(widget.board.length / 10);
     // set widget.board.length -> page index
     int maxPage =
         widget.board.length / 10 > 1 ? (widget.board.length / 10).ceil() : 1;
@@ -455,7 +463,7 @@ class _BoardArticleState extends State<BoardArticle> {
       temp.add(i);
     }
     pageList.add(temp);
-    print(pageList);
+    // print(pageList);
   }
 
   @override
@@ -567,7 +575,7 @@ class _BoardArticleState extends State<BoardArticle> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        BoardDetail(
+                                                       new BoardDetail(
                                                           data: BoardItem(
                                                               title: widget
                                                                       .board[(selectedPageIndex - 1) * 10 + (index)]
@@ -586,8 +594,7 @@ class _BoardArticleState extends State<BoardArticle> {
                                                               content: widget
                                                                       .board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['content']),
-                                                        ))).then(
-                                                (value) => _refresh());
+                                                        ))).then(this.widget.onRefresh);
                                             // increase view
                                             updateView(
                                                 widget.board[

@@ -28,6 +28,10 @@ class _PaperPageState extends State<PaperPage> {
     fetchedData = papers.orderBy('id').get();
   }
 
+  _refresh(dynamic value) => setState(() {
+        fetchedData = papers.orderBy('id').get();
+      });
+
   // search action
   void searchWithTitle(String title) {
     setState(() {
@@ -148,7 +152,11 @@ class _PaperPageState extends State<PaperPage> {
                               )
                             : SizedBox(),
                         // Board  ------------------------------------------------------------
-                        BoardArticle(board: data),
+                        BoardArticle(
+                          board: data,
+                          storage: 'paper',
+                          onRefresh: _refresh,
+                        ),
                         Footer(),
                       ],
                     );
