@@ -25,7 +25,7 @@ class Footer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
         alignment: Alignment.center,
-        child: TextBody(text: "Copyright © 2021 Seunghwanly Kim-kwan-woo"),
+        child: TextBody(text: "Copyright © 2021 Lee & Kim"),
       ),
     );
   }
@@ -280,8 +280,8 @@ class Article extends StatelessWidget {
                           child: Text(
                             imageDesc,
                             style: backgroundColor == Colors.white
-                                ? imageDescTextStyle
-                                : imageDescTexWhitetStyle,
+                                ? bodyTextStyle
+                                : bodyWhiteTextStyle,
                             softWrap: true,
                             textAlign: TextAlign.center,
                           ),
@@ -455,13 +455,6 @@ class _BoardArticleState extends State<BoardArticle> {
             width: md.width,
             height: 100,
           ),
-          // Board ------------------------------------------------
-          Container(
-            width: md.width,
-            height: 80,
-            margin: marginHorizontal(md.width),
-            child: Text('Board', style: h1TextStyle),
-          ),
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -477,7 +470,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '번호',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // title
@@ -485,7 +478,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 3,
                       child: Text(
                         '제목',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // writer
@@ -493,7 +486,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '작성자',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // date
@@ -501,7 +494,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '날짜',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // view
@@ -509,7 +502,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '조회수',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                 ],

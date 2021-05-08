@@ -228,8 +228,8 @@ class _PaperPageState extends State<PaperPage> {
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.notoSans(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -248,12 +248,7 @@ class _PaperPageState extends State<PaperPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 )
@@ -294,8 +289,8 @@ class _PaperPageState extends State<PaperPage> {
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.notoSans(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -314,12 +309,7 @@ class _PaperPageState extends State<PaperPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.notoSans(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 ),
