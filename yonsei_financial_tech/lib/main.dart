@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         });
       },
       // theme: Theme.of(context).copyWith(platform: TargetPlatform.macOS),
-      theme: ThemeData(fontFamily: GoogleFonts.notoSerif().fontFamily),
+      theme: ThemeData(fontFamily: GoogleFonts.nunito().fontFamily),
       debugShowCheckedModeBanner: false,
     );
   }

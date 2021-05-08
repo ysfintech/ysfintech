@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
 
@@ -180,6 +181,33 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
             Align(
               alignment: Alignment.center,
               child: SizedBox(
+                height: 20,
+              ),
+            ),
+            Align(
+              // 첨부파일 다운받기
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => print('file download'),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  padding: paddingH20V20,
+                  side: BorderSide(color: lightWhite)
+                ),
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 12.0,
+                  children: <Widget>[
+                    Icon(Icons.file_download),
+                    Text('file path', style: bodyTextStyle)
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: SizedBox(
                 height: 100,
               ),
             ),
@@ -219,7 +247,8 @@ class _MarkdownContentState extends State<MarkdownContent> {
               selectable: true,
               shrinkWrap: true,
               data: widget.data,
-              styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
+              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
+              styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
             )
           ],
         ));
