@@ -575,13 +575,11 @@ class _BoardArticleState extends State<BoardArticle> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                       new BoardDetail(
+                                                        new BoardDetail(
                                                           data: BoardItem(
-                                                              title: widget
-                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                              title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['title'],
-                                                              writer: widget
-                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                              writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['writer'],
                                                               number: widget
                                                                       .board[(selectedPageIndex - 1) * 10 + (index)]
@@ -593,8 +591,12 @@ class _BoardArticleState extends State<BoardArticle> {
                                                                       ['view'],
                                                               content: widget
                                                                       .board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                  ['content']),
-                                                        ))).then(this.widget.onRefresh);
+                                                                  ['content'],
+                                                              imagePath: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['imagePath']),
+                                                        ))).then(
+                                                this.widget.onRefresh);
                                             // increase view
                                             updateView(
                                                 widget.board[

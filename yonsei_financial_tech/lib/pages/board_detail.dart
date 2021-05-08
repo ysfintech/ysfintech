@@ -1,6 +1,10 @@
+import 'dart:html' as html;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
 
@@ -56,10 +60,22 @@ class BoardDetailArticle extends StatefulWidget {
 class _BoardDetailArticleState extends State<BoardDetailArticle> {
   BoardItem data;
 
+  final String storageURL = "gs://ysfintech-homepage.appspot.com/paper/";
+
   @override
   void initState() {
     super.initState();
     data = widget.data;
+  }
+
+
+  Future<void> downloadFile(String imagePath) async {
+    // 1) set url 
+    String downloadURL = await firebaseStorage.FirebaseStorage.instance.ref(imagePath).getDownloadURL();
+    // 2) request
+    html.AnchorElement anchorElement = new html.AnchorElement(href: downloadURL);
+    anchorElement.download = downloadURL;
+    anchorElement.click();
   }
 
   @override
@@ -178,33 +194,40 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               // ),
               child: MarkdownContent(data: data.content),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: SizedBox(
-                height: 20,
-              ),
-            ),
-            Align(
-              // 첨부파일 다운받기
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => print('file download'),
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  padding: paddingH20V20,
-                  side: BorderSide(color: lightWhite)
-                ),
-                child: Wrap(
-                  alignment: WrapAlignment.spaceBetween,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 12.0,
-                  children: <Widget>[
-                    Icon(Icons.file_download),
-                    Text('file path', style: bodyTextStyle)
-                  ],
-                ),
-              ),
-            ),
+            data.imagePath != null
+                ? Column(
+                    children: <Align>[
+                      Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          height: 20,
+                        ),
+                      ),
+                      Align(
+                        // 첨부파일 다운받기
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () => downloadFile(data.imagePath),
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              padding: paddingH20V20,
+                              side: BorderSide(color: lightWhite)),
+                          child: Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 12.0,
+                            children: <Widget>[
+                              Icon(Icons.file_download),
+                              Text(data.imagePath.substring(storageURL.length),
+                                  style: bodyTextStyle)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
