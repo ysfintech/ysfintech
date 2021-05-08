@@ -180,7 +180,7 @@ class _PublishPageState extends State<PublishPage> {
 
     return Stack(
       children: <Widget>[
-       Container(
+        Container(
           color: Colors.white,
           width: md.width,
           height: 100,
@@ -226,8 +226,8 @@ class _PublishPageState extends State<PublishPage> {
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.montserrat(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -246,12 +246,7 @@ class _PublishPageState extends State<PublishPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 )
@@ -292,8 +287,8 @@ class _PublishPageState extends State<PublishPage> {
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.montserrat(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -312,12 +307,7 @@ class _PublishPageState extends State<PublishPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 ),
