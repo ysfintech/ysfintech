@@ -47,9 +47,7 @@ class _PeoplePageState extends State<PeoplePage> {
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
                 MenuBar(),
-                // IMAGE BACKGROUND - NAME -------------------------------------------
                 title(context),
-                // About Us - INTRODUCTION -------------------------------------------
                 FutureBuilder<QuerySnapshot>(
                     future: fetchedData_yonsei,
                     builder: (context, snapshot) {
@@ -116,7 +114,7 @@ Container title(BuildContext context) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: Colors.white,
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -137,7 +135,7 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -162,7 +160,7 @@ Container acaExPeople(BuildContext context, List _people, List _id) {
   var md = MediaQuery.of(context).size;
 
   return Container(
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -184,7 +182,7 @@ Container indusExPeople(BuildContext context, List _people, List _id) {
 
   return Container(
     color: themeBlue,
-    padding: marginHorizontal(md.width * 0.4),
+    padding: marginHorizontal(md.width),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

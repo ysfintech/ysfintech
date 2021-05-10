@@ -38,6 +38,7 @@ class _ProjectPageState extends State<ProjectPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -82,6 +83,7 @@ class _ProjectPageState extends State<ProjectPage> {
                           width: double.infinity,
                           alignment: Alignment.center,
                           child: ListView.builder(
+                            controller: _controller,  // same scroll controller 
                             reverse: true,
                             shrinkWrap: true,
                             itemCount: data.length,
@@ -106,12 +108,13 @@ class _ProjectPageState extends State<ProjectPage> {
                                   if (snapshot.hasError) {
                                     return Text('500 - error');
                                   } else if (!snapshot.hasData) {
-                                    return Center(
-                                        child: SizedBox(
-                                            width: 40,
-                                            height: 40,
-                                            child:
-                                                CircularProgressIndicator()));
+                                    // return Center(
+                                    //     child: SizedBox(
+                                    //         width: 40,
+                                    //         height: 40,
+                                    //         child:
+                                    //             CircularProgressIndicator()));
+                                    return SizedBox(); // remove indicator
                                   } else {
                                     return Article(
                                       backgroundColor: index % 2 == 0
@@ -125,9 +128,7 @@ class _ProjectPageState extends State<ProjectPage> {
                                       period: data[index].data()['period'],
                                       image: Image.network(
                                           snapshot.data.toString(),
-                                          headers: {
-                                            "Access-Control-Allow-Origin": "*"
-                                          },
+                                          width: 500,  // image in one size
                                           fit: BoxFit.cover),
                                     );
                                   }

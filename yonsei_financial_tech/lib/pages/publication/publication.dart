@@ -9,11 +9,12 @@ class PublishPage extends StatefulWidget {
 }
 
 class _PublishPageState extends State<PublishPage> {
-ScrollController _controller = new ScrollController();
+  ScrollController _controller = new ScrollController();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference papers = FirebaseFirestore.instance.collection('publication');
+  CollectionReference papers =
+      FirebaseFirestore.instance.collection('publication');
 
   var fetchedData;
 
@@ -23,8 +24,12 @@ ScrollController _controller = new ScrollController();
   @override
   void initState() {
     super.initState();
-    fetchedData = papers.orderBy('number').get();
+    fetchedData = papers.orderBy('id').get();
   }
+
+  _refresh(dynamic value) => setState(() {
+        fetchedData = papers.orderBy('id').get();
+      });
 
   // search action
   void searchWithTitle(String title) {
@@ -32,26 +37,11 @@ ScrollController _controller = new ScrollController();
       filterText = title;
     });
   }
-  // FOR TESTING
-  // Future<void> add() {
-  //   for (int i = 2; i < 15; ++i) {
-  //     papers.add({
-  //       'number': i,
-  //       'title': 'test-' + i.toString(),
-  //       'writer': 'test-writer',
-  //       'date': '21.04.08',
-  //       'view': Random().nextInt(50)
-  //     }).then((value) => print('completed'));
-  //   }
-  // }
-  // TextButton(
-  //                         onPressed: add,
-  //                         child: Text("ADD!!!"),
-  //                       ),
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -84,13 +74,21 @@ ScrollController _controller = new ScrollController();
                     // add filtering
                     snapshot.data.docs.forEach((element) {
                       if (filterText.length == 0) {
-                        data.add(element.data());
+                        Map<String, dynamic> temp = {
+                          'docID': element.id,
+                          ...element.data()
+                        };
+                        data.add(temp);
                       } else {
                         if (element
                             .data()['title']
                             .toString()
                             .contains(filterText)) {
-                          data.add(element.data());
+                          Map<String, dynamic> temp = {
+                            'docID': element.id,
+                            ...element.data()
+                          };
+                          data.add(temp);
                         }
                       }
                     });
@@ -101,6 +99,12 @@ ScrollController _controller = new ScrollController();
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
                         MenuBar(),
+                        title(context),
+                        Container(
+                          padding: paddingBottom24,
+                          color: Colors.white,
+                          child: divider,
+                        ),
                         // IMAGE BACKGROUND - NAME -------------------------------------------
                         searchTab(context),
                         filterText.length != 0
@@ -148,7 +152,11 @@ ScrollController _controller = new ScrollController();
                               )
                             : SizedBox(),
                         // Board  ------------------------------------------------------------
-                        BoardArticle(board: data),
+                        BoardArticle(
+                          board: data,
+                          storage: 'publication',
+                          onRefresh: _refresh,
+                        ),
                         Footer(),
                       ],
                     );
@@ -160,26 +168,42 @@ ScrollController _controller = new ScrollController();
     );
   }
 
+  Container title(BuildContext context) {
+    var md = MediaQuery.of(context).size;
+    return Container(
+      width: md.width,
+      color: Colors.white,
+      padding: marginHorizontal(md.width),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: 100),
+          Container(
+            child: Text(
+              'Publication',
+              style: h1TextStyle,
+            ),
+          ),
+          SizedBox(height: 100),
+        ],
+      ),
+    );
+  }
+
   Widget searchTab(BuildContext context) {
     var md = MediaQuery.of(context).size;
 
     TextEditingController textEditingController = new TextEditingController();
 
     return Stack(
-      alignment: AlignmentDirectional.center,
       children: <Widget>[
         Container(
-            // height: md.height * 0.58,
-            height: 400,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage('images/publication.jpg'),
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.5), BlendMode.darken),
-              fit: BoxFit.cover,
-            ))),
+          color: Colors.white,
+          width: md.width,
+          height: 100,
+        ),
         Container(
-          margin: marginHorizontal(md.width * 0.5),
+          margin: marginHorizontal(md.width),
           height: md.width > 600 ? 60 : 120,
           child: md.width > 600
               ? Row(
@@ -219,8 +243,8 @@ ScrollController _controller = new ScrollController();
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.montserrat(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -239,12 +263,7 @@ ScrollController _controller = new ScrollController();
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 )
@@ -285,8 +304,8 @@ ScrollController _controller = new ScrollController();
                                   hintText: '검색할 제목을 입력해주세요.',
                                   labelStyle: GoogleFonts.montserrat(
                                       color: Colors.black87,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
                                       letterSpacing: 1.0))),
                         )),
                     Expanded(
@@ -305,22 +324,10 @@ ScrollController _controller = new ScrollController();
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20.0),
                               )),
-                          child: Text("검색",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 1.0)),
+                          child: Text("검색", style: bodyWhiteTextStyle),
                         ))
                   ],
                 ),
-        ),
-        // title
-        Positioned(
-          top: 50.0,
-          left: 100.0,
-          child: Text('Publication',
-              style: articleTitleTextStyle(color: Colors.white)),
         )
       ],
     );

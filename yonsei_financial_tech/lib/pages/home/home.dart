@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -56,17 +57,20 @@ class _HomePageState extends State<HomePage> {
                       /**
                        *  개행 문자를 포함해서 return 하기 
                        */
-                      List<String> contentArray = snapshot.data.docs[0].data()['content'].toString().split('<br>');
+                      List<String> contentArray = snapshot.data.docs[0]
+                          .data()['content']
+                          .toString()
+                          .split('<br>');
                       String content() {
-                        StringBuffer sb =new StringBuffer();
-                        for(String item in contentArray) {
+                        StringBuffer sb = new StringBuffer();
+                        for (String item in contentArray) {
                           sb.write(item + '\n\n');
                         }
                         return sb.toString();
                       }
 
                       return Article(
-                        title: snapshot.data.docs[0].data()['title'],
+                        //title: snapshot.data.docs[0].data()['title'],
                         content: content(),
                       );
                     }
