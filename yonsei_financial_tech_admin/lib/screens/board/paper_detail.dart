@@ -1,18 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/utils/color.dart';
+import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
-
-Future<void> updateDocument(String pathID, String content, String title, BuildContext context) {
-  return FirebaseFirestore.instance
-      .collection('paper')
-      .doc(pathID)
-      .update({'content': content, 'title': title}).then(
-          (value) => print("project updated")).then((value) => Navigator.pop(context, true));
-}
 
 class BoardDetail extends StatefulWidget {
   final String pathID;
@@ -29,12 +23,15 @@ class _BoardDetailState extends State<BoardDetail> {
   ScrollController controller = new ScrollController();
 
   bool _editable = false;
+  html.File _file;
+  Field _field;
 
   @override
   void initState() {
     super.initState();
     title = new TextEditingController(text: widget.data.title);
     content = new TextEditingController(text: widget.data.content);
+    _field = new Field(collection: 'paper');
   }
 
   @override
@@ -46,45 +43,52 @@ class _BoardDetailState extends State<BoardDetail> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Material(
-        color: Colors.black.withOpacity(0.5),
-        child: Container(
-            margin: marginH40V40,
-            padding: paddingH20V20,
-            color: Colors.white,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20),
-                // buttons
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      TextButton.icon(
-                        onPressed: () => Navigator.pop(context),
-                        icon: Icon(Icons.close, color: Colors.black),
-                        label: SizedBox(),
+    return Container(
+        padding: paddingH20V20,
+        color: Colors.white,
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20),
+            // buttons
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  TextButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.close, color: Colors.black),
+                    label: SizedBox(),
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.end,
+                    spacing: 10.0,
+                    children: <ElevatedButton>[
+                      ElevatedButton.icon(
+                        onPressed: () => _field.removeField(widget.pathID),
+                        icon: Icon(Icons.delete_rounded),
+                        label: Text(
+                          "REMOVE",
+                          style: bodyWhiteTextStyle,
+                        ),
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.red[200]),
                       ),
-                      ElevatedButton(
+                      ElevatedButton.icon(
+                        icon: Icon(_editable
+                            ? Icons.save_alt_rounded
+                            : Icons.edit_rounded),
+                        label: Text(_editable ? 'SAVE' : 'EDIT',
+                            style: bodyWhiteTextStyle),
                         style: ElevatedButton.styleFrom(
                             primary: !_editable ? themeBlue : Colors.orange),
-                        child: Container(
-                            width: 80,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Icon(_editable
-                                    ? Icons.save_alt_rounded
-                                    : Icons.edit_rounded),
-                                SizedBox(width: 10),
-                                Text(_editable ? 'SAVE' : 'EDIT',
-                                    style: bodyWhiteTextStyle)
-                              ],
-                            )),
                         onPressed: () {
                           setState(() {
                             if (_editable) {
-                              updateDocument(
-                                      widget.pathID, content.text, title.text, context)
+                              _field
+                                  .updateDocument(context,
+                                      pathID: widget.pathID,
+                                      content: content.text,
+                                      title: title.text,
+                                      imagePath: _file != null ?_field.getImagePath(_file) : widget.data.imagePath)
                                   .then((value) => ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Text(
@@ -95,117 +99,109 @@ class _BoardDetailState extends State<BoardDetail> {
                           });
                         },
                       )
-                    ]),
-                // show title
-                Expanded(
-                  // title and writer
-                  flex: 1,
-                  child: size.width > 800
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            !_editable
-                                ? Expanded(
-                                    flex: 7,
-                                    child: Text(widget.data.title,
-                                        style: h2TextStyle))
-                                : Expanded(
-                                    flex: 7,
-                                    child: TextFormField(
-                                      maxLines: 2,
-                                      controller: title,
-                                      autofocus: true,
-                                      enabled: _editable,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              gapPadding: 16.0,
-                                              borderSide:
-                                                  BorderSide(color: ligthGray)),
-                                          filled: true,
-                                          fillColor: lightWhite,
-                                          icon: Icon(Icons.title_rounded)),
-                                    )),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  'written by ' + widget.data.writer,
-                                  style: bodyTextStyle,
-                                  textAlign: TextAlign.end,
-                                )),
-                          ],
-                        )
-                      : Column(
-                          children: <Widget>[
-                            !_editable
-                                ? Expanded(
-                                    flex: 7,
-                                    child: Text(widget.data.title,
-                                        style: h2TextStyle))
-                                : Expanded(
-                                    flex: 7,
-                                    child: TextFormField(
-                                      maxLines: 2,
-                                      controller: title,
-                                      autofocus: true,
-                                      enabled: _editable,
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              gapPadding: 16.0,
-                                              borderSide:
-                                                  BorderSide(color: ligthGray)),
-                                          filled: true,
-                                          fillColor: lightWhite,
-                                          icon: Icon(Icons.title_rounded)),
-                                    )),
-                            Expanded(
-                                flex: 3,
-                                child: Text(
-                                  'written by ' + widget.data.writer,
-                                  style: bodyTextStyle,
-                                  textAlign: TextAlign.end,
-                                )),
-                          ],
-                        ),
-                ),
-                SizedBox(height: 5),
-                Expanded(
-                  // title and writer
-                  flex: 1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text('date ' + widget.data.date, style: bodyTextStyle),
-                      SizedBox(width: 10),
-                      Text('view ' + widget.data.view.toString(),
-                          style: bodyTextStyle),
                     ],
-                  ),
+                  )
+                ]),
+            SizedBox(height: 50),
+            // show title
+            Expanded(
+                // title and writer
+                flex: 1,
+                child: !_editable
+                    ? Text(widget.data.title, style: h2TextStyle)
+                    : TextFormField(
+                        maxLines: 2,
+                        controller: title,
+                        autofocus: true,
+                        enabled: _editable,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                gapPadding: 16.0,
+                                borderSide: BorderSide(color: ligthGray)),
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.title_rounded)),
+                      )),
+            SizedBox(height: 5),
+            Expanded(
+              // title and writer
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Text('date ' + widget.data.date, style: bodyTextStyle),
+                  SizedBox(width: 10),
+                  Text('view ' + widget.data.view.toString(),
+                      style: bodyTextStyle),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Expanded(
+                // content
+                flex: 7,
+                child: !_editable
+                    ? Markdown(
+                        controller: controller,
+                        selectable: true,
+                        data: widget.data.content,
+                      )
+                    : TextFormField(
+                        maxLines: null,
+                        controller: content,
+                        autofocus: true,
+                        enabled: _editable,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                gapPadding: 16.0,
+                                borderSide: BorderSide(color: ligthGray)),
+                            filled: true,
+                            fillColor: lightWhite,
+                            icon: Icon(Icons.article_rounded)),
+                      )),
+            SizedBox(height: 20),
+            Expanded(
+              flex: 1,
+              child: TextButton(
+                onPressed: _editable
+                    ? () async {
+                        final _picked = await ImagePickerWeb.getImage(
+                            outputType: ImageType.file);
+                        try {
+                          setState(() {
+                            _file = _picked;
+                          });
+                        } catch (e) {}
+                      }
+                    : widget.data.imagePath == null
+                        ? null
+                        : () => _field.downloadFile(widget.data.imagePath),
+                style: TextButton.styleFrom(
+                    padding: paddingH20V20,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8)),
+                    side: BorderSide(color: lightWhite)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(!_editable
+                        ? Icons.download_rounded
+                        : Icons.upload_rounded),
+                    Text(
+                        !_editable
+                            ? widget.data.imagePath == null
+                                ? '업로드된 파일이 없습니다.'
+                                : _field.getImageName(widget.data.imagePath)
+                            : _file == null
+                                ? '파일 업로드 및 수정'
+                                : _file.name,
+                        style: bodyTextStyle)
+                  ],
                 ),
-                SizedBox(height: 10),
-                Expanded(
-                    // content
-                    flex: 8,
-                    child: !_editable
-                        ? Markdown(
-                            controller: controller,
-                            selectable: true,
-                            data: widget.data.content,
-                          )
-                        : TextFormField(
-                            maxLines: null,
-                            controller: content,
-                            autofocus: true,
-                            enabled: _editable,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    gapPadding: 16.0,
-                                    borderSide: BorderSide(color: ligthGray)),
-                                filled: true,
-                                fillColor: lightWhite,
-                                icon: Icon(Icons.article_rounded)),
-                          )),
-                SizedBox(height: 20),
-              ],
-            )));
+              ),
+            )
+          ],
+        ));
   }
 }

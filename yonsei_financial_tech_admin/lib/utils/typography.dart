@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 
 // HEAD LINE 1
-TextStyle h1TextStyle = GoogleFonts.notoSans(
+TextStyle h1TextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 30,
         color: textPrimary,
         letterSpacing: 1.5,
         fontWeight: FontWeight.w700));
 
-TextStyle h1WhiteTextStyle = GoogleFonts.notoSans(
+TextStyle h1WhiteTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 30,
         color: Colors.white,
@@ -19,7 +19,7 @@ TextStyle h1WhiteTextStyle = GoogleFonts.notoSans(
         fontWeight: FontWeight.w700));
 
 // HEAD LINE 2
-TextStyle h2TextStyle = GoogleFonts.notoSans(
+TextStyle h2TextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
   fontSize: 24,
   color: textPrimary,
@@ -27,7 +27,7 @@ TextStyle h2TextStyle = GoogleFonts.notoSans(
   letterSpacing: 1,
 ));
 
-TextStyle h2WhiteTextStyle = GoogleFonts.notoSans(
+TextStyle h2WhiteTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
   fontSize: 24,
   color: lightWhite,
@@ -36,14 +36,14 @@ TextStyle h2WhiteTextStyle = GoogleFonts.notoSans(
 ));
 
 // HEAD LINE 3
-TextStyle h3TextStyle = GoogleFonts.notoSans(
+TextStyle h3TextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 20,
         color: textSecondary,
         letterSpacing: 1,
         fontWeight: FontWeight.w500));
 
-TextStyle h3WhiteTextStyle = GoogleFonts.notoSans(
+TextStyle h3WhiteTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 20,
         color: lightWhite,
@@ -51,16 +51,16 @@ TextStyle h3WhiteTextStyle = GoogleFonts.notoSans(
         fontWeight: FontWeight.w500));
 
 // CONTENT
-TextStyle bodyTextStyle = GoogleFonts.notoSans(
+TextStyle bodyTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 16, color: textPrimary, fontWeight: FontWeight.w400));
 
-TextStyle bodyWhiteTextStyle = GoogleFonts.notoSans(
+TextStyle bodyWhiteTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 16, color: lightWhite, fontWeight: FontWeight.w400));
 
 // button
-TextStyle buttonTextStyle = GoogleFonts.notoSans(
+TextStyle buttonTextStyle = GoogleFonts.nunito(
     textStyle: TextStyle(
         fontSize: 14,
         color: textPrimary,
@@ -69,9 +69,9 @@ TextStyle buttonTextStyle = GoogleFonts.notoSans(
 
 // image DESC
 TextStyle imageDescTextStyle =
-    GoogleFonts.notoSans(textStyle: TextStyle(fontSize: 12, color: ligthGray));
+    GoogleFonts.nunito(textStyle: TextStyle(fontSize: 12, color: ligthGray));
 
-TextStyle imageDescTexWhitetStyle = GoogleFonts.notoSans(
+TextStyle imageDescTexWhitetStyle = GoogleFonts.nunito(
     textStyle: TextStyle(fontSize: 12, color: lightWhite));
 
 // Advanced
@@ -80,4 +80,4 @@ TextStyle titleIntroductionTextStyle = TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.w800,
     // fontFamily: 'Yonsei'
-    fontFamily: GoogleFonts.notoSans().fontFamily);
+    fontFamily: GoogleFonts.nunito().fontFamily);
