@@ -62,7 +62,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
   BoardItem data;
 
   final String storageURL = "gs://ysfintech-homepage.appspot.com/paper/";
-  
+
   @override
   void initState() {
     super.initState();
@@ -72,20 +72,26 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
   String getOnlyTitle(String imagePath) {
     String res;
     // check it is paper or publication
-    if(imagePath.contains('gs://ysfintech-homepage.appspot.com/paper')) {
-      res = imagePath.substring('gs://ysfintech-homepage.appspot.com/paper'.length);
+    if (imagePath.contains('gs://ysfintech-homepage.appspot.com/paper/')) {
+      res = imagePath
+          .substring('gs://ysfintech-homepage.appspot.com/paper/'.length);
     }
-    if(imagePath.contains('gs://ysfintech-homepage.appspot.com/publication')) {
-      res = imagePath.substring('gs://ysfintech-homepage.appspot.com/publication'.length);
+    if (imagePath
+        .contains('gs://ysfintech-homepage.appspot.com/publication/')) {
+      res = imagePath
+          .substring('gs://ysfintech-homepage.appspot.com/publication/'.length);
     }
     return res;
   }
 
   Future<void> downloadFile(String imagePath) async {
-    // 1) set url 
-    String downloadURL = await firebaseStorage.FirebaseStorage.instance.ref(imagePath).getDownloadURL();
+    // 1) set url
+    String downloadURL = await firebaseStorage.FirebaseStorage.instance
+        .ref(imagePath)
+        .getDownloadURL();
     // 2) request
-    html.AnchorElement anchorElement = new html.AnchorElement(href: downloadURL);
+    html.AnchorElement anchorElement =
+        new html.AnchorElement(href: downloadURL);
     anchorElement.download = downloadURL;
     anchorElement.click();
   }
@@ -134,30 +140,32 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
             Align(
                 // TITLE | DATE | VIEW_ WRITER
                 alignment: Alignment.centerLeft,
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     // TITLE
-                    Text(data.title, style: h1TextStyle),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(data.title, style: h1TextStyle),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child:  Wrap(
+                              alignment: WrapAlignment.end,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 20.0,
+                              // DATE | VIEW
+                              children: <Widget>[
+                                Text('작성일자  ' + data.date,
+                                    style: bodyTextStyle),
+                                Text('조회수 ' + data.view.toString(),
+                                    style: bodyTextStyle),
+                                Text('작성자 ' + data.writer, style: bodyTextStyle)
+                              ],
+                            ))
+
                     // DATE | VIEW |_WRITER
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Wrap(
-                          alignment: WrapAlignment.end,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 10.0,
-                          // DATE | VIEW
-                          children: <Widget>[
-                            Text('작성일자  ' + data.date, style: bodyTextStyle),
-                            Text('조회수 ' + data.view.toString(),
-                                style: bodyTextStyle),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle)
-                          ],
-                        ),
-                      ],
-                    )
                   ],
                 )),
             Align(
