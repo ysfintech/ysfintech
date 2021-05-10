@@ -85,11 +85,27 @@ class _BoardDetailState extends State<BoardDetail> {
                             if (_editable) {
                               _field
                                   .updateDocument(context,
+                                      file: _file != null ? _file : null,
                                       pathID: widget.pathID,
                                       content: content.text,
                                       title: title.text,
-                                      imagePath: _file != null ?_field.getImagePath(_file) : widget.data.imagePath)
-                                  .then((value) => ScaffoldMessenger.of(context)
+                                      imagePath: _file != null
+                                          ? _field.getImagePath(_file)
+                                          : widget.data.imagePath)
+                                  .then((value) {
+                                if (_file != null) {
+                                  if (widget.data.imagePath != null) {
+                                    if (_file.name !=
+                                        _field.getImageName(
+                                            widget.data.imagePath)) {
+                                      _field
+                                          .removeStorage(widget.data.imagePath)
+                                          .then((value) =>
+                                              print('prev file deleted'));
+                                    }
+                                  }
+                                }
+                              }).then((value) => ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Text(
                                               '${widget.data.title}의 내용이 수정되었습니다.'))));
@@ -194,7 +210,9 @@ class _BoardDetailState extends State<BoardDetail> {
                                 ? '업로드된 파일이 없습니다.'
                                 : _field.getImageName(widget.data.imagePath)
                             : _file == null
-                                ? '파일 업로드 및 수정'
+                                ? widget.data.imagePath == null
+                                    ? '파일 업로드 및 수정'
+                                    : _field.getImageName(widget.data.imagePath)
                                 : _file.name,
                         style: bodyTextStyle)
                   ],

@@ -6,6 +6,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/screens/project/project_detail.dart';
 import 'package:ysfintech_admin/utils/color.dart';
+import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
@@ -23,41 +24,14 @@ class _PostState extends State<Post> {
   ScrollController controller = new ScrollController();
 
   html.File uploadFile;
-
-  Future<void> uploadImage(html.File data) async {
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref('gs://ysfintech-homepage.appspot.com/')
-        .child('paper/${data.name}');
-    try {
-      await ref.putBlob(data);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> uploadDocument(Board data, BuildContext context) {
-    return uploadImage(uploadFile).then((value) => FirebaseFirestore.instance
-        .collection('paper')
-        .add({
-          'content': data.content,
-          'date': data.date,
-          'title': data.title,
-          'view': data.view,
-          'writer': data.writer,
-          'imagePath': data.imagePath
-        })
-        .then((value) => print("project updated"))
-        .then((value) => Navigator.pop(context, true)));
-  }
-
-  String getImagePath(html.File file, String path) =>
-      'gs://ysfintech-homepage.appspot.com/' + path + '/' + file.name;
+  Field _field;
 
   @override
   void initState() {
     super.initState();
     title = new TextEditingController();
     content = new TextEditingController();
+    _field = new Field(collection: 'paper');
   }
 
   @override
@@ -112,22 +86,25 @@ class _PostState extends State<Post> {
                           view: 0,
                           content: '''${content.text}
                             ''',
-                          imagePath: getImagePath(this.uploadFile, 'paper'));
+                          imagePath: _field.getImagePath(this.uploadFile));
                       setState(() {
-                        uploadDocument(data, context).then((value) =>
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Wrap(
-                                    alignment: WrapAlignment.spaceBetween,
-                                    children: [
-                                  Text('새로운 게시글이 등록되었습니다.'),
-                                  TextButton.icon(
-                                      icon: Icon(Icons.refresh_rounded),
-                                      label: Text(
-                                        "새로고침해주세요",
-                                        style: bodyWhiteTextStyle,
-                                      ),
-                                      onPressed: () => print('parent refresh needed'))
-                                ]))));
+                        _field.uploadDocument(uploadFile, data, context).then(
+                            (value) => ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                        content: Wrap(
+                                            alignment:
+                                                WrapAlignment.spaceBetween,
+                                            children: [
+                                      Text('새로운 게시글이 등록되었습니다.'),
+                                      TextButton.icon(
+                                          icon: Icon(Icons.refresh_rounded),
+                                          label: Text(
+                                            "새로고침해주세요",
+                                            style: bodyWhiteTextStyle,
+                                          ),
+                                          onPressed: () =>
+                                              print('parent refresh needed'))
+                                    ]))));
                       });
                     },
                   )
