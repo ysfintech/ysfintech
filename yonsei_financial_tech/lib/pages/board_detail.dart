@@ -132,65 +132,34 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               ),
             ),
             Align(
-              // TITLE | DATE | VIEW_ WRITER
-              alignment: Alignment.center,
-              child: size.width > 800
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                // TITLE | DATE | VIEW_ WRITER
+                alignment: Alignment.centerLeft,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    // TITLE
+                    Text(data.title, style: h1TextStyle),
+                    // DATE | VIEW |_WRITER
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        // TITLE
-                        Text(data.title, style: h1TextStyle),
-                        // DATE | VIEW |_WRITER
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Row(
-                              // DATE | VIEW
-                              children: <Widget>[
-                                Text('작성일자  ' + data.date,
-                                    style: bodyTextStyle),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text('조회수 ' + data.view.toString(),
-                                    style: bodyTextStyle),
-                              ],
-                            ),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle)
-                          ],
-                        )
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        // TITLE
-                        Text(data.title, style: h1TextStyle),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        // DATE | VIEW |_WRITER
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                        Wrap(
+                          alignment: WrapAlignment.end,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 10.0,
                           // DATE | VIEW
                           children: <Widget>[
-                            Text('작성일자 \t' + data.date, style: bodyTextStyle),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('작성자\t' + data.writer, style: bodyTextStyle),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('조회수\t' + data.view.toString(),
+                            Text('작성일자  ' + data.date, style: bodyTextStyle),
+                            Text('조회수 ' + data.view.toString(),
                                 style: bodyTextStyle),
+                            Text('작성자 ' + data.writer, style: bodyTextStyle)
                           ],
                         ),
                       ],
-                    ),
-            ),
+                    )
+                  ],
+                )),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
