@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/board/paper_screen.dart';
-import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/project/project_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
@@ -88,7 +87,7 @@ class HomeScreenState extends State<HomeScreen>
                 PeopleScreen(),
                 ProjectScreen(),
                 PaperScreen(),
-                HeroAnimation(),
+                PaperScreen(),
               ],
             ),
           )
@@ -113,7 +112,7 @@ class HomeScreenState extends State<HomeScreen>
             pageIndex: 2, title: "Project", icon: Icons.science_rounded),
         listItemNavigator(drawerStatus,
             pageIndex: 3,
-            title: "Working Paper",
+            title: "Working Papers",
             icon: Icons.library_books_rounded),
         listItemNavigator(drawerStatus,
             pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),
