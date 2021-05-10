@@ -14,8 +14,7 @@ class _EduPageState extends State<EduPage> {
 
   // fire store
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference edu =
-      FirebaseFirestore.instance.collection('education');
+  CollectionReference edu = FirebaseFirestore.instance.collection('education');
   // data
   var fetchedData;
 
@@ -28,6 +27,7 @@ class _EduPageState extends State<EduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -54,19 +54,22 @@ class _EduPageState extends State<EduPage> {
                       /**
                        *  개행 문자를 포함해서 return 하기 
                        */
-                      List<String> contentArray = snapshot.data.docs[0].data()['content'].toString().split('<br>');
+                      List<String> contentArray = snapshot.data.docs[0]
+                          .data()['content']
+                          .toString()
+                          .split('<br>');
                       String content() {
-                        StringBuffer sb =new StringBuffer();
-                        for(String item in contentArray) {
+                        StringBuffer sb = new StringBuffer();
+                        for (String item in contentArray) {
                           sb.write(item + '\n\n');
                         }
                         return sb.toString();
                       }
 
                       return Article(
-                        title: snapshot.data.docs[0].data()['title'],
-                        content: content()
-                      );
+                          backgroundColor: themeBlue,
+                          //title: snapshot.data.docs[0].data()['title'],
+                          content: content());
                     }
                   },
                 ),
@@ -79,4 +82,25 @@ class _EduPageState extends State<EduPage> {
       ),
     );
   }
+}
+
+Container title(BuildContext context) {
+  var md = MediaQuery.of(context).size;
+  return Container(
+    color: Colors.white,
+    padding: marginHorizontal(md.width),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 100),
+        Container(
+          child: Text(
+            'Education',
+            style: h1TextStyle,
+          ),
+        ),
+        SizedBox(height: 100),
+      ],
+    ),
+  );
 }

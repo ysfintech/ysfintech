@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -25,7 +26,7 @@ class Footer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
         alignment: Alignment.center,
-        child: TextBody(text: "Copyright © 2021 Seunghwanly Kim-kwan-woo"),
+        child: TextBody(text: "Copyright © 2021 Lee & Kim"),
       ),
     );
   }
@@ -88,7 +89,7 @@ class MenuBar extends StatelessWidget {
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.home),
                               child: Text(
-                                "Introduction",
+                                "Home",
                                 style: buttonTextStyle,
                               ),
                               style: ButtonStyle(
@@ -118,7 +119,7 @@ class MenuBar extends StatelessWidget {
                               onPressed: () =>
                                   Navigator.pushNamed(context, Routes.paper),
                               child: Text(
-                                "Working Paper",
+                                "Working Papers",
                                 style: buttonTextStyle,
                               ),
                               style: ButtonStyle(
@@ -280,8 +281,8 @@ class Article extends StatelessWidget {
                           child: Text(
                             imageDesc,
                             style: backgroundColor == Colors.white
-                                ? imageDescTextStyle
-                                : imageDescTexWhitetStyle,
+                                ? bodyTextStyle
+                                : bodyWhiteTextStyle,
                             softWrap: true,
                             textAlign: TextAlign.center,
                           ),
@@ -343,31 +344,36 @@ Stack title(BuildContext context) {
     alignment: Alignment.centerLeft,
     children: <Widget>[
       Container(
-          // height: md.height * 0.58,
-          height: 600,
+          // height: md.height * 0.5,
+          height: 300,
           decoration: BoxDecoration(
               image: DecorationImage(
             image: AssetImage('images/introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
       Container(
-          margin: EdgeInsets.only(
-              left: md.width > 800 ? md.width * 0.1 : md.width / 20),
+          // margin: EdgeInsets.only(
+          //     left: md.width > 800 ? md.width * 0.1 : md.width / 20),
           decoration: BoxDecoration(
               //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              color: themeBlue,
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black26,
-                    offset: Offset.fromDirection(3.0),
-                    blurRadius: 10.0,
-                    spreadRadius: 3.0)
-              ]),
-          alignment: Alignment.center,
+              // color: themeBlue,
+              color: Colors.black.withOpacity(0.2),
+              backgroundBlendMode: BlendMode.darken
+              // boxShadow: [
+              //   BoxShadow(
+              //       color: Colors.black26,
+              //       offset: Offset.fromDirection(3.0),
+              //       blurRadius: 10.0,
+              //       spreadRadius: 3.0)
+              // ]
+              ),
+          alignment: Alignment.centerLeft,
           padding: EdgeInsets.symmetric(
-              horizontal: md.width > 540 ? 25 : 0, vertical: 60),
-          width: md.width > 450 ? 520 : 400,
-          height: md.height > 400 ? 300 : 240,
+              horizontal: md.width > 540 ? 100 : 0, vertical: 20),
+          width: md.width,
+          // width: md.width > 450 ? 520 : 400,
+          // height: md.height > 400 ? 300 : 240,
+          height: 300,
           child: RichText(
             text: TextSpan(children: <TextSpan>[
               TextSpan(text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
@@ -385,8 +391,10 @@ Stack title(BuildContext context) {
 
 class BoardArticle extends StatefulWidget {
   final List<Map<String, dynamic>> board;
+  final String storage;
+  final Function onRefresh;
 
-  BoardArticle({this.board});
+  BoardArticle({this.board, this.storage, this.onRefresh});
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
@@ -417,10 +425,31 @@ class _BoardArticleState extends State<BoardArticle> {
   List<List<int>> pageList = [];
   int pageListRow = 0;
 
+  // firebase
+  CollectionReference papers = FirebaseFirestore.instance.collection('paper');
+  CollectionReference publications =
+      FirebaseFirestore.instance.collection('publication');
+
+  Future<void> updateView(String docID, int updatedView) {
+    if (widget.storage == 'paper') {
+      return papers
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    } else {
+      return publications
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    print(widget.board.length / 10);
+    // print(widget.board.length / 10);
     // set widget.board.length -> page index
     int maxPage =
         widget.board.length / 10 > 1 ? (widget.board.length / 10).ceil() : 1;
@@ -434,7 +463,7 @@ class _BoardArticleState extends State<BoardArticle> {
       temp.add(i);
     }
     pageList.add(temp);
-    print(pageList);
+    // print(pageList);
   }
 
   @override
@@ -450,18 +479,11 @@ class _BoardArticleState extends State<BoardArticle> {
             width: md.width,
             height: 100,
           ),
-          // Board ------------------------------------------------
-          Container(
-            width: md.width,
-            height: 80,
-            margin: marginHorizontal(md.width * 0.5),
-            child: Text('Board', style: h1TextStyle),
-          ),
           Align(
             alignment: Alignment.center,
             child: Container(
               color: themeBlue,
-              margin: marginHorizontal(md.width * 0.5),
+              margin: marginHorizontal(md.width),
               padding: paddingH20V20,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -472,7 +494,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '번호',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // title
@@ -480,7 +502,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 3,
                       child: Text(
                         '제목',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // writer
@@ -488,7 +510,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '작성자',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // date
@@ -496,7 +518,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '날짜',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                   // view
@@ -504,7 +526,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       flex: 1,
                       child: Text(
                         '조회수',
-                        style: h3WhiteTextStyle,
+                        style: bodyWhiteTextStyle,
                         textAlign: TextAlign.center,
                       )),
                 ],
@@ -525,7 +547,7 @@ class _BoardArticleState extends State<BoardArticle> {
                           children: <Widget>[
                             // post
                             Container(
-                              margin: marginHorizontal(md.width * 0.5),
+                              margin: marginHorizontal(md.width),
                               padding: paddingH20V20,
                               child: Row(
                                 mainAxisAlignment:
@@ -547,28 +569,47 @@ class _BoardArticleState extends State<BoardArticle> {
                                   Expanded(
                                       flex: 3,
                                       child: Hover(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BoardDetail(
-                                                        data: BoardItem(
-                                                            title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['title'],
-                                                            writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['writer'],
-                                                            number: widget.board[
-                                                                    (selectedPageIndex - 1) * 10 +
-                                                                        (index)]
-                                                                ['number'],
-                                                            date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['date'],
-                                                            view: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['view'],
-                                                            content:
-                                                                widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                    ['content']),
-                                                      ))),
+                                          onTap: () {
+                                            // page route
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        new BoardDetail(
+                                                          data: BoardItem(
+                                                              title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['title'],
+                                                              writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['writer'],
+                                                              number: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['number'],
+                                                              date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['date'],
+                                                              view:
+                                                                  widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                      ['view'],
+                                                              content: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['content'],
+                                                              imagePath: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['imagePath']),
+                                                        ))).then(
+                                                this.widget.onRefresh);
+                                            // increase view
+                                            updateView(
+                                                widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['docID'],
+                                                widget.board[
+                                                        (selectedPageIndex -
+                                                                    1) *
+                                                                10 +
+                                                            (index)]['view'] +
+                                                    1);
+                                          },
                                           child: Text(
                                             widget.board[
                                                     (selectedPageIndex - 1) *
@@ -616,7 +657,7 @@ class _BoardArticleState extends State<BoardArticle> {
                             ),
                             // divider
                             Container(
-                              margin: marginHorizontal(md.width * 0.5),
+                              margin: marginHorizontal(md.width),
                               child: divider,
                             )
                           ],
