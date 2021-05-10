@@ -28,6 +28,10 @@ class _PaperPageState extends State<PaperPage> {
     fetchedData = papers.orderBy('id').get();
   }
 
+  _refresh(dynamic value) => setState(() {
+        fetchedData = papers.orderBy('id').get();
+      });
+
   // search action
   void searchWithTitle(String title) {
     setState(() {
@@ -38,6 +42,7 @@ class _PaperPageState extends State<PaperPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(
@@ -70,13 +75,21 @@ class _PaperPageState extends State<PaperPage> {
                     // add filtering
                     snapshot.data.docs.forEach((element) {
                       if (filterText.length == 0) {
-                        data.add(element.data());
+                        Map<String, dynamic> temp = {
+                          'docID': element.id,
+                          ...element.data()
+                        };
+                        data.add(temp);
                       } else {
                         if (element
                             .data()['title']
                             .toString()
                             .contains(filterText)) {
-                          data.add(element.data());
+                          Map<String, dynamic> temp = {
+                            'docID': element.id,
+                            ...element.data()
+                          };
+                          data.add(temp);
                         }
                       }
                     });
@@ -140,7 +153,11 @@ class _PaperPageState extends State<PaperPage> {
                               )
                             : SizedBox(),
                         // Board  ------------------------------------------------------------
-                        BoardArticle(board: data),
+                        BoardArticle(
+                          board: data,
+                          storage: 'paper',
+                          onRefresh: _refresh,
+                        ),
                         Footer(),
                       ],
                     );
