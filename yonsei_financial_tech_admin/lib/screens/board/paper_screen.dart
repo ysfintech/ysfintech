@@ -77,7 +77,7 @@ class _PaperScreenState extends State<PaperScreen> {
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
-                            onPressed: () => showDialog(context: context, builder: (context) => Post(id: list.length + 1)),
+                            onPressed: () => showBottomSheet(context: context, builder: (context) => Post(id: list.length + 1)),
                           ))),
                   SizedBox(
                     height: 20,
@@ -92,7 +92,7 @@ class _PaperScreenState extends State<PaperScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       tileColor: Colors.white,
-                      onTap: () => showDialog(context: context,
+                      onTap: () => showBottomSheet(context: context,
                         builder: (context) => BoardDetail(
                           data: list[index], pathID: snapshot.data.docs[index].id,
                         ),                      
@@ -104,7 +104,7 @@ class _PaperScreenState extends State<PaperScreen> {
                           SizedBox(
                             width: 5,
                           ),
-                          Text(list[index].id.toString())
+                          Text((index + 1).toString())
                         ],
                       ),
                       title: Text(

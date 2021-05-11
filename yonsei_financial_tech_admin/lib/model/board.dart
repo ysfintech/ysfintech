@@ -22,21 +22,22 @@ class Project {
 class Board {
   final String content;
   final String date;
-  final int id;
   final String title;
   final int view;
   final String writer;
+  final String imagePath;
 
-  Board({this.content, this.date, this.id, this.title, this.view, this.writer});
+  Board({this.content, this.date, this.title, this.view, this.writer, this.imagePath});
 
   factory Board.from(QueryDocumentSnapshot snapshot) {
     return Board(
         content: snapshot.data()['content'],
         date: snapshot.data()['date'],
-        id: snapshot.data()['id'],
         title: snapshot.data()['title'],
         view: snapshot.data()['view'],
-        writer: snapshot.data()['writer']);
+        writer: snapshot.data()['writer'],
+        imagePath: snapshot.data()['imagePath']
+        );
   }
 }
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -390,8 +391,10 @@ Stack title(BuildContext context) {
 
 class BoardArticle extends StatefulWidget {
   final List<Map<String, dynamic>> board;
+  final String storage;
+  final Function onRefresh;
 
-  BoardArticle({this.board});
+  BoardArticle({this.board, this.storage, this.onRefresh});
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
@@ -422,10 +425,31 @@ class _BoardArticleState extends State<BoardArticle> {
   List<List<int>> pageList = [];
   int pageListRow = 0;
 
+  // firebase
+  CollectionReference papers = FirebaseFirestore.instance.collection('paper');
+  CollectionReference publications =
+      FirebaseFirestore.instance.collection('publication');
+
+  Future<void> updateView(String docID, int updatedView) {
+    if (widget.storage == 'paper') {
+      return papers
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    } else {
+      return publications
+          .doc(docID)
+          .update({'view': updatedView})
+          .then((value) => print('view updated'))
+          .catchError((onError) => print('view update failed : $onError'));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    print(widget.board.length / 10);
+    // print(widget.board.length / 10);
     // set widget.board.length -> page index
     int maxPage =
         widget.board.length / 10 > 1 ? (widget.board.length / 10).ceil() : 1;
@@ -439,7 +463,7 @@ class _BoardArticleState extends State<BoardArticle> {
       temp.add(i);
     }
     pageList.add(temp);
-    print(pageList);
+    // print(pageList);
   }
 
   @override
@@ -545,28 +569,47 @@ class _BoardArticleState extends State<BoardArticle> {
                                   Expanded(
                                       flex: 3,
                                       child: Hover(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BoardDetail(
-                                                        data: BoardItem(
-                                                            title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['title'],
-                                                            writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['writer'],
-                                                            number: widget.board[
-                                                                    (selectedPageIndex - 1) * 10 +
-                                                                        (index)]
-                                                                ['number'],
-                                                            date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['date'],
-                                                            view: widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                ['view'],
-                                                            content:
-                                                                widget.board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                    ['content']),
-                                                      ))),
+                                          onTap: () {
+                                            // page route
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        new BoardDetail(
+                                                          data: BoardItem(
+                                                              title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['title'],
+                                                              writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['writer'],
+                                                              number: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['number'],
+                                                              date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['date'],
+                                                              view:
+                                                                  widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                      ['view'],
+                                                              content: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['content'],
+                                                              imagePath: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['imagePath']),
+                                                        ))).then(
+                                                this.widget.onRefresh);
+                                            // increase view
+                                            updateView(
+                                                widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['docID'],
+                                                widget.board[
+                                                        (selectedPageIndex -
+                                                                    1) *
+                                                                10 +
+                                                            (index)]['view'] +
+                                                    1);
+                                          },
                                           child: Text(
                                             widget.board[
                                                     (selectedPageIndex - 1) *

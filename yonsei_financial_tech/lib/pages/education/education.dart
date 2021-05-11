@@ -27,6 +27,7 @@ class _EduPageState extends State<EduPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SingleChildScrollView(

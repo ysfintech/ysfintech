@@ -1,5 +1,10 @@
+import 'dart:html' as html;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
 
@@ -24,6 +29,7 @@ class _BoardDetailState extends State<BoardDetail> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           SizedBox(
@@ -44,9 +50,51 @@ class _BoardDetailState extends State<BoardDetail> {
   }
 }
 
-class BoardDetailArticle extends StatelessWidget {
+class BoardDetailArticle extends StatefulWidget {
   final BoardItem data;
   BoardDetailArticle({@required this.data});
+
+  @override
+  _BoardDetailArticleState createState() => _BoardDetailArticleState();
+}
+
+class _BoardDetailArticleState extends State<BoardDetailArticle> {
+  BoardItem data;
+
+  final String storageURL = "gs://ysfintech-homepage.appspot.com/paper/";
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+  }
+
+  String getOnlyTitle(String imagePath) {
+    String res;
+    // check it is paper or publication
+    if (imagePath.contains('gs://ysfintech-homepage.appspot.com/paper/')) {
+      res = imagePath
+          .substring('gs://ysfintech-homepage.appspot.com/paper/'.length);
+    }
+    if (imagePath
+        .contains('gs://ysfintech-homepage.appspot.com/publication/')) {
+      res = imagePath
+          .substring('gs://ysfintech-homepage.appspot.com/publication/'.length);
+    }
+    return res;
+  }
+
+  Future<void> downloadFile(String imagePath) async {
+    // 1) set url
+    String downloadURL = await firebaseStorage.FirebaseStorage.instance
+        .ref(imagePath)
+        .getDownloadURL();
+    // 2) request
+    html.AnchorElement anchorElement =
+        new html.AnchorElement(href: downloadURL);
+    anchorElement.download = downloadURL;
+    anchorElement.click();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +115,11 @@ class BoardDetailArticle extends StatelessWidget {
             Align(
               alignment: Alignment.topLeft,
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
                       icon: Icon(Icons.keyboard_arrow_left_rounded),
-                      iconSize: 30,
+                      iconSize: 24,
                       onPressed: () => Navigator.pop(context)),
                   SizedBox(
                     width: 10,
@@ -89,67 +138,41 @@ class BoardDetailArticle extends StatelessWidget {
               ),
             ),
             Align(
-              // TITLE | DATE | VIEW_ WRITER
-              alignment: Alignment.center,
-              child: size.width > 800
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        // TITLE
-                        Text(data.title, style: h1TextStyle),
-                        // DATE | VIEW |_WRITER
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Row(
+                // TITLE | DATE | VIEW_ WRITER
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    // TITLE
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(data.title, style: h1TextStyle),
+                    ),
+                    Align(
+                        alignment: Alignment.centerRight,
+                        child:  Wrap(
+                              alignment: WrapAlignment.end,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 20.0,
                               // DATE | VIEW
                               children: <Widget>[
                                 Text('작성일자  ' + data.date,
                                     style: bodyTextStyle),
-                                SizedBox(
-                                  width: 10,
-                                ),
                                 Text('조회수 ' + data.view.toString(),
                                     style: bodyTextStyle),
+                                Text('작성자 ' + data.writer, style: bodyTextStyle)
                               ],
-                            ),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle)
-                          ],
-                        )
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        // TITLE
-                        Text(data.title, style: h1TextStyle),
-                        SizedBox(height: 50,),
-                        // DATE | VIEW |_WRITER
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          // DATE | VIEW
-                          children: <Widget>[
-                            Text('작성일자  ' + data.date, style: bodyTextStyle),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text('조회수 ' + data.view.toString(),
-                                style: bodyTextStyle),
-                          ],
-                        ),
-                      ],
-                    ),
-            ),
+                            ))
+
+                    // DATE | VIEW |_WRITER
+                  ],
+                )),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
                 height: 100,
+                child: divider,
               ),
             ),
             // ARTICLE
@@ -162,6 +185,40 @@ class BoardDetailArticle extends StatelessWidget {
               // ),
               child: MarkdownContent(data: data.content),
             ),
+            data.imagePath != null
+                ? Column(
+                    children: <Align>[
+                      Align(
+                        alignment: Alignment.center,
+                        child: SizedBox(
+                          height: 20,
+                        ),
+                      ),
+                      Align(
+                        // 첨부파일 다운받기
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () => downloadFile(data.imagePath),
+                          style: TextButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              padding: paddingH20V20,
+                              side: BorderSide(color: lightWhite)),
+                          child: Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 12.0,
+                            children: <Widget>[
+                              Icon(Icons.file_download),
+                              Text(getOnlyTitle(data.imagePath),
+                                  style: bodyTextStyle)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                : SizedBox(),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
@@ -204,7 +261,8 @@ class _MarkdownContentState extends State<MarkdownContent> {
               selectable: true,
               shrinkWrap: true,
               data: widget.data,
-              styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
+              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
+              styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
             )
           ],
         ));

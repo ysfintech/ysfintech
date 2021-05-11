@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/board/paper_screen.dart';
-import 'package:ysfintech_admin/screens/hero/hero_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/project/project_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
@@ -9,6 +8,8 @@ import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int tap_index;
+  HomeScreen({Key key, @required this.tap_index}) : super(key: key);
   @override
   HomeScreenState createState() => HomeScreenState();
 }
@@ -20,7 +21,8 @@ class HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(vsync: this, length: 5, initialIndex: 0)
+    tabController = new TabController(
+        vsync: this, length: 5, initialIndex: widget.tap_index)
       ..addListener(() {
         setState(() {
           active = tabController.index;
@@ -88,7 +90,7 @@ class HomeScreenState extends State<HomeScreen>
                 PeopleScreen(),
                 ProjectScreen(),
                 PaperScreen(),
-                HeroAnimation(),
+                PaperScreen(),
               ],
             ),
           )
@@ -113,7 +115,7 @@ class HomeScreenState extends State<HomeScreen>
             pageIndex: 2, title: "Project", icon: Icons.science_rounded),
         listItemNavigator(drawerStatus,
             pageIndex: 3,
-            title: "Working Paper",
+            title: "Working Papers",
             icon: Icons.library_books_rounded),
         listItemNavigator(drawerStatus,
             pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),

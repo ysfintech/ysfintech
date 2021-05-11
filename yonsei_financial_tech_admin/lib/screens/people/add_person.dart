@@ -1,11 +1,14 @@
 import 'dart:async';
-import 'dart:html';
+import 'dart:html' as html;
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart'; // NetworkImage
+import 'package:image_whisperer/image_whisperer.dart'; // BlobImage
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/person.dart';
-import 'package:ysfintech_admin/screens/people/people.dart';
+import 'package:ysfintech_admin/screens/home/home_screen.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
@@ -25,17 +28,17 @@ class _AddPersonState extends State<AddPerson> {
   TextEditingController _majorController = new TextEditingController();
   TextEditingController _fieldController = new TextEditingController();
 
-  final _pickedImages = <File>[];
   var pickImage = null;
+  var blobImage = null;
   String _imageInfo = '';
 
   Future<void> _getImgFile() async {
-    File pickImage_a =
+    html.File pickImage_a =
         await ImagePickerWeb.getImage(outputType: ImageType.file);
     setState(() {
       pickImage = pickImage_a;
-      _imageInfo =
-          'Name: ${pickImage_a.name}\nRelative Path: ${pickImage_a.relativePath}';
+      blobImage = new BlobImage(pickImage_a, name: pickImage.name);
+      _imageInfo = '${pickImage_a.name}\n';
     });
   }
 
@@ -81,7 +84,8 @@ class _AddPersonState extends State<AddPerson> {
                   if (_person.name == null ||
                       _person.major == null ||
                       _person.field == null ||
-                      _person.number == null) {
+                      _person.number == null ||
+                      pickImage == null) {
                     _showError();
                   } else {
                     _showAddDialog(_person);
@@ -240,8 +244,7 @@ class _AddPersonState extends State<AddPerson> {
                     scrollDirection: Axis.horizontal,
                     itemCount: 1,
                     itemBuilder: pickImage != null
-                        ? (context, index) =>
-                            Container(child: Image.file(pickImage))
+                        ? (context, index) => Image.network(blobImage.url)
                         : (context, index) => Container()),
               ),
             ),
@@ -266,6 +269,11 @@ class _AddPersonState extends State<AddPerson> {
                         onPressed: () {
                           _add(_person);
                           Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return new HomeScreen(tap_index: 1);
+                          }));
                         }),
                     new TextButton(
                         child: new Text("취소"),
@@ -327,10 +335,14 @@ class _AddPersonState extends State<AddPerson> {
   }
 
   Future<dynamic> _addImg(String add_id) async {
-    FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-    var snapshot = await _firebaseStorage
-        .ref()
-        .child("gs://ysfintech-homepage.appspot.com/people/")
-        .putFile(pickImage);
+    String img_name = add_id + "." + pickImage.name.split(".")[1].toLowerCase();
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/')
+        .child('people/${img_name}');
+    try {
+      await ref.putBlob(pickImage);
+    } catch (e) {
+      print(e);
+    }
   }
 }

@@ -26,6 +26,7 @@ dependencies:
   # file upload
   file_picker: ^3.0.1
   image_picker_web: ^2.0.1
+  image_whisperer: ^0.11.1
 
   flutter:
     sdk: flutter

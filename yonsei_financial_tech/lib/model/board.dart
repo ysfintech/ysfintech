@@ -18,6 +18,7 @@ class BoardItem {
   final String date;
   final int view;
   final String content;
+  final String imagePath;
 
   BoardItem(
       {this.content,
@@ -25,7 +26,8 @@ class BoardItem {
       this.number,
       this.title,
       this.view,
-      this.writer});
+      this.writer,
+      this.imagePath});
 
   factory BoardItem.fromJson(Map<String, dynamic> json) {
     return BoardItem(
@@ -34,6 +36,8 @@ class BoardItem {
         writer: json['writer'],
         date: json['date'],
         view: json['view'],
-        content: json['content']);
+        content: json['content'],
+        imagePath: json['imagePath']
+        );
   }
 }
