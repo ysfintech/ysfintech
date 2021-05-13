@@ -535,6 +535,7 @@ class _BoardArticleState extends State<BoardArticle> {
           ),
           widget.board.length != 0
               ? ListView.builder(
+                  reverse: true,
                   shrinkWrap: true,
                   itemCount: 10,
                   itemBuilder: (BuildContext context, int index) {
@@ -558,9 +559,10 @@ class _BoardArticleState extends State<BoardArticle> {
                                   Expanded(
                                       flex: 1,
                                       child: Text(
-                                        widget.board[
-                                                (selectedPageIndex - 1) * 10 +
-                                                    (index)]['id']
+                                        // widget.board[
+                                        //         (selectedPageIndex - 1) * 10 +
+                                        //             (index)]['id']
+                                        (index+1)
                                             .toString(),
                                         style: bodyTextStyle,
                                         textAlign: TextAlign.center,

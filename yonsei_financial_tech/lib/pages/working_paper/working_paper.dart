@@ -93,9 +93,6 @@ class _PaperPageState extends State<PaperPage> {
                         }
                       }
                     });
-                    // reverse data
-                    data = data.reversed.toList();
-                    print(data.length);
                     return Column(
                       children: <Widget>[
                         // MENU BAR ----------------------------------------------------------
