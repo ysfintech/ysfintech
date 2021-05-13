@@ -145,7 +145,7 @@ class _ProjectDetailState extends State<ProjectDetail> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(12),
                     child: Image.network(snapshot.data.toString(),
                         width: size.width * 0.17,
                         height: size.width * 0.17,

@@ -90,7 +90,7 @@ class _PaperScreenState extends State<PaperScreen> {
                     separatorBuilder: (context, index) => SizedBox(height: 10),
                     itemBuilder: (context, index) => ListTile(
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                          borderRadius: BorderRadius.circular(12)),
                       tileColor: Colors.white,
                       onTap: () => showBottomSheet(context: context,
                         builder: (context) => BoardDetail(

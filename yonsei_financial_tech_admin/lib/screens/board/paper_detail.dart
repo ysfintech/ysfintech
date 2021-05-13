@@ -195,7 +195,7 @@ class _BoardDetailState extends State<BoardDetail> {
                 style: TextButton.styleFrom(
                     padding: paddingH20V20,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8)),
+                        borderRadius: BorderRadius.circular(12)),
                     side: BorderSide(color: lightWhite)),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,

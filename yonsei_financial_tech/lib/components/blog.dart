@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 // extension
 import 'package:yonsei_financial_tech/extensions/hover.dart';
 // components
@@ -18,7 +18,6 @@ import 'package:yonsei_financial_tech/routes.dart';
 const Widget divider = Divider(color: Color(0xFFEEEEEE), thickness: 1);
 
 class Footer extends StatelessWidget {
-  // TODO Add additional footer components (i.e. about, links, logos).
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,6 +42,7 @@ class Footer extends StatelessWidget {
 class MenuBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
         color: Colors.white,
         child: Column(
@@ -54,101 +54,97 @@ class MenuBar extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   Flexible(
-                      child: Row(
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () async => await canLaunch(
-                                'https://www.yonsei.ac.kr/sc/index.jsp')
-                            .then((canRun) {
-                          canRun
-                              ? launch('https://www.yonsei.ac.kr/sc/index.jsp',
-                                  enableJavaScript: true)
-                              : throw 'Could not launch';
-                        }),
-                        child: Image.asset('images/yonsei.jpg',
-                            height: 80, fit: BoxFit.fitHeight),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      InkWell(
-                        onTap: () => Navigator.popUntil(context,
-                            ModalRoute.withName(Navigator.defaultRouteName)),
-                        child: Image.asset('images/yonsei_logo.png',
-                            height: 80, fit: BoxFit.fitHeight),
-                      )
-                    ],
-                  )),
-                  Flexible(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: Wrap(
-                        spacing: 30,
-                        children: <Widget>[
-                          TextButton(
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, Routes.home),
-                              child: Text(
-                                "Home",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, Routes.people),
-                              child: Text(
-                                "People",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, Routes.project),
-                              child: Text(
-                                "Project",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, Routes.paper),
-                              child: Text(
-                                "Working Papers",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
-                              onPressed: () =>
-                                  Navigator.pushNamed(context, Routes.publish),
-                              child: Text(
-                                "Publication",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                          TextButton(
-                              onPressed: () => Navigator.pushNamed(
-                                  context, Routes.education),
-                              child: Text(
-                                "Education",
-                                style: buttonTextStyle,
-                              ),
-                              style: ButtonStyle(
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.transparent))),
-                        ],
+                    child: InkWell(
+                      onTap: () => Navigator.popUntil(context,
+                          ModalRoute.withName(Navigator.defaultRouteName)),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Image.asset('images/yonsei_logo.png',
+                                height: 80, fit: BoxFit.fitHeight),
+                            size.width > 800
+                                ? Text(
+                                    "연세대학교 수리경제 연구실",
+                                    style: GoogleFonts.notoSans(
+                                        color: themeBlue,
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                : SizedBox()
+                          ],
+                        ),
                       ),
                     ),
                   ),
+                  Flexible(
+                      child: Container(
+                    alignment: Alignment.centerRight,
+                    child: Wrap(
+                      spacing: 30,
+                      children: <Widget>[
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.home),
+                            child: Text(
+                              "Home",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.people),
+                            child: Text(
+                              "People",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.project),
+                            child: Text(
+                              "Project",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.paper),
+                            child: Text(
+                              "Working Papers",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.publish),
+                            child: Text(
+                              "Publication",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.education),
+                            child: Text(
+                              "Education",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                      ],
+                    ),
+                  ))
                 ],
               ),
             ),
@@ -340,7 +336,6 @@ class Article extends StatelessWidget {
 
 Stack title(BuildContext context) {
   var md = MediaQuery.of(context).size;
-  // margin: EdgeInsets.symmetric(horizontal: md.width * 0.1, vertical: 0.1),
   return Stack(
     alignment: Alignment.centerLeft,
     children: <Widget>[
@@ -353,27 +348,13 @@ Stack title(BuildContext context) {
             fit: BoxFit.cover,
           ))),
       Container(
-          // margin: EdgeInsets.only(
-          //     left: md.width > 800 ? md.width * 0.1 : md.width / 20),
           decoration: BoxDecoration(
-              //borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              // color: themeBlue,
               color: Colors.black.withOpacity(0.2),
-              backgroundBlendMode: BlendMode.darken
-              // boxShadow: [
-              //   BoxShadow(
-              //       color: Colors.black26,
-              //       offset: Offset.fromDirection(3.0),
-              //       blurRadius: 10.0,
-              //       spreadRadius: 3.0)
-              // ]
-              ),
+              backgroundBlendMode: BlendMode.darken),
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.symmetric(
               horizontal: md.width > 540 ? 100 : 0, vertical: 20),
           width: md.width,
-          // width: md.width > 450 ? 520 : 400,
-          // height: md.height > 400 ? 300 : 240,
           height: 300,
           child: RichText(
             text: TextSpan(children: <TextSpan>[
@@ -428,7 +409,7 @@ class _BoardArticleState extends State<BoardArticle> {
 
   // firebase
   CollectionReference papers = FirebaseFirestore.instance.collection('paper');
-  
+
   Future<void> updateView(String docID, int updatedView) {
     return papers
         .doc(docID)

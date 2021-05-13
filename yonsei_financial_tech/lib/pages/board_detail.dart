@@ -192,7 +192,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                           onPressed: () => downloadFile(data.imagePath),
                           style: TextButton.styleFrom(
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
+                                  borderRadius: BorderRadius.circular(12)),
                               padding: paddingH20V20,
                               side: BorderSide(color: lightWhite)),
                           child: Wrap(
