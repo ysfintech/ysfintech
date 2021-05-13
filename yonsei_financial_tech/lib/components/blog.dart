@@ -276,8 +276,9 @@ class Article extends StatelessWidget {
                         )),
                         SizedBox(height: 20),
                         Container(
-                          width: md.width * 0.4,
-                          height: md.width * 0.12,
+                          width: md.width,
+                          height: md.width * 0.15,
+                          margin: marginHorizontal(md.width),
                           child: Text(
                             imageDesc,
                             style: backgroundColor == Colors.white

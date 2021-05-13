@@ -24,6 +24,8 @@ class _PeopleScreenState extends State<PeopleScreen> {
   var fetchedData_aca;
   var fetchedData_indus;
 
+  List<int> _people_num = [0, 0, 0];
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +45,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            addPerson(context),
+            addPerson(context, _people_num),
             Divider(
               color: Colors.black,
             ),
@@ -63,6 +65,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                       _yonsei_people.add(element.data());
                       _yonsei_id.add(element.id);
                     });
+                    _people_num[0] = _yonsei_id.length;
                     return yonseiPeople(context, _yonsei_people, _yonsei_id);
                   }
                 }),
@@ -84,6 +87,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                       _aca_people.add(element.data());
                       _aca_id.add(element.id);
                     });
+                    _people_num[1] = _aca_id.length;
                     return acaExPeople(context, _aca_people, _aca_id);
                   }
                 }),
@@ -105,6 +109,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
                       _indus_people.add(element.data());
                       _indus_id.add(element.id);
                     });
+                    _people_num[2] = _indus_id.length;
                     return indusExPeople(context, _indus_people, _indus_id);
                   }
                 }),
@@ -115,7 +120,7 @@ class _PeopleScreenState extends State<PeopleScreen> {
   }
 }
 
-Container addPerson(BuildContext context) {
+Container addPerson(BuildContext context, List<int> people_number) {
   var md = MediaQuery.of(context).size;
   return Container(
     //padding: EdgeInsets.fromLTRB(md.width * 0.1, 0, md.width * 0.1, 0),
@@ -124,7 +129,7 @@ Container addPerson(BuildContext context) {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         SizedBox(height: 50.0),
-        AddPerson(),
+        AddPerson(people_num: people_number),
       ],
     ),
   );

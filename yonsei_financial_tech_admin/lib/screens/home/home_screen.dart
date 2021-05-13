@@ -8,6 +8,8 @@ import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int tap_index;
+  HomeScreen({Key key, @required this.tap_index}) : super(key: key);
   @override
   HomeScreenState createState() => HomeScreenState();
 }
@@ -19,7 +21,8 @@ class HomeScreenState extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(vsync: this, length: 5, initialIndex: 0)
+    tabController = new TabController(
+        vsync: this, length: 5, initialIndex: widget.tap_index)
       ..addListener(() {
         setState(() {
           active = tabController.index;

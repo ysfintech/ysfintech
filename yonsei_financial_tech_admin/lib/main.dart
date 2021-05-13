@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Map<String, WidgetBuilder> routes = {
       '/': (BuildContext context) => Login(),
-      '/home': (BuildContext context) => HomeScreen(),
+      '/home': (BuildContext context) => HomeScreen(tap_index: 0),
     };
     return MaterialApp(
       initialRoute: '/home',

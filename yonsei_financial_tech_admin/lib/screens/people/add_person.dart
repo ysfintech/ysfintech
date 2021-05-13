@@ -1,10 +1,20 @@
+import 'dart:async';
 import 'dart:html' as html;
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart'; // NetworkImage
+import 'package:image_whisperer/image_whisperer.dart'; // BlobImage
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:ysfintech_admin/model/person.dart';
+import 'package:ysfintech_admin/screens/home/home_screen.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
 class AddPerson extends StatefulWidget {
+  final List<int> people_num;
+  AddPerson({Key key, @required this.people_num}) : super(key: key);
   @override
   _AddPersonState createState() => _AddPersonState();
 }
@@ -12,45 +22,44 @@ class AddPerson extends StatefulWidget {
 class _AddPersonState extends State<AddPerson> {
   final isSelected = <bool>[false, false, false];
 
+  Person _person = new Person();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _nameController = new TextEditingController();
   TextEditingController _majorController = new TextEditingController();
   TextEditingController _fieldController = new TextEditingController();
 
-  final _pickedImages = <Image>[];
+  var pickImage = null;
+  var blobImage = null;
   String _imageInfo = '';
-  Future<void> _pickImage() async {
-    Image fromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.widget);
-
-    if (fromPicker != null) {
-      setState(() {
-        _pickedImages.clear();
-        _pickedImages.add(fromPicker);
-      });
-    }
-  }
 
   Future<void> _getImgFile() async {
-    html.File infos = await ImagePickerWeb.getImage(outputType: ImageType.file);
-    setState(() => _imageInfo =
-        'Name: ${infos.name}\nRelative Path: ${infos.relativePath}');
-  }
-
-  Future<void> _getImgInfo() async {
-    final infos = await ImagePickerWeb.getImageInfo;
+    html.File pickImage_a =
+        await ImagePickerWeb.getImage(outputType: ImageType.file);
     setState(() {
-      _pickedImages.clear();
-      _pickedImages.add(Image.memory(
-        infos.data,
-        semanticLabel: infos.fileName,
-      ));
-      _imageInfo = '${infos.fileName}';
+      pickImage = pickImage_a;
+      blobImage = new BlobImage(pickImage_a, name: pickImage.name);
+      _imageInfo = '${pickImage_a.name}\n';
     });
   }
+
+  // Future<void> _getImgInfo() async {
+  //   File infos_file = await ImagePickerWeb.getImage(outputType: ImageType.file);
+  //   final infos = await ImagePickerWeb.getImageInfo;
+  //   setState(() {
+  //     _pickedImages.clear();
+  //     _pickedImages.add(Image.memory(
+  //       infos.data,
+  //       semanticLabel: infos.fileName,
+  //     ));
+  //     _imageInfo = '${infos.fileName}';
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+        child: Form(
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -60,7 +69,28 @@ class _AddPersonState extends State<AddPerson> {
               Text("Add New Person", style: h2TextStyle),
               SizedBox(width: 20.0),
               ElevatedButton.icon(
-                onPressed: _pickImage,
+                onPressed: () {
+                  _person.name = _nameController.text;
+                  _person.major = _majorController.text;
+                  _person.field = _fieldController.text;
+                  if (isSelected[0] == true) {
+                    _person.number = widget.people_num[0] + 1;
+                  } else if (isSelected[1] == true) {
+                    _person.number = widget.people_num[1] + 1;
+                  } else if (isSelected[2] == true) {
+                    _person.number = widget.people_num[2] + 1;
+                  }
+
+                  if (_person.name == null ||
+                      _person.major == null ||
+                      _person.field == null ||
+                      _person.number == null ||
+                      pickImage == null) {
+                    _showError();
+                  } else {
+                    _showAddDialog(_person);
+                  }
+                },
                 icon: Icon(Icons.add, size: 18),
                 label: Text('Add new person'),
                 style: ButtonStyle(
@@ -89,7 +119,7 @@ class _AddPersonState extends State<AddPerson> {
           selectImage(),
         ],
       ),
-    );
+    ));
   }
 
 //소속 그룹 선택
@@ -138,14 +168,15 @@ class _AddPersonState extends State<AddPerson> {
     return Column(
       children: <Widget>[
         TextFormField(
-            decoration: InputDecoration(
-              labelText: "이름",
-              border: InputBorder.none,
-              filled: true,
-              fillColor: lightWhite,
-            ),
-            controller: _nameController,
-            enabled: false),
+          decoration: InputDecoration(
+            labelText: "이름",
+            border: InputBorder.none,
+            filled: true,
+            fillColor: lightWhite,
+          ),
+          controller: _nameController,
+          enabled: true,
+        ),
         SizedBox(
           height: 15.0,
         ),
@@ -157,7 +188,7 @@ class _AddPersonState extends State<AddPerson> {
               fillColor: lightWhite,
             ),
             controller: _majorController,
-            enabled: false),
+            enabled: true),
         SizedBox(
           height: 15.0,
         ),
@@ -169,7 +200,7 @@ class _AddPersonState extends State<AddPerson> {
               fillColor: lightWhite,
             ),
             controller: _fieldController,
-            enabled: false),
+            enabled: true),
       ],
     );
   }
@@ -182,7 +213,7 @@ class _AddPersonState extends State<AddPerson> {
           Row(
             children: <Widget>[
               ElevatedButton.icon(
-                onPressed: _getImgInfo, //_pickImage,
+                onPressed: _getImgFile, //_pickImage,
                 icon: Icon(Icons.check, size: 18),
                 label: Text('Select Image'),
                 style: ButtonStyle(
@@ -211,11 +242,107 @@ class _AddPersonState extends State<AddPerson> {
                 height: 200,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: _pickedImages == null ? 0 : _pickedImages.length,
-                    itemBuilder: (context, index) => _pickedImages[index]),
+                    itemCount: 1,
+                    itemBuilder: pickImage != null
+                        ? (context, index) => Image.network(blobImage.url)
+                        : (context, index) => Container()),
               ),
             ),
           ]),
         ]);
+  }
+
+  void _showAddDialog(Person _person) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: new Text("Add new Person"),
+              content: new Text("새로운 Person을 추가합니다."),
+              actions: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    new TextButton(
+                        child: new Text("확인"),
+                        onPressed: () {
+                          _add(_person);
+                          Navigator.pop(context);
+                          Navigator.of(context).pushReplacement(
+                              new MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                            return new HomeScreen(tap_index: 1);
+                          }));
+                        }),
+                    new TextButton(
+                        child: new Text("취소"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ),
+              ]);
+        });
+  }
+
+  void _showError() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: new Text("Add new Person"),
+              content: new Text("모든 정보를 올바르게 입력하세요"),
+              actions: <Widget>[
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    new TextButton(
+                        child: new Text("확인"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        }),
+                  ],
+                ),
+              ]);
+        });
+  }
+
+  void _add(Person _person) async {
+    if (isSelected[0] == true) {
+      await FirebaseFirestore.instance.collection("people_yonsei").add({
+        "name": _person.name,
+        "field": _person.field,
+        "major": _person.major,
+        "number": _person.number,
+      }).then((value) => _addImg(value.id));
+    } else if (isSelected[1] == true) {
+      await FirebaseFirestore.instance.collection("people_aca").add({
+        "name": _person.name,
+        "field": _person.field,
+        "major": _person.major,
+        "number": _person.number,
+      }).then((value) => _addImg(value.id));
+    } else if (isSelected[2] == true) {
+      await FirebaseFirestore.instance.collection("people_indus").add({
+        "name": _person.name,
+        "field": _person.field,
+        "major": _person.major,
+        "number": _person.number,
+      }).then((value) => _addImg(value.id));
+    }
+  }
+
+  Future<dynamic> _addImg(String add_id) async {
+    String img_name = add_id + "." + pickImage.name.split(".")[1].toLowerCase();
+    firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/')
+        .child('people/${img_name}');
+    try {
+      await ref.putBlob(pickImage);
+    } catch (e) {
+      print(e);
+    }
   }
 }
