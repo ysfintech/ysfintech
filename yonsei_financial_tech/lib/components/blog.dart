@@ -428,23 +428,13 @@ class _BoardArticleState extends State<BoardArticle> {
 
   // firebase
   CollectionReference papers = FirebaseFirestore.instance.collection('paper');
-  CollectionReference publications =
-      FirebaseFirestore.instance.collection('publication');
-
+  
   Future<void> updateView(String docID, int updatedView) {
-    if (widget.storage == 'paper') {
-      return papers
-          .doc(docID)
-          .update({'view': updatedView})
-          .then((value) => print('view updated'))
-          .catchError((onError) => print('view update failed : $onError'));
-    } else {
-      return publications
-          .doc(docID)
-          .update({'view': updatedView})
-          .then((value) => print('view updated'))
-          .catchError((onError) => print('view update failed : $onError'));
-    }
+    return papers
+        .doc(docID)
+        .update({'view': updatedView})
+        .then((value) => print('view updated'))
+        .catchError((onError) => print('view update failed : $onError'));
   }
 
   @override
@@ -563,8 +553,7 @@ class _BoardArticleState extends State<BoardArticle> {
                                         // widget.board[
                                         //         (selectedPageIndex - 1) * 10 +
                                         //             (index)]['id']
-                                        (index+1)
-                                            .toString(),
+                                        (index + 1).toString(),
                                         style: bodyTextStyle,
                                         textAlign: TextAlign.center,
                                       )),

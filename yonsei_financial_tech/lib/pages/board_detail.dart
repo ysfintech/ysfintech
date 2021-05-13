@@ -71,16 +71,8 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
 
   String getOnlyTitle(String imagePath) {
     String res;
-    // check it is paper or publication
-    if (imagePath.contains('gs://ysfintech-homepage.appspot.com/paper/')) {
-      res = imagePath
-          .substring('gs://ysfintech-homepage.appspot.com/paper/'.length);
-    }
-    if (imagePath
-        .contains('gs://ysfintech-homepage.appspot.com/publication/')) {
-      res = imagePath
-          .substring('gs://ysfintech-homepage.appspot.com/publication/'.length);
-    }
+    res = imagePath
+        .substring('gs://ysfintech-homepage.appspot.com/paper/'.length);
     return res;
   }
 
@@ -151,19 +143,18 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                     ),
                     Align(
                         alignment: Alignment.centerRight,
-                        child:  Wrap(
-                              alignment: WrapAlignment.end,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              spacing: 20.0,
-                              // DATE | VIEW
-                              children: <Widget>[
-                                Text('작성일자  ' + data.date,
-                                    style: bodyTextStyle),
-                                Text('조회수 ' + data.view.toString(),
-                                    style: bodyTextStyle),
-                                Text('작성자 ' + data.writer, style: bodyTextStyle)
-                              ],
-                            ))
+                        child: Wrap(
+                          alignment: WrapAlignment.end,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 20.0,
+                          // DATE | VIEW
+                          children: <Widget>[
+                            Text('작성일자  ' + data.date, style: bodyTextStyle),
+                            Text('조회수 ' + data.view.toString(),
+                                style: bodyTextStyle),
+                            Text('작성자 ' + data.writer, style: bodyTextStyle)
+                          ],
+                        ))
 
                     // DATE | VIEW |_WRITER
                   ],
