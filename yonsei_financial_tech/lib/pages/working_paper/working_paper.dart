@@ -219,11 +219,11 @@ class _PaperPageState extends State<PaperPage> {
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black26,
-                                  offset: Offset.fromDirection(-2.0),
-                                  blurRadius: 16.0,
+                                  offset: Offset.fromDirection(1.0),
+                                  blurRadius: 5.0,
                                 )
                               ],
-                              borderRadius: BorderRadius.circular(20.0)),
+                              borderRadius: BorderRadius.circular(12.0)),
                           child: TextFormField(
                               controller: textEditingController,
                               onChanged: (value) {
@@ -260,7 +260,7 @@ class _PaperPageState extends State<PaperPage> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                                borderRadius: BorderRadius.circular(12.0),
                               )),
                           child: Text("검색", style: bodyWhiteTextStyle),
                         ))
@@ -284,7 +284,7 @@ class _PaperPageState extends State<PaperPage> {
                                   blurRadius: 16.0,
                                 )
                               ],
-                              borderRadius: BorderRadius.circular(20.0)),
+                              borderRadius: BorderRadius.circular(12.0)),
                           child: TextFormField(
                               controller: textEditingController,
                               onChanged: (value) {
@@ -321,7 +321,7 @@ class _PaperPageState extends State<PaperPage> {
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                                borderRadius: BorderRadius.circular(12.0),
                               )),
                           child: Text("검색", style: bodyWhiteTextStyle),
                         ))
