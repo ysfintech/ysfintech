@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/home/home_screen.dart';
 import 'package:ysfintech_admin/utils/color_constants.dart';
+// firebase auth
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Login extends StatefulWidget {
   Login({Key key, this.title}) : super(key: key);
@@ -11,9 +13,35 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isChecked = false;
+
+  // text controller
+  TextEditingController emailController, passwordController;
+
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  Future<void> signIn(String email, String password) async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) =>
+              FirebaseAuth.instance.setPersistence(Persistence.SESSION))
+          .then((value) => Navigator.pushNamed(context, '/home'));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('입력한 계정을 찾을 수 없습니다.')));
+      } else if (e.code == 'wrong-password') {
+        return ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('비밀번호가 올바르지 않습니다.')));
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    emailController = new TextEditingController();
+    passwordController = new TextEditingController();
   }
 
   @override
@@ -25,29 +53,28 @@ class _LoginState extends State<Login> {
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
       ),
+      controller: emailController,
     );
 
     final password = TextFormField(
       autofocus: false,
-      initialValue: '',
       obscureText: true,
       decoration: InputDecoration(
         hintText: 'Password',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
       ),
+      controller: passwordController,
     );
 
     final loginButton = Container(
       width: MediaQuery.of(context).size.width / 2.5,
-      child: RaisedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
-        },
-        padding: EdgeInsets.all(12),
-        color: ColorConstants.blue,
+      child: ElevatedButton(
+        onPressed: () => signIn(emailController.text, passwordController.text),
+        style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.all(12),
+            primary: ColorConstants.blue,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
         child: Text('Log In',
             style: TextStyle(
                 fontSize: 16,
@@ -56,13 +83,6 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    final forgotLabel = FlatButton(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(color: Colors.black54),
-      ),
-      onPressed: () {},
-    );
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -93,7 +113,7 @@ class _LoginState extends State<Login> {
                     SizedBox(height: 62.0),
                     Center(
                         child: Text(
-                      "Admin Material",
+                      "ysfintech admin",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -120,7 +140,6 @@ class _LoginState extends State<Login> {
                             Text("Remember Me")
                           ],
                         ),
-                        forgotLabel,
                       ],
                     ),
                     SizedBox(height: 18.0),

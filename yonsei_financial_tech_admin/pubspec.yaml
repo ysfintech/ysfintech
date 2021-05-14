@@ -18,6 +18,8 @@ environment:
 
 dependencies:
   google_fonts: ^2.0.0
+  # auth
+  firebase_auth: ^1.1.4
   firebase_core: "^1.0.3"
   cloud_firestore: ^1.0.4
   firebase_storage: ^8.0.3
