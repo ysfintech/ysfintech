@@ -20,6 +20,7 @@ class Project {
 }
 
 class Board {
+  final int id;
   final String content;
   final String date;
   final String title;
@@ -27,17 +28,24 @@ class Board {
   final String writer;
   final String imagePath;
 
-  Board({this.content, this.date, this.title, this.view, this.writer, this.imagePath});
+  Board(
+      {this.id,
+      this.content,
+      this.date,
+      this.title,
+      this.view,
+      this.writer,
+      this.imagePath});
 
   factory Board.from(QueryDocumentSnapshot snapshot) {
     return Board(
+        id: snapshot.data()['id'],
         content: snapshot.data()['content'],
         date: snapshot.data()['date'],
         title: snapshot.data()['title'],
         view: snapshot.data()['view'],
         writer: snapshot.data()['writer'],
-        imagePath: snapshot.data()['imagePath']
-        );
+        imagePath: snapshot.data()['imagePath']);
   }
 }
 

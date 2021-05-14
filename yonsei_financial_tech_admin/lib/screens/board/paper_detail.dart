@@ -63,7 +63,12 @@ class _BoardDetailState extends State<BoardDetail> {
                     spacing: 10.0,
                     children: <ElevatedButton>[
                       ElevatedButton.icon(
-                        onPressed: () => _field.removeField(widget.pathID),
+                        onPressed: () => _field
+                            .removeField(widget.pathID)
+                            .then((value) => Navigator.pop(context))
+                            .then((value) => ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                                    SnackBar(content: Text('성공적으로 삭제되었습니다.')))),
                         icon: Icon(Icons.delete_rounded),
                         label: Text(
                           "REMOVE",

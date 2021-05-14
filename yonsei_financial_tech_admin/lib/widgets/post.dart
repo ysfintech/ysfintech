@@ -43,7 +43,11 @@ class _PostState extends State<Post> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Container(
+    return SingleChildScrollView(
+      controller: controller,
+      child:
+    Container(
+      constraints: BoxConstraints(minHeight: size.height, maxHeight: double.infinity),
         padding: paddingH20V20,
         color: Colors.white,
         child: Column(
@@ -72,6 +76,7 @@ class _PostState extends State<Post> {
                         )),
                     onPressed: () {
                       Board data = new Board(
+                          id: widget.id,
                           title: title.text,
                           writer: '관리자',
                           date: DateTime.now().year.toString().substring(2, 4) +
@@ -158,13 +163,23 @@ class _PostState extends State<Post> {
               // file upload
               child: TextButton(
                 onPressed: () async {
-                  final _picked =
-                      await ImagePickerWeb.getImage(outputType: ImageType.file);
+                  html.InputElement uploadInput = html.FileUploadInputElement();
+                  uploadInput.click();
+                  await uploadInput.onChange.first;
+                  final files = uploadInput.files;
                   try {
                     setState(() {
-                      uploadFile = _picked;
+                      uploadFile = files[0];
                     });
-                  } catch (e) {}
+                  } catch (e) {
+                  }
+                  // final _picked =
+                  //     await ImagePickerWeb.getImage(outputType: ImageType.file);
+                  // try {
+                  //   setState(() {
+                  //     uploadFile = _picked;
+                  //   });
+                  // } catch (e) {}
                 },
                 style: TextButton.styleFrom(
                     padding: paddingH20V20,
@@ -183,6 +198,6 @@ class _PostState extends State<Post> {
             ),
             SizedBox(height: 50),
           ],
-        ));
+        )));
   }
 }

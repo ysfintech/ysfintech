@@ -49,6 +49,7 @@ class Field {
     return uploadImage(uploadFile).then((value) => FirebaseFirestore.instance
         .collection('paper')
         .add({
+          'id' : data.id,
           'content': data.content,
           'date': data.date,
           'title': data.title,
