@@ -6,6 +6,7 @@ import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/people/people.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeScreen extends StatefulWidget {
   final int tap_index;
@@ -55,8 +56,10 @@ class HomeScreenState extends State<HomeScreen>
             child: IconButton(
               padding: EdgeInsets.all(0),
               icon: Icon(Icons.exit_to_app_rounded),
-              onPressed: () {
-                Navigator.pop(context);
+              onPressed: () async {
+                await FirebaseAuth.instance
+                    .signOut()
+                    .then((value) => Navigator.pop(context));
               },
             ),
           ),
