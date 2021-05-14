@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   User currentUser = FirebaseAuth.instance.currentUser;
 
   @override
@@ -15,21 +14,20 @@ class MyApp extends StatelessWidget {
       '/': (BuildContext context) => Login(),
       '/home': (BuildContext context) => HomeScreen(tap_index: 0),
     };
-    if(currentUser == null) {
-       return MaterialApp(
-          initialRoute: '/',
-          routes: routes,
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-        );
-    } 
-    else {
-       return MaterialApp(
-          initialRoute: '/home',
-          routes: routes,
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
-        );
+    if (currentUser == null) {
+      return MaterialApp(
+        initialRoute: '/',
+        routes: routes,
+        debugShowCheckedModeBanner: false,
+        title: 'ysfintech admin',
+      );
+    } else {
+      return MaterialApp(
+        initialRoute: '/home',
+        routes: routes,
+        debugShowCheckedModeBanner: false,
+        title: 'ysfintech admin',
+      );
     }
   }
 }
