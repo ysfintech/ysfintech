@@ -22,7 +22,7 @@ class HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     tabController = new TabController(
-        vsync: this, length: 5, initialIndex: widget.tap_index)
+        vsync: this, length: 4, initialIndex: widget.tap_index)
       ..addListener(() {
         setState(() {
           active = tabController.index;
@@ -90,7 +90,6 @@ class HomeScreenState extends State<HomeScreen>
                 PeopleScreen(),
                 ProjectScreen(),
                 PaperScreen(),
-                PaperScreen(),
               ],
             ),
           )
@@ -117,8 +116,6 @@ class HomeScreenState extends State<HomeScreen>
             pageIndex: 3,
             title: "Working Papers",
             icon: Icons.library_books_rounded),
-        listItemNavigator(drawerStatus,
-            pageIndex: 4, title: "Publication", icon: Icons.storage_rounded),
       ],
     );
   }
