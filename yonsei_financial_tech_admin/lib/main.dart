@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: routes,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'ysfintech admin',
     );
   }
 }

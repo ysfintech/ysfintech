@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
       // theme: Theme.of(context).copyWith(platform: TargetPlatform.macOS),
       theme: ThemeData(fontFamily: GoogleFonts.nunito().fontFamily),
       debugShowCheckedModeBanner: false,
+      title: '연세대학교 수리경제 연구실',
     );
   }
 }
