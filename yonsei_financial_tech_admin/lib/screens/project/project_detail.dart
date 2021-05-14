@@ -32,6 +32,33 @@ Future<void> uploadImage(html.File data, int id) async {
   }
 }
 
+Future<void> deletePost(String pathID, int id, BuildContext context) async {
+  firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+      .ref('gs://ysfintech-homepage.appspot.com/')
+      .child('project/$id.png');
+
+  return await ref
+      .delete()
+      .then((value) => {
+            FirebaseFirestore.instance
+                .collection('project')
+                .doc(pathID)
+                .delete()
+                .then((value) =>
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("성공적으로 삭제되었습니다. 새로고침을 해주세요."),
+                    )))
+                .catchError((err) =>
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("삭제를 못하였습니다."),
+                    )))
+          })
+      // ignore: return_of_invalid_type_from_catch_error
+      .catchError((err) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("이미지삭제를 실패하였습니다."),
+          )));
+}
+
 class ProjectDetail extends StatefulWidget {
   final ScrollController controller;
   final String pathID;
@@ -212,43 +239,69 @@ class _ProjectDetailState extends State<ProjectDetail> {
               controller: imageDesc,
               enabled: _editable),
           SizedBox(height: 10),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(primary: themeBlue),
-            child: Container(
-                width: 80,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(_editable
-                        ? Icons.save_alt_rounded
-                        : Icons.edit_rounded),
-                    SizedBox(width: 10),
-                    Text(_editable ? 'SAVE' : 'EDIT', style: bodyWhiteTextStyle)
-                  ],
-                )),
-            onPressed: () {
-              setState(() {
-                // save to firebase
-                if (_editable) {
-                  updateDocument(
-                          widget.pathID,
-                          new Project(
-                              title: title.text,
-                              content: content.text,
-                              from: from.text,
-                              period: period.text,
-                              imageDesc: imageDesc.text))
-                      .then((value) => ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(
-                              content: Text('${title.text}의 내용이 수정되었습니다.'))));
-                }
-                _editable = !_editable;
-              });
-            },
+          Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: themeBlue),
+                child: Container(
+                  width: 120,
+                  height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(_editable
+                            ? Icons.save_alt_rounded
+                            : Icons.edit_rounded),
+                        SizedBox(width: 10),
+                        Text(_editable ? 'SAVE' : 'EDIT',
+                            style: bodyWhiteTextStyle)
+                      ],
+                    )),
+                onPressed: () {
+                  setState(() {
+                    // save to firebase
+                    if (_editable) {
+                      updateDocument(
+                              widget.pathID,
+                              new Project(
+                                  title: title.text,
+                                  content: content.text,
+                                  from: from.text,
+                                  period: period.text,
+                                  imageDesc: imageDesc.text))
+                          .then((value) => ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(
+                                  content:
+                                      Text('${title.text}의 내용이 수정되었습니다.'))));
+                    }
+                    _editable = !_editable;
+                  });
+                },
+              ),
+              SizedBox(
+                height: 40,
+                width: 40,
+              ),
+              ElevatedButton(
+                onPressed: () => deletePost(widget.pathID, _id, context),
+                child: Container(
+                  width: 120,
+                  height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Icon(Icons.delete_forever_rounded),
+                        SizedBox(width: 10),
+                        Text('DELETE', style: bodyWhiteTextStyle)
+                      ],
+                    )),
+                style: ElevatedButton.styleFrom(primary: Colors.red[300]),
+              )
+            ],
           ),
           SizedBox(
             height: 10,
-            child: divider,
           ),
         ],
       ),

@@ -6,6 +6,7 @@ import 'package:ysfintech_admin/screens/project/project_detail.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:html' as html;
 
 class ProjectScreen extends StatefulWidget {
@@ -17,6 +18,59 @@ class _ProjectScreenState extends State<ProjectScreen> {
   // firebase firestore
   CollectionReference project =
       FirebaseFirestore.instance.collection('project');
+
+  Future<void> uploadImage(html.File data, int id) async {
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/')
+        .child('project/$id.png');
+
+    final metadata =
+        firebase_storage.SettableMetadata(contentType: 'image/png');
+
+    try {
+      await ref.putBlob(data, metadata);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> uploadFirestore(
+      {String title,
+      String period,
+      String from,
+      String content,
+      String imageDesc,
+      int id,
+      html.File file}) async {
+    return await uploadImage(file, id)
+        .then((value) => {
+              FirebaseFirestore.instance
+                  .collection('project')
+                  .add({
+                    'id': id,
+                    'title': title,
+                    'period': period,
+                    'from': from,
+                    'imageDesc': imageDesc,
+                    'imagePath':
+                        'gs://ysfintech-homepage.appspot.com/project/$id.png',
+                    'content': content
+                  })
+                  .then((value) =>
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("새로운 Project가 Post되었습니다."),
+                      )))
+                  .catchError((err) =>
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("포스팅 실패하였습니다."),
+                      )))
+            })
+        .catchError(
+            // ignore: return_of_invalid_type_from_catch_error
+            (err) => ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text("이미지가 올바르지 않습니다."),
+                )));
+  }
 
   // data fetched
   Future<QuerySnapshot> projectData;
@@ -76,7 +130,8 @@ class _ProjectScreenState extends State<ProjectScreen> {
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
-                            onPressed: () => postDialog(context),
+                            onPressed: () => postDialog(
+                                context, snapshot.data.docs.length + 1),
                           ))),
                   SizedBox(
                     height: 20,
@@ -85,8 +140,6 @@ class _ProjectScreenState extends State<ProjectScreen> {
                     shrinkWrap: true,
                     controller: _controller,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        // childAspectRatio: size.width > 800 ? 3 / 4 : 1 / 6,
-                        // crossAxisCount: size.width > 800 ? 2 : 1,
                         childAspectRatio: 4 / 3,
                         crossAxisCount: 1),
                     itemCount: snapshot.data.docs.length,
@@ -116,7 +169,7 @@ class _ProjectScreenState extends State<ProjectScreen> {
     );
   }
 
-  void postDialog(@required BuildContext context) {
+  void postDialog(@required BuildContext context, int newpostID) {
     ScrollController controller = new ScrollController();
 
     // controller
@@ -149,7 +202,15 @@ class _ProjectScreenState extends State<ProjectScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <TextButton>[
                         TextButton.icon(
-                            onPressed: () => print('post'),
+                            onPressed: () => uploadFirestore(
+                              id: newpostID,
+                              title: titleController.text,
+                              period: periodController.text,
+                              from: fromController.text,
+                              content: contentController.text,
+                              imageDesc: imageDescController.text,
+                              file: _file
+                            ).then((value) => Navigator.pop(context)),
                             icon: Icon(
                               Icons.post_add_rounded,
                               size: 30,
@@ -221,28 +282,33 @@ class _ProjectScreenState extends State<ProjectScreen> {
                   // file upload
                   Align(
                       alignment: Alignment.center,
-                      child: StatefulBuilder(builder: (context, setState) => 
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Text(_file == null ? '이미지 업로드 및 수정' : _file.name,
-                                style: bodyTextStyle),
-                            SizedBox(width: 10),
-                            ElevatedButton(
-                              style:
-                                  ElevatedButton.styleFrom(primary: themeBlue),
-                              onPressed: () async {
-                                // 사진을 선택하는 ImagePickerWeb -> html.File 로 전환
-                                final _picked = await ImagePickerWeb.getImage(
-                                    outputType: ImageType.file);
-                                setState(() {
-                                  _file = _picked;
-                                });
-                                print(_file.name);
-                              },
-                              child: Text(" 파일 선택 ", style: bodyWhiteTextStyle),
-                            ),
-                          ]))),
+                      child: StatefulBuilder(
+                          builder: (context, setState) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: <Widget>[
+                                    Text(
+                                        _file == null
+                                            ? '이미지 업로드 및 수정'
+                                            : _file.name,
+                                        style: bodyTextStyle),
+                                    SizedBox(width: 10),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          primary: themeBlue),
+                                      onPressed: () async {
+                                        // 사진을 선택하는 ImagePickerWeb -> html.File 로 전환
+                                        final _picked =
+                                            await ImagePickerWeb.getImage(
+                                                outputType: ImageType.file);
+                                        setState(() {
+                                          _file = _picked;
+                                        });
+                                        print(_file.name);
+                                      },
+                                      child: Text(" 파일 선택 ",
+                                          style: bodyWhiteTextStyle),
+                                    ),
+                                  ]))),
                   SizedBox(height: 20),
                   // image desc
                   Align(
