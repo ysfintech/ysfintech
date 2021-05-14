@@ -42,19 +42,6 @@ class _AddPersonState extends State<AddPerson> {
     });
   }
 
-  // Future<void> _getImgInfo() async {
-  //   File infos_file = await ImagePickerWeb.getImage(outputType: ImageType.file);
-  //   final infos = await ImagePickerWeb.getImageInfo;
-  //   setState(() {
-  //     _pickedImages.clear();
-  //     _pickedImages.add(Image.memory(
-  //       infos.data,
-  //       semanticLabel: infos.fileName,
-  //     ));
-  //     _imageInfo = '${infos.fileName}';
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -334,13 +321,13 @@ class _AddPersonState extends State<AddPerson> {
     }
   }
 
-  Future<dynamic> _addImg(String add_id) async {
+  void _addImg(String add_id) {
     String img_name = add_id + "." + pickImage.name.split(".")[1].toLowerCase();
     firebaseStorage.Reference ref = firebaseStorage.FirebaseStorage.instance
         .ref('gs://ysfintech-homepage.appspot.com/')
         .child('people/${img_name}');
     try {
-      await ref.putBlob(pickImage);
+      ref.putBlob(pickImage);
     } catch (e) {
       print(e);
     }

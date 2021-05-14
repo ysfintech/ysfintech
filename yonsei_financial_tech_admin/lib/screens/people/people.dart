@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ysfintech_admin/screens/home/home_screen.dart';
 import 'package:ysfintech_admin/screens/people/add_person.dart';
+import 'package:ysfintech_admin/screens/people/delete_person.dart';
+import 'package:ysfintech_admin/screens/people/update_person.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+//import 'package:image_picker_web/image_picker_web.dart';
 
 class PeopleScreen extends StatefulWidget {
   @override
@@ -149,7 +152,7 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, _id),
+        _peopleList(context, _people, _id, "yonsei"),
       ],
     ),
   );
@@ -169,7 +172,7 @@ Container acaExPeople(BuildContext context, List _people, List _id) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, _id),
+        _peopleList(context, _people, _id, "aca"),
       ],
     ),
   );
@@ -189,14 +192,16 @@ Container indusExPeople(BuildContext context, List _people, List _id) {
         SizedBox(
           height: 80,
         ),
-        _peopleList(context, _people, _id),
+        _peopleList(context, _people, _id, "indus"),
       ],
     ),
   );
 }
 
-Widget _peopleList(BuildContext context, List _people, List _id) {
+Widget _peopleList(
+    BuildContext context, List _people, List _id, String category) {
   var md = MediaQuery.of(context).size;
+
   // firebase storage
   Future<String> downloadURL_jpg(_id) async {
     String downloadURL = '';
@@ -269,7 +274,17 @@ Widget _peopleList(BuildContext context, List _people, List _id) {
               ),
               Column(children: <Widget>[
                 ElevatedButton.icon(
-                  //onPressed: _pickImage,
+                  onPressed: () {
+                    UpdatePerson u = new UpdatePerson(
+                        person: _people[index],
+                        pid: _id[index],
+                        initialURL: [
+                          downloadURL_jpg(_id[index]),
+                          downloadURL_png(_id[index])
+                        ],
+                        category: category);
+                    u.showUpdateDialog(context);
+                  },
                   icon: Icon(Icons.edit, size: 18, color: Colors.white),
                   label: Text('Update', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
@@ -286,7 +301,13 @@ Widget _peopleList(BuildContext context, List _people, List _id) {
                   height: 10.0,
                 ),
                 ElevatedButton.icon(
-                  //onPressed: _pickImage,
+                  onPressed: () {
+                    DelPerson d = new DelPerson(
+                        pid: _id[index],
+                        pnum: _people[index]["number"],
+                        category: category);
+                    d.showDelDialog(context);
+                  },
                   icon: Icon(Icons.delete, size: 18, color: Colors.white),
                   label: Text('Delete', style: TextStyle(color: Colors.white)),
                   style: ButtonStyle(
@@ -294,7 +315,7 @@ Widget _peopleList(BuildContext context, List _people, List _id) {
                       (Set<MaterialState> states) {
                         if (states.contains(MaterialState.pressed))
                           return themeBlue;
-                        return themeBlue; // Use the component's default.
+                        return themeBlue;
                       },
                     ),
                   ),
