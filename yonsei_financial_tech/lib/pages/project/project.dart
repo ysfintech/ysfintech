@@ -65,6 +65,7 @@ class _ProjectPageState extends State<ProjectPage> {
                     ],
                   ),
                 ),
+                divider,
                 FutureBuilder<QuerySnapshot>(
                   future: fetchedData,
                   builder: (context, snapshot) {

@@ -249,7 +249,7 @@ class Article extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Align(
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     child: Container(
                       margin: marginHorizontal(md.width),
                       child: Text(

@@ -73,7 +73,7 @@ class _PostState extends State<Post> {
                     onPressed: () {
                       Board data = new Board(
                           title: title.text,
-                          writer: '@auth',
+                          writer: '관리자',
                           date: DateTime.now().year.toString().substring(2, 4) +
                               '.' +
                               (DateTime.now().month.toString().length == 1
@@ -131,7 +131,7 @@ class _PostState extends State<Post> {
                       icon: Icon(Icons.title_rounded)),
                 ),
                 Text(
-                  'written by ' + '@auth',
+                  'written by ' + '관리자',
                   style: bodyTextStyle,
                   textAlign: TextAlign.end,
                 )
