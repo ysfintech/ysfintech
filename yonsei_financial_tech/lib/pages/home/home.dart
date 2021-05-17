@@ -33,7 +33,10 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
+          Scrollbar(
+            controller: _controller,
+            isAlwaysShown: true,
+              child: SingleChildScrollView(
             controller: _controller,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -80,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                 Footer()
               ],
             ),
-          ),
+          )),
         ],
       ),
     );

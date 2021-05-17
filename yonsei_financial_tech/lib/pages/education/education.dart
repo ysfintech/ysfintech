@@ -30,54 +30,57 @@ class _EduPageState extends State<EduPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
-            controller: _controller,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                // MENU BAR ----------------------------------------------------------
-                MenuBar(),
-                // IMAGE BACKGROUND - NAME -------------------------------------------
-                title(context),
-                // Education Article -------------------------------------------------
-                FutureBuilder<QuerySnapshot>(
-                  future: fetchedData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('500 - error'));
-                    } else if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      /**
+          Scrollbar(
+              controller: _controller,
+              isAlwaysShown: true,
+              child: SingleChildScrollView(
+                controller: _controller,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    // MENU BAR ----------------------------------------------------------
+                    MenuBar(),
+                    // IMAGE BACKGROUND - NAME -------------------------------------------
+                    title(context),
+                    // Education Article -------------------------------------------------
+                    FutureBuilder<QuerySnapshot>(
+                      future: fetchedData,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Center(child: Text('500 - error'));
+                        } else if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          /**
                        *  개행 문자를 포함해서 return 하기 
                        */
-                      List<String> contentArray = snapshot.data.docs[0]
-                          .data()['content']
-                          .toString()
-                          .split('<br>');
-                      String content() {
-                        StringBuffer sb = new StringBuffer();
-                        for (String item in contentArray) {
-                          sb.write(item + '\n\n');
-                        }
-                        return sb.toString();
-                      }
+                          List<String> contentArray = snapshot.data.docs[0]
+                              .data()['content']
+                              .toString()
+                              .split('<br>');
+                          String content() {
+                            StringBuffer sb = new StringBuffer();
+                            for (String item in contentArray) {
+                              sb.write(item + '\n\n');
+                            }
+                            return sb.toString();
+                          }
 
-                      return Article(
-                          backgroundColor: themeBlue,
-                          //title: snapshot.data.docs[0].data()['title'],
-                          content: content());
-                    }
-                  },
+                          return Article(
+                              backgroundColor: themeBlue,
+                              //title: snapshot.data.docs[0].data()['title'],
+                              content: content());
+                        }
+                      },
+                    ),
+                    // Footer   ----------------------------------------------------------
+                    Footer()
+                  ],
                 ),
-                // Footer   ----------------------------------------------------------
-                Footer()
-              ],
-            ),
-          ),
+              )),
         ],
       ),
     );
