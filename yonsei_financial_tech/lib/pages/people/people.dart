@@ -225,6 +225,7 @@ Widget _peopleList(
 
   return GridView.builder(
       shrinkWrap: true,
+      primary: false,
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 500,
         crossAxisSpacing: 30,
