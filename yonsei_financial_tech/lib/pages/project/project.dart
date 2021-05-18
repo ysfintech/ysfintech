@@ -41,6 +41,10 @@ class _ProjectPageState extends State<ProjectPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
+          Scrollbar(
+            controller: _controller,
+            isAlwaysShown: true,
+            child: 
           SingleChildScrollView(
             controller: _controller,
             child: Column(
@@ -79,7 +83,6 @@ class _ProjectPageState extends State<ProjectPage> {
                               child: CircularProgressIndicator()));
                     } else {
                       var data = snapshot.data.docs.asMap();
-                      // data[index].data()['id'].toString()
                       return Container(
                           width: double.infinity,
                           alignment: Alignment.center,
@@ -109,12 +112,6 @@ class _ProjectPageState extends State<ProjectPage> {
                                   if (snapshot.hasError) {
                                     return Text('500 - error');
                                   } else if (!snapshot.hasData) {
-                                    // return Center(
-                                    //     child: SizedBox(
-                                    //         width: 40,
-                                    //         height: 40,
-                                    //         child:
-                                    //             CircularProgressIndicator()));
                                     return SizedBox(); // remove indicator
                                   } else {
                                     return Article(
@@ -143,7 +140,7 @@ class _ProjectPageState extends State<ProjectPage> {
                 Footer(),
               ],
             ),
-          ),
+          )),
         ],
       ),
     );

@@ -42,6 +42,10 @@ class _PublishPageState extends State<PublishPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
+          Scrollbar(
+            controller: _controller,
+            isAlwaysShown: true,
+            child: 
           SingleChildScrollView(
               controller: _controller,
               child: Column(
@@ -65,7 +69,7 @@ class _PublishPageState extends State<PublishPage> {
                   ),
                   Footer(),
                 ],
-              )),
+              ))),
         ],
       ),
     );

@@ -45,122 +45,126 @@ class _PaperPageState extends State<PaperPage> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
-          SingleChildScrollView(
+          Scrollbar(
               controller: _controller,
-              child: FutureBuilder<QuerySnapshot>(
-                future: fetchedData,
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(child: Text('500 - error'));
-                  } else if (!snapshot.hasData) {
-                    return Column(
-                      children: <Widget>[
-                        // MENU BAR ----------------------------------------------------------
-                        MenuBar(),
-                        Container(
-                          color: Colors.white,
-                          width: double.infinity,
-                          height: 400,
-                          child: Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                        Footer()
-                      ],
-                    );
-                  } else {
-                    // data
-                    List<Map<String, dynamic>> data = [];
-                    // add filtering
-                    snapshot.data.docs.forEach((element) {
-                      if (filterText.length == 0) {
-                        Map<String, dynamic> temp = {
-                          'docID': element.id,
-                          ...element.data()
-                        };
-                        data.add(temp);
+              isAlwaysShown: true,
+              child: SingleChildScrollView(
+                  controller: _controller,
+                  child: FutureBuilder<QuerySnapshot>(
+                    future: fetchedData,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text('500 - error'));
+                      } else if (!snapshot.hasData) {
+                        return Column(
+                          children: <Widget>[
+                            // MENU BAR ----------------------------------------------------------
+                            MenuBar(),
+                            Container(
+                              color: Colors.white,
+                              width: double.infinity,
+                              height: 400,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            Footer()
+                          ],
+                        );
                       } else {
-                        if (element
-                            .data()['title']
-                            .toString()
-                            .contains(filterText)) {
-                          Map<String, dynamic> temp = {
-                            'docID': element.id,
-                            ...element.data()
-                          };
-                          data.add(temp);
-                        }
-                      }
-                    });
-                    return Column(
-                      children: <Widget>[
-                        // MENU BAR ----------------------------------------------------------
-                        MenuBar(),
-                        title(context),
-                        Container(
-                          padding: paddingBottom24,
-                          color: Colors.white,
-                          child: divider,
-                        ),
-                        // IMAGE BACKGROUND - NAME -------------------------------------------
-                        searchTab(context),
-                        filterText.length != 0
-                            ? Align(
-                                alignment: Alignment.topRight,
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.15,
-                                          vertical: 20),
-                                      color: themeBlue.withOpacity(0.7),
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text(
-                                            "'" +
-                                                filterText +
+                        // data
+                        List<Map<String, dynamic>> data = [];
+                        // add filtering
+                        snapshot.data.docs.forEach((element) {
+                          if (filterText.length == 0) {
+                            Map<String, dynamic> temp = {
+                              'docID': element.id,
+                              ...element.data()
+                            };
+                            data.add(temp);
+                          } else {
+                            if (element
+                                .data()['title']
+                                .toString()
+                                .contains(filterText)) {
+                              Map<String, dynamic> temp = {
+                                'docID': element.id,
+                                ...element.data()
+                              };
+                              data.add(temp);
+                            }
+                          }
+                        });
+                        return Column(
+                          children: <Widget>[
+                            // MENU BAR ----------------------------------------------------------
+                            MenuBar(),
+                            title(context),
+                            Container(
+                              padding: paddingBottom24,
+                              color: Colors.white,
+                              child: divider,
+                            ),
+                            // IMAGE BACKGROUND - NAME -------------------------------------------
+                            searchTab(context),
+                            filterText.length != 0
+                                ? Align(
+                                    alignment: Alignment.topRight,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: <Widget>[
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.15,
+                                              vertical: 20),
+                                          color: themeBlue.withOpacity(0.7),
+                                          alignment: Alignment.centerRight,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Text(
                                                 "'" +
-                                                ' 관련 검색 결과 초기화',
-                                            style: h3WhiteTextStyle,
+                                                    filterText +
+                                                    "'" +
+                                                    ' 관련 검색 결과 초기화',
+                                                style: h3WhiteTextStyle,
+                                              ),
+                                              TextButton.icon(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      filterText = '';
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                      Icons.close_rounded,
+                                                      color: Colors.white,
+                                                      size: 22),
+                                                  label: Text('')),
+                                            ],
                                           ),
-                                          TextButton.icon(
-                                              onPressed: () {
-                                                setState(() {
-                                                  filterText = '';
-                                                });
-                                              },
-                                              icon: Icon(Icons.close_rounded,
-                                                  color: Colors.white,
-                                                  size: 22),
-                                              label: Text('')),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(),
-                        // Board  ------------------------------------------------------------
-                        BoardArticle(
-                          board: data,
-                          storage: 'paper',
-                          onRefresh: _refresh,
-                        ),
-                        Footer(),
-                      ],
-                    );
-                  }
-                },
-              )),
+                                  )
+                                : SizedBox(),
+                            // Board  ------------------------------------------------------------
+                            BoardArticle(
+                              board: data,
+                              storage: 'paper',
+                              onRefresh: _refresh,
+                            ),
+                            Footer(),
+                          ],
+                        );
+                      }
+                    },
+                  ))),
         ],
       ),
     );
@@ -240,11 +244,7 @@ class _PaperPageState extends State<PaperPage> {
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: '검색할 제목을 입력해주세요.',
-                                  labelStyle: GoogleFonts.notoSans(
-                                      color: Colors.black87,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 1.0))),
+                                  labelStyle: bodyTextStyle)),
                         )),
                     Expanded(
                       flex: 1,
@@ -301,11 +301,7 @@ class _PaperPageState extends State<PaperPage> {
                               decoration: InputDecoration(
                                   border: InputBorder.none,
                                   hintText: '검색할 제목을 입력해주세요.',
-                                  labelStyle: GoogleFonts.notoSans(
-                                      color: Colors.black87,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400,
-                                      letterSpacing: 1.0))),
+                                  labelStyle: bodyTextStyle)),
                         )),
                     Expanded(
                       flex: 1,
