@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 // extension
 import 'package:yonsei_financial_tech/extensions/hover.dart';
 // components
@@ -53,18 +55,19 @@ class MenuBar extends StatelessWidget {
               // color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  Flexible(
+                  Expanded(
                     child: InkWell(
                       onTap: () => Navigator.popUntil(context,
                           ModalRoute.withName(Navigator.defaultRouteName)),
                       child: Container(
                         child: Row(
                           children: [
-                            Image.asset('images/yonsei_logo.png',
-                                height: 80, fit: BoxFit.fitHeight),
+                            SvgPicture.asset("images/yonsei_logo.svg",
+                                width: 40, height: 40),
+                            SizedBox(width: 10,),
                             size.width > 800
                                 ? Text(
-                                    "연세대학교 수리경제 연구실",
+                                    "연세대학교 금융기술센터",
                                     style: GoogleFonts.notoSans(
                                         color: themeBlue,
                                         fontSize: 24,
@@ -76,7 +79,7 @@ class MenuBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                       child: Container(
                     alignment: Alignment.centerRight,
                     child: Wrap(
@@ -127,6 +130,22 @@ class MenuBar extends StatelessWidget {
                                 Navigator.pushNamed(context, Routes.publish),
                             child: Text(
                               "Publication",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () async {
+                              var dest = 'http://ahn.yonsei.ac.kr/';
+                              await canLaunch(dest)
+                                  .then((value) => launch(dest))
+                                  // ignore: return_of_invalid_type_from_catch_error
+                                  .catchError(
+                                      (err) => print('could not launch'));
+                            },
+                            child: Text(
+                              "Lab",
                               style: buttonTextStyle,
                             ),
                             style: ButtonStyle(
@@ -358,13 +377,13 @@ Stack title(BuildContext context) {
           height: 300,
           child: RichText(
             text: TextSpan(children: <TextSpan>[
-              TextSpan(text: '연세대학교 금융기술센터', style: titleIntroductionTextStyle),
               TextSpan(
-                  text: '\n에 오신 것을 환영합니다',
+                  text: 'Welcome to',
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
                       color: lightWhite)),
+              TextSpan(text: '\nYonsei FinTech Center', style: titleIntroductionTextStyle),
             ]),
           )),
     ],
