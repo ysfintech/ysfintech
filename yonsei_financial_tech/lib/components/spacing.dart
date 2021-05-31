@@ -5,6 +5,7 @@ const EdgeInsets marginBottom12 = EdgeInsets.only(bottom: 12);
 const EdgeInsets marginBottom24 = EdgeInsets.only(bottom: 24);
 const EdgeInsets marginBottom40 = EdgeInsets.only(bottom: 40);
 const EdgeInsets marginHorizontal300 = EdgeInsets.symmetric(horizontal: 300);
+const EdgeInsets marginHorizontal20 = EdgeInsets.symmetric(horizontal: 20);
 EdgeInsets marginHorizontal(double width) {
   return EdgeInsets.symmetric(horizontal: width * 0.2 * 0.4);
 }

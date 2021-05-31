@@ -54,7 +54,7 @@ class MenuBar extends StatelessWidget {
               // color: Colors.white,
               child: Row(
                 children: <Widget>[
-                  Flexible(
+                  Expanded(
                     child: InkWell(
                       onTap: () => Navigator.popUntil(context,
                           ModalRoute.withName(Navigator.defaultRouteName)),
@@ -62,7 +62,8 @@ class MenuBar extends StatelessWidget {
                         child: Row(
                           children: [
                             Image.asset('images/yonsei_logo.png',
-                                height: 80, fit: BoxFit.fitHeight),
+                                height: 80, fit: BoxFit.fitHeight, filterQuality: FilterQuality.high),
+                            SizedBox(width: 10,),
                             size.width > 800
                                 ? Text(
                                     "연세대학교 금융기술센터",
@@ -77,7 +78,7 @@ class MenuBar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                       child: Container(
                     alignment: Alignment.centerRight,
                     child: Wrap(
