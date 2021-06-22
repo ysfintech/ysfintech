@@ -150,7 +150,7 @@ Container yonseiPeople(BuildContext context, List _people, List _id) {
         // SizedBox(
         //   height: 80,
         // ),
-        Text("참여 전임교원", style: h3WhiteTextStyle),
+        Text("학내 참여", style: h3WhiteTextStyle),
         SizedBox(
           height: 80,
         ),
