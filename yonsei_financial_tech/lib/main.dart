@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:yonsei_financial_tech/pages/education/education.dart';
+
 // pages
 import 'package:yonsei_financial_tech/pages/people/people.dart';
 import 'package:yonsei_financial_tech/pages/home/home.dart';
@@ -46,8 +46,6 @@ class MyApp extends StatelessWidget {
               return PaperPage();
             case Routes.publish:
               return PublishPage();
-            case Routes.education:
-              return EduPage();
             default:
               return SizedBox.shrink();
           }
