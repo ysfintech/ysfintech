@@ -27,7 +27,7 @@ class Footer extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       child: Align(
         alignment: Alignment.center,
-        child: TextBody(text: "Copyright © 2021 Lee & Kim"),
+        child: TextBody(text: "Copyright © 2021 연세대학교 수리경제 연구실"),
       ),
     );
   }
