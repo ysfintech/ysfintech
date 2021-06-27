@@ -62,7 +62,7 @@ class MenuBar extends StatelessWidget {
                       child: Container(
                         child: Row(
                           children: [
-                            SvgPicture.asset("images/yonsei_logo.svg",
+                            SvgPicture.asset("yonsei_logo.svg",
                                 width: 40, height: 40),
                             SizedBox(width: 10,),
                             size.width > 800
@@ -353,7 +353,7 @@ Stack title(BuildContext context) {
           height: 300,
           decoration: BoxDecoration(
               image: DecorationImage(
-            image: AssetImage('images/introBackground.jpeg'),
+            image: AssetImage('introBackground.jpeg'),
             fit: BoxFit.cover,
           ))),
       Container(
