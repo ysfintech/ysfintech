@@ -319,7 +319,6 @@ class Article extends StatelessWidget {
 class ArticleB extends StatelessWidget {
   final Color backgroundColor;
   final Image image;
-  final String imageDesc;
   final String name;
   final String role;
   final String content;
@@ -331,8 +330,7 @@ class ArticleB extends StatelessWidget {
       this.role,
       this.backgroundColor,
       this.image,
-      @required this.content,
-      this.imageDesc});
+      @required this.content});
 
   @override
   Widget build(BuildContext context) {
