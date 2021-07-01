@@ -116,9 +116,15 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                   SizedBox(
                     width: 10,
                   ),
-                  Text(
-                    "뒤로가기",
-                    style: bodyTextStyle,
+                  TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        "뒤로가기",
+                        style: bodyTextStyle,
+                      ),
+                      style: ButtonStyle(
+                          overlayColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.transparent))
                   )
                 ],
               ),
