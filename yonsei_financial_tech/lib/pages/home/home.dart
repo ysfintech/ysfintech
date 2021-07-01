@@ -107,9 +107,9 @@ class _HomePageState extends State<HomePage> {
                                       content: content(),
                                       imageDesc:
                                           data[index].data()['nothing'],
-                                      role: data[index].data()['role'],
+                                      from: data[index].data()['role'],
                                       name: data[index].data()['name'],
-                                      image: Image.network(
+                                      period: Image.network(
                                           snapshot.data.toString(),
                                           width: 200,  // image in one size
                                           fit: BoxFit.cover),
