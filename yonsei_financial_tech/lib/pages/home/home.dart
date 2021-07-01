@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                   } else if (!snapshot.hasData) {
                                     return SizedBox(); // remove indicator
                                   } else {
-                                    return ArticleB(
+                                    return Article(
                                       backgroundColor: index % 2 == 0
                                           ? themeBlue
                                           : Colors.white,
