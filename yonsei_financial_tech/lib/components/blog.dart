@@ -204,7 +204,7 @@ class Article extends StatelessWidget {
                       width: md.width,
                       height: md.width > 800
                           ? 80
-                          : title.length * 2.0,
+                          : (title.length * 0.05 + 60),
                       margin: marginHorizontal(md.width),
                       child: Text(title,
                           style: backgroundColor == Colors.white
