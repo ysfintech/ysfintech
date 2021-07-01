@@ -105,8 +105,8 @@ class _HomePageState extends State<HomePage> {
                                           : themeBlue,
                                       title: data[index].data()['title'],
                                       content: content(),
-                                      name: data[index].data()['name'],
-                                      role: data[index].data()['role'],
+                                      period: data[index].data()['name'],
+                                      from: data[index].data()['role'],
                                       image: Image.network(
                                           snapshot.data.toString(),
                                           width: 200,  // image in one size
