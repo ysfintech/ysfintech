@@ -5,7 +5,6 @@ import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 // firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,29 +14,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController _controller = new ScrollController();
 
-  // firebase cloud firestore\
-  CollectionReference homes =
+  // fire store
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference intro =
       FirebaseFirestore.instance.collection('introduction');
-
-  // firebase storage
-  Future<String> downloadURLExample(title) async {
-    String downloadURL = await firebase_storage.FirebaseStorage.instance
-        .ref('gs://ysfintech-homepage.appspot.com/introduction/' + title + '.png')
-        .getDownloadURL();
-    return downloadURL;
-  }
-
+  // data
   var fetchedData;
 
   @override
   void initState() {
     super.initState();
-    fetchedData = homes.orderBy('id').get();
+    fetchedData = intro.get();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -45,16 +36,17 @@ class _HomePageState extends State<HomePage> {
           Scrollbar(
             controller: _controller,
             isAlwaysShown: true,
-            child: 
-          SingleChildScrollView(
+              child: SingleChildScrollView(
             controller: _controller,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
                 MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 title(context),
-                // PROJECTS  ------------------------------------------------------------
+                // About Us - INTRODUCTION -------------------------------------------
                 FutureBuilder<QuerySnapshot>(
                   future: fetchedData,
                   builder: (context, snapshot) {
@@ -62,67 +54,33 @@ class _HomePageState extends State<HomePage> {
                       return Center(child: Text('500 - error'));
                     } else if (!snapshot.hasData) {
                       return Center(
-                          child: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: CircularProgressIndicator()));
+                        child: CircularProgressIndicator(),
+                      );
                     } else {
-                      var data = snapshot.data.docs.asMap();
-                      return Container(
-                          width: double.infinity,
-                          alignment: Alignment.center,
-                          child: ListView.builder(
-                            controller: _controller,  // same scroll controller 
-                            reverse: true,
-                            shrinkWrap: true,
-                            itemCount: data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              // content parsing
-                              List<String> parsedContent = data[index]
-                                  .data()['content']
-                                  .toString()
-                                  .split('<br>');
-                              String content() {
-                                StringBuffer sb = new StringBuffer();
-                                for (String item in parsedContent) {
-                                  sb.write(item + '\n\n');
-                                }
-                                return sb.toString();
-                              }
+                      /**
+                       *  개행 문자를 포함해서 return 하기 
+                       */
+                      List<String> contentArray = snapshot.data.docs[0]
+                          .data()['content']
+                          .toString()
+                          .split('<br>');
+                      String content() {
+                        StringBuffer sb = new StringBuffer();
+                        for (String item in contentArray) {
+                          sb.write(item + '\n\n');
+                        }
+                        return sb.toString();
+                      }
 
-                              return FutureBuilder(
-                                future: downloadURLExample(
-                                    data[index].data()['id'].toString()),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('500 - error');
-                                  } else if (!snapshot.hasData) {
-                                    return SizedBox(); // remove indicator
-                                  } else {
-                                    return Article(
-                                      backgroundColor: index % 2 == 0
-                                          ? Colors.white
-                                          : themeBlue,
-                                      title: data[index].data()['title'],
-                                      content: content(),
-                                      imageDesc:
-                                          data[index].data()['nothing'],
-                                      from: data[index].data()['role'],
-                                      period: data[index].data()['name'],
-                                      image: Image.network(
-                                          snapshot.data.toString(),
-                                          width: 200,  // image in one size
-                                          fit: BoxFit.cover),
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                          ));
+                      return Article(
+                        //title: snapshot.data.docs[0].data()['title'],
+                        content: content(),
+                      );
                     }
                   },
                 ),
-                Footer(),
+                // FOOTER ------------------------------------------------------------
+                Footer()
               ],
             ),
           )),
