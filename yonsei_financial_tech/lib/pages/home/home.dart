@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                   } else if (!snapshot.hasData) {
                                     return SizedBox(); // remove indicator
                                   } else {
-                                    return Article(
+                                    return ArticleB(
                                       backgroundColor: index % 2 == 0
                                           ? themeBlue
                                           : Colors.white,
@@ -107,8 +107,8 @@ class _HomePageState extends State<HomePage> {
                                       content: content(),
                                       imageDesc:
                                           data[index].data()['nothing'],
-                                      from: data[index].data()['role'],
-                                      period: data[index].data()['name'],
+                                      role: data[index].data()['role'],
+                                      name: data[index].data()['name'],
                                       image: Image.network(
                                           snapshot.data.toString(),
                                           width: 200,  // image in one size
