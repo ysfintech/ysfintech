@@ -472,24 +472,27 @@ class ArticleB extends StatelessWidget {
                           height: md.width * 0.15,
                           margin: marginHorizontal(md.width),
                           child: Column(
-                            Text(
-                                name,
-                                style: backgroundColor == Colors.white
-                                    ? h3TextStyle
-                                    : h3WhiteTextStyle,
-                                softWrap: true,
-                                textAlign: TextAlign.center,
-                            ),
-                            Text(
-                                role,
-                                style: backgroundColor == Colors.white
-                                    ? h3TextStyle
-                                    : h3WhiteTextStyle,
-                                softWrap: true,
-                                textAlign: TextAlign.center,
-                            )
-                          ),
-                        ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Text>[
+                              Text(
+                                  name,
+                                  style: backgroundColor == Colors.white
+                                      ? h3TextStyle
+                                      : h3WhiteTextStyle,
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                  role,
+                                  style: backgroundColor == Colors.white
+                                      ? h3TextStyle
+                                      : h3WhiteTextStyle,
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                              )
+                            ],
+                          )
+                        )
                       ]))
                 ],
               )
