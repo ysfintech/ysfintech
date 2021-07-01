@@ -347,23 +347,21 @@ class ArticleB extends StatelessWidget {
                 width: md.width,
                 height: 100,
               ),
-              
-              
-              
-              
+
               // image and image description to center
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Align(
-                    alignment: Alignment.centerLeft,
+                    //alignment: Alignment.centerLeft,
                     child: Container(
                       margin: marginHorizontal(md.width),
                       child: Text(
                         content,
                         style: backgroundColor == Colors.white
-                            ? h2TextStyle
-                            : h2WhiteTextStyle,
+                            ? h3TextStyle
+                            : h3WhiteTextStyle,
+                        textAlign: TextAlign.centerLeft
                       ),
                     ),
                   ),
@@ -420,18 +418,6 @@ class ArticleB extends StatelessWidget {
                   width: md.width,
                   height: 100,
                 ),
-                title != null
-                    ? Container(
-                        width: md.width,
-                        height:
-                            title.length > 40 ? (title.length - 40) * 4.0 : 40,
-                        margin: marginHorizontal(md.width),
-                        child: Text(title,
-                            style: backgroundColor != null
-                                ? h2WhiteTextStyle
-                                : h2TextStyle),
-                      )
-                    : SizedBox(),
                 Align(
                   alignment: Alignment.center,
                   child: Container(
