@@ -220,38 +220,11 @@ class Article extends StatelessWidget {
                       width: md.width,
                       height: 80,
                       margin: marginHorizontal(md.width),
-                      child: md.width > 0
-                          ? Row(
-                              children: <Text>[
-                                Text(period,
-                                    style: backgroundColor == Colors.white
-                                        ? h3TextStyle
-                                        : h3WhiteTextStyle),
-                                Text(
-                                  ",  " + from,
-                                  style: backgroundColor == Colors.white
-                                      ? h3TextStyle
-                                      : h3WhiteTextStyle,
-                                  softWrap: true,
-                                )
-                              ],
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Text>[
-                                Text(period,
-                                    style: backgroundColor == Colors.white
-                                        ? h3TextStyle
-                                        : h3WhiteTextStyle),
-                                Text(
-                                  ",  " + from,
-                                  style: backgroundColor == Colors.white
-                                      ? h3TextStyle
-                                      : h3WhiteTextStyle,
-                                  softWrap: true,
-                                )
-                              ],
-                            ))
+                      child: Text(period + ', ' + from,
+                                style: backgroundColor == Colors.white
+                                    ? h3TextStyle
+                                    : h3WhiteTextStyle)
+                  )
                   : SizedBox(),
               // image and image description to center
               Column(
