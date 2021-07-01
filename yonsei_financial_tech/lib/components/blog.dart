@@ -397,7 +397,12 @@ class ArticleB extends StatelessWidget {
                                   textAlign: TextAlign.center,
                               )
                             ],
-                        ))
+                          )
+                          SizedBox(
+                            width: md.width,
+                            height: 100,
+                          )
+                        )
                       ]))
                 ],
               )
