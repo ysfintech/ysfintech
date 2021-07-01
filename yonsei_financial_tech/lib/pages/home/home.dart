@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   ScrollController _controller = new ScrollController();
 
   // firebase cloud firestore\
-  CollectionReference projects =
+  CollectionReference homes =
       FirebaseFirestore.instance.collection('introduction');
 
   // firebase storage
@@ -26,81 +26,91 @@ class _HomePageState extends State<HomePage> {
         .getDownloadURL();
     return downloadURL;
   }
-  
-  // data
+
   var fetchedData;
 
   @override
   void initState() {
     super.initState();
-    fetchedData = intro.orderBy('id').get();
+    fetchedData = homes.orderBy('id').get();
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
-      //backgroundColor: Colors.white,
+      backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           Scrollbar(
             controller: _controller,
             isAlwaysShown: true,
-              child: SingleChildScrollView(
+            child: 
+          SingleChildScrollView(
             controller: _controller,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 // MENU BAR ----------------------------------------------------------
                 MenuBar(),
                 // IMAGE BACKGROUND - NAME -------------------------------------------
                 title(context),
-                // About Us - INTRODUCTION -------------------------------------------
+                // PROJECTS  ------------------------------------------------------------
                 FutureBuilder<QuerySnapshot>(
-                  var data = snapshot.data.docs.asMap();
-                  return Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      child: ListView.builder(
-                        controller: _controller,  // same scroll controller 
-                        reverse: true,
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          // content parsing
-                          List<String> parsedContent = data[index]
-                              .data()['content']
-                              .toString()
-                              .split('<br>');
-                          String content() {
-                            StringBuffer sb = new StringBuffer();
-                            for (String item in parsedContent) {
-                              sb.write(item + '\n\n');
-                            }
-                            return sb.toString();
-                          }
+                  future: fetchedData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('500 - error'));
+                    } else if (!snapshot.hasData) {
+                      return Center(
+                          child: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: CircularProgressIndicator()));
+                    } else {
+                      var data = snapshot.data.docs.asMap();
+                      return Container(
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          child: ListView.builder(
+                            controller: _controller,  // same scroll controller 
+                            reverse: true,
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // content parsing
+                              List<String> parsedContent = data[index]
+                                  .data()['content']
+                                  .toString()
+                                  .split('<br>');
+                              String content() {
+                                StringBuffer sb = new StringBuffer();
+                                for (String item in parsedContent) {
+                                  sb.write(item + '\n\n');
+                                }
+                                return sb.toString();
+                              }
 
-                          return FutureBuilder(
-                            future: downloadURLExample(
-                                data[index].data()['id'].toString()),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Text('500 - error');
-                              } else if (!snapshot.hasData) {
-                                return SizedBox(); // remove indicator
-                              } else {
-                                return Article(
-                                  backgroundColor: index % 2 == 0
-                                      ? Colors.white
-                                      : themeBlue,
-                                  title: data[index].data()['title'],
-                                  content: content(),
-                                  name: data[index].data()['name'],
-                                  role: data[index].data()['role'],
-                                  image: Image.network(
-                                      snapshot.data.toString(),
-                                      width: 200,  // image in one size
-                                      fit: BoxFit.cover),
+                              return FutureBuilder(
+                                future: downloadURLExample(
+                                    data[index].data()['id'].toString()),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('500 - error');
+                                  } else if (!snapshot.hasData) {
+                                    return SizedBox(); // remove indicator
+                                  } else {
+                                    return Article(
+                                      backgroundColor: index % 2 == 0
+                                          ? Colors.white
+                                          : themeBlue,
+                                      title: data[index].data()['title'],
+                                      content: content(),
+                                      name: data[index].data()['name'],
+                                      role: data[index].data()['role'],
+                                      image: Image.network(
+                                          snapshot.data.toString(),
+                                          width: 200,  // image in one size
+                                          fit: BoxFit.cover),
                                     );
                                   }
                                 },
@@ -110,9 +120,7 @@ class _HomePageState extends State<HomePage> {
                     }
                   },
                 ),
-
-                // FOOTER ------------------------------------------------------------
-                Footer()
+                Footer(),
               ],
             ),
           )),
