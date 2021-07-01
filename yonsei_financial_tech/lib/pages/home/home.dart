@@ -5,6 +5,7 @@ import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 // firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class HomePage extends StatefulWidget {
   @override
