@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   // firebase storage
   Future<String> downloadURLExample(title) async {
     String downloadURL = await firebase_storage.FirebaseStorage.instance
-        .ref('gs://ysfintech-homepage.appspot.com/introduction/' + title + '.png')
+        .ref('gs://ysfintech-homepage.appspot.com/introduction/' + title + '.jpg')
         .getDownloadURL();
     return downloadURL;
   }
