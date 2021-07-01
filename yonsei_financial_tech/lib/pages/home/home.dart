@@ -14,19 +14,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController _controller = new ScrollController();
 
-  // fire store
+  // fire store 1
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference intro =
       FirebaseFirestore.instance.collection('introduction');
   // data
-  var fetchedData;
+  var fetchedDataA;
 
   @override
   void initState() {
     super.initState();
-    fetchedData = intro.get();
+    fetchedDataA = intro.get();
   }
+  
+  // fire store 2
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  CollectionReference edu = FirebaseFirestore.instance.collection('education');
+  // data
+  var fetchedDataB;
 
+  @override
+  void initState() {
+    super.initState();
+    fetchedDataB = edu.get();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                 title(context),
                 // About Us - INTRODUCTION -------------------------------------------
                 FutureBuilder<QuerySnapshot>(
-                  future: fetchedData,
+                  future: fetchedDataA,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Center(child: Text('500 - error'));
@@ -76,6 +88,39 @@ class _HomePageState extends State<HomePage> {
                         //title: snapshot.data.docs[0].data()['title'],
                         content: content(),
                       );
+                    }
+                  },
+                ),
+                // Education Article -------------------------------------------------
+                FutureBuilder<QuerySnapshot>(
+                  future: fetchedDataB,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text('500 - error'));
+                    } else if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      /**
+                   *  개행 문자를 포함해서 return 하기 
+                   */
+                      List<String> contentArray = snapshot.data.docs[0]
+                          .data()['content']
+                          .toString()
+                          .split('<br>');
+                      String content() {
+                        StringBuffer sb = new StringBuffer();
+                        for (String item in contentArray) {
+                          sb.write(item + '\n\n');
+                        }
+                        return sb.toString();
+                      }
+
+                      return Article(
+                          backgroundColor: themeBlue,
+                          //title: snapshot.data.docs[0].data()['title'],
+                          content: content());
                     }
                   },
                 ),
