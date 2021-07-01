@@ -101,8 +101,8 @@ class _HomePageState extends State<HomePage> {
                                   } else {
                                     return Article(
                                       backgroundColor: index % 2 == 0
-                                          ? Colors.white
-                                          : themeBlue,
+                                          ? Colors.themeBlue
+                                          : white,
                                       title: data[index].data()['title'],
                                       content: content(),
                                       imageDesc:
