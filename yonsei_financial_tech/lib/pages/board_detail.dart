@@ -182,7 +182,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                       Align(
                         alignment: Alignment.center,
                         child: SizedBox(
-                          height: 100,
+                          height: 20,
                         ),
                       ),
                       Align(
