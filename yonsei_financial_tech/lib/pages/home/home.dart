@@ -105,8 +105,6 @@ class _HomePageState extends State<HomePage> {
                                           : Colors.white,
                                       title: data[index].data()['title'],
                                       content: content(),
-                                      imageDesc:
-                                          data[index].data()['nothing'],
                                       role: data[index].data()['role'],
                                       name: data[index].data()['name'],
                                       image: Image.network(
