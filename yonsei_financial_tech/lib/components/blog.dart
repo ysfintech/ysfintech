@@ -353,7 +353,7 @@ class ArticleB extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Align(
-                    //alignment: Alignment.centerLeft,
+                    alignment: Alignment.centerLeft,
                     child: Container(
                       margin: marginHorizontal(md.width),
                       child: Text(
@@ -361,12 +361,11 @@ class ArticleB extends StatelessWidget {
                         style: backgroundColor == Colors.white
                             ? h3TextStyle
                             : h3WhiteTextStyle,
-                        textAlign: TextAlign.centerLeft
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
                   Align(
                       alignment: Alignment.center,
@@ -381,7 +380,7 @@ class ArticleB extends StatelessWidget {
                           height: md.width * 0.15,
                           margin: marginHorizontal(md.width),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Text>[
                               Text(
                                   name,
