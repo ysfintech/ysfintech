@@ -484,7 +484,7 @@ class _BoardArticleState extends State<BoardArticle> {
                       child: Text(
                         '제목',
                         style: bodyWhiteTextStyle,
-                        textAlign: TextAlign.left,
+                        textAlign: TextAlign.center,
                       )),
                   // writer
                   Expanded(
