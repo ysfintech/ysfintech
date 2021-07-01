@@ -149,10 +149,10 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                           spacing: 20.0,
                           // DATE | VIEW
                           children: <Widget>[
-                            Text('작성일자  ' + data.date, style: bodyTextStyle),
-                            Text('조회수 ' + data.view.toString(),
+                            Text('작성일자:  ' + data.date, style: bodyTextStyle),
+                            Text('조회수: ' + data.view.toString(),
                                 style: bodyTextStyle),
-                            Text('작성자 ' + data.writer, style: bodyTextStyle)
+                            Text('작성자: ' + data.writer, style: bodyTextStyle)
                           ],
                         ))
 
