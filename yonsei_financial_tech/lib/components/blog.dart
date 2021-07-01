@@ -398,10 +398,6 @@ class ArticleB extends StatelessWidget {
                               )
                             ],
                         ))
-                        SizedBox(
-                          width: md.width,
-                          height: 100,
-                        )
                       ]))
                 ],
               )
