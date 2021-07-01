@@ -14,35 +14,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   ScrollController _controller = new ScrollController();
 
-  // fire store 1
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference intro =
+  // firebase cloud firestore\
+  CollectionReference projects =
       FirebaseFirestore.instance.collection('introduction');
-  // data
-  var fetchedDataA;
 
-  @override
-  void initState() {
-    super.initState();
-    fetchedDataA = intro.get();
+  // firebase storage
+  Future<String> downloadURLExample(title) async {
+    String downloadURL = await firebase_storage.FirebaseStorage.instance
+        .ref('gs://ysfintech-homepage.appspot.com/introduction/' + title + '.png')
+        .getDownloadURL();
+    return downloadURL;
   }
   
-  // fire store 2
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  CollectionReference edu = FirebaseFirestore.instance.collection('education');
   // data
-  var fetchedDataB;
+  var fetchedData;
 
   @override
   void initState() {
     super.initState();
-    fetchedDataB = edu.get();
+    fetchedData = intro.orderBy('id').get();
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
           Scrollbar(
@@ -60,70 +56,60 @@ class _HomePageState extends State<HomePage> {
                 title(context),
                 // About Us - INTRODUCTION -------------------------------------------
                 FutureBuilder<QuerySnapshot>(
-                  future: fetchedDataA,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('500 - error'));
-                    } else if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      /**
-                       *  개행 문자를 포함해서 return 하기 
-                       */
-                      List<String> contentArray = snapshot.data.docs[0]
-                          .data()['content']
-                          .toString()
-                          .split('<br>');
-                      String content() {
-                        StringBuffer sb = new StringBuffer();
-                        for (String item in contentArray) {
-                          sb.write(item + '\n\n');
-                        }
-                        return sb.toString();
-                      }
+                  var data = snapshot.data.docs.asMap();
+                  return Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: ListView.builder(
+                        controller: _controller,  // same scroll controller 
+                        reverse: true,
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          // content parsing
+                          List<String> parsedContent = data[index]
+                              .data()['content']
+                              .toString()
+                              .split('<br>');
+                          String content() {
+                            StringBuffer sb = new StringBuffer();
+                            for (String item in parsedContent) {
+                              sb.write(item + '\n\n');
+                            }
+                            return sb.toString();
+                          }
 
-                      return Article(
-                        //title: snapshot.data.docs[0].data()['title'],
-                        content: content(),
-                      );
+                          return FutureBuilder(
+                            future: downloadURLExample(
+                                data[index].data()['id'].toString()),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('500 - error');
+                              } else if (!snapshot.hasData) {
+                                return SizedBox(); // remove indicator
+                              } else {
+                                return Article(
+                                  backgroundColor: index % 2 == 0
+                                      ? Colors.white
+                                      : themeBlue,
+                                  title: data[index].data()['title'],
+                                  content: content(),
+                                  name: data[index].data()['name'],
+                                  role: data[index].data()['role'],
+                                  image: Image.network(
+                                      snapshot.data.toString(),
+                                      width: 200,  // image in one size
+                                      fit: BoxFit.cover),
+                                    );
+                                  }
+                                },
+                              );
+                            },
+                          ));
                     }
                   },
                 ),
-                // Education Article -------------------------------------------------
-                FutureBuilder<QuerySnapshot>(
-                  future: fetchedDataB,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Center(child: Text('500 - error'));
-                    } else if (!snapshot.hasData) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else {
-                      /**
-                   *  개행 문자를 포함해서 return 하기 
-                   */
-                      List<String> contentArray = snapshot.data.docs[0]
-                          .data()['content']
-                          .toString()
-                          .split('<br>');
-                      String content() {
-                        StringBuffer sb = new StringBuffer();
-                        for (String item in contentArray) {
-                          sb.write(item + '\n\n');
-                        }
-                        return sb.toString();
-                      }
 
-                      return Article(
-                          backgroundColor: themeBlue,
-                          //title: snapshot.data.docs[0].data()['title'],
-                          content: content());
-                    }
-                  },
-                ),
                 // FOOTER ------------------------------------------------------------
                 Footer()
               ],
