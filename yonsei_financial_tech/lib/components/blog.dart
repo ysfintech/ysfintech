@@ -599,7 +599,7 @@ class _BoardArticleState extends State<BoardArticle> {
                                                         (index)]['title']
                                                 .toString(),
                                             style: bodyTextStyle,
-                                            textAlign: TextAlign.centerleft,
+                                            textAlign: TextAlign.center,
                                           ))),
                                   // writer
                                   Expanded(
