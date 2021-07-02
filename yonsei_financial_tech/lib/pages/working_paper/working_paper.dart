@@ -128,12 +128,21 @@ class _PaperPageState extends State<PaperPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: <Widget>[
-                                              Text(
-                                                "'" +
+                                              TextButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    filterText = '';
+                                                  });
+                                                },
+                                                child: Text("'" +
                                                     filterText +
                                                     "'" +
                                                     ' 관련 검색 결과 초기화',
-                                                style: h3WhiteTextStyle,
+                                                    style: h3WhiteTextStyle,
+                                                ),
+                                                style: ButtonStyle(
+                                                  overlayColor: MaterialStateColor.resolveWith(
+                                                    (states) => Colors.transparent))
                                               ),
                                               TextButton.icon(
                                                   onPressed: () {
