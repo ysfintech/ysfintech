@@ -385,16 +385,16 @@ class ArticleB extends StatelessWidget {
                               Text(
                                   name,
                                   style: backgroundColor == Colors.white
-                                      ? h3TextStyle
-                                      : h3WhiteTextStyle,
+                                      ? bodyTextStyle
+                                      : bodyWhiteTextStyle,
                                   softWrap: true,
                                   textAlign: TextAlign.center,
                               ),
                               Text(
                                   role,
                                   style: backgroundColor == Colors.white
-                                      ? h3TextStyle
-                                      : h3WhiteTextStyle,
+                                      ? bodyTextStyle
+                                      : bodyWhiteTextStyle,
                                   softWrap: true,
                                   textAlign: TextAlign.center,
                               )
