@@ -202,7 +202,7 @@ class _PaperPageState extends State<PaperPage> {
         Container(
           color: Colors.white,
           width: md.width,
-          height: 200,
+          height: 50,
         ),
         Container(
           color: Colors.transparent,
