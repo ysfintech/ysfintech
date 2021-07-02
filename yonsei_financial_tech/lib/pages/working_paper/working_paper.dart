@@ -161,7 +161,7 @@ class _PaperPageState extends State<PaperPage> {
                                       ],
                                     ),
                                   )
-                                : SizedBox(),
+                                : SizedBox(height: 70),
                             // Board  ------------------------------------------------------------
                             BoardArticle(
                               board: data,
