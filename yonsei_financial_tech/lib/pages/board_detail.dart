@@ -148,6 +148,12 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                       child: Text(data.title, style: h1TextStyle),
                     ),
                     Align(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 100,
+                      ),
+                    ),
+                    Align(
                         alignment: Alignment.centerRight,
                         child: Wrap(
                           alignment: WrapAlignment.end,
