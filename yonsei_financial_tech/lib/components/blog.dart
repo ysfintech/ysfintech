@@ -359,8 +359,8 @@ class ArticleB extends StatelessWidget {
                       child: Text(
                         content,
                         style: backgroundColor == Colors.white
-                            ? h3TextStyle
-                            : h3WhiteTextStyle,
+                            ? bodyTextStyle
+                            : bodyWhiteTextStyle,
                       ),
                     ),
                   ),
