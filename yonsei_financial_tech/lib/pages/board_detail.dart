@@ -264,7 +264,7 @@ class _MarkdownContentState extends State<MarkdownContent> {
               selectable: true,
               shrinkWrap: true,
               data: widget.data,
-              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)),
+              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(textScaleFactor: 1.5),
               styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
             )
           ],
