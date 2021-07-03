@@ -62,10 +62,10 @@ class MenuBar extends StatelessWidget {
                       child: Container(
                         child: Row(
                           children: [
-                            //SvgPicture.asset("yonsei_logo.svg",
-                                //width: 50, height: 50),
-                            Image.asset("yonsei_logo.jpg",
+                            SvgPicture.asset("yonsei_logo.svg",
                                 width: 50, height: 50),
+                            //Image.asset("yonsei_logo.jpg",
+                                //width: 50, height: 50),
                             SizedBox(width: 10,),
                             size.width > 600
                                 ? Text(
