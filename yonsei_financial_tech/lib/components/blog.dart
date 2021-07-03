@@ -53,7 +53,7 @@ class MenuBar extends StatelessWidget {
             Container(
               margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               // color: Colors.white,
-              child: Column(
+              child: Row(
                 children: <Widget>[
                   Expanded(
                     child: InkWell(
