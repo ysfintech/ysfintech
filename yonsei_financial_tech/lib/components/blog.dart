@@ -63,7 +63,7 @@ class MenuBar extends StatelessWidget {
                         child: Row(
                           children: [
                             SvgPicture.asset("yonsei_logo.svg",
-                                width: 40, height: 40),
+                                width: 50, height: 50),
                             SizedBox(width: 10,),
                             size.width > 800
                                 ? Text(
@@ -73,7 +73,13 @@ class MenuBar extends StatelessWidget {
                                         fontSize: 24,
                                         fontWeight: FontWeight.bold),
                                   )
-                                : SizedBox()
+                                : Text(
+                                    "연세대학교 금융기술센터",
+                                    style: GoogleFonts.notoSans(
+                                        color: themeBlue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  )
                           ],
                         ),
                       ),
