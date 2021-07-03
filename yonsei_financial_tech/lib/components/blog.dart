@@ -62,7 +62,7 @@ class MenuBar extends StatelessWidget {
                       child: Container(
                         child: Row(
                           children: [
-                            SvgPicture.asset("yonsei_logo.svg",
+                            SvgPicture.asset("assets/yonsei_logo.svg",
                                 width: 50, height: 50),
                             //Image.asset("assets/yonsei_logo.jpg",
                                 //width: 50, height: 50),
