@@ -634,7 +634,7 @@ class _BoardArticleState extends State<BoardArticle> {
           ),
           widget.board.length != 0
               ? ListView.builder(
-                  physics: const NeverScrollableScrollPhysics()
+                  physics: NeverScrollableScrollPhysics()
                   reverse: true,
                   shrinkWrap: true,
                   itemCount: 10,
