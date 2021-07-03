@@ -77,7 +77,7 @@ class MenuBar extends StatelessWidget {
                                     "연세대학교 금융기술센터",
                                     style: GoogleFonts.notoSans(
                                         color: themeBlue,
-                                        fontSize: 15,
+                                        fontSize: 10,
                                         fontWeight: FontWeight.bold),
                                   )
                           ],
