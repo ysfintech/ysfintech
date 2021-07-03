@@ -117,6 +117,16 @@ class MenuBar extends StatelessWidget {
                                     (states) => Colors.transparent))),
                         TextButton(
                             onPressed: () =>
+                                Navigator.pushNamed(context, Routes.publish),
+                            child: Text(
+                              "Publication",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
+                            onPressed: () =>
                                 Navigator.pushNamed(context, Routes.paper),
                             child: Text(
                               "Working Papers",
@@ -126,10 +136,16 @@ class MenuBar extends StatelessWidget {
                                 overlayColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.transparent))),
                         TextButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, Routes.publish),
+                            onPressed: () async {
+                              var dest = 'https://www.facebook.com/groups/ahn.yonsei/';
+                              await canLaunch(dest)
+                                  .then((value) => launch(dest))
+                                  // ignore: return_of_invalid_type_from_catch_error
+                                  .catchError(
+                                      (err) => print('could not launch'));
+                            },
                             child: Text(
-                              "Publication",
+                              "Facebook",
                               style: buttonTextStyle,
                             ),
                             style: ButtonStyle(
