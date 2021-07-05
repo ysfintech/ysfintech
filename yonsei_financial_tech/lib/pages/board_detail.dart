@@ -186,7 +186,14 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               //   content: "content",
               //   backgroundColor: Colors.white,
               // ),
-              child: MarkdownContent(data: data.content),
+              child: MarkdownContent(
+                data: data.content,
+                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                  .copyWith(
+                  (p: Theme.of(context).textTheme.bodyTextStyle.copyWith(fontSize: 16)
+                  ),
+                )
+              ),
             ),
             data.imagePath != null
                 ? Column(
