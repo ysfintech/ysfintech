@@ -188,10 +188,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               // ),
               child: MarkdownContent(
                 data: data.content,
-                styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
-                  .copyWith(
-                  (p: Theme.of(context).textTheme.bodyTextStyle.copyWith(fontSize: 16)
-                  ),
+                styleSheet: MarkdownStyleSheet(h1: TextStyle(fontSize: 16),
                 )
               ),
             ),
