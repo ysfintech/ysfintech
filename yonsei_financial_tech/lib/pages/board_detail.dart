@@ -186,11 +186,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
               //   content: "content",
               //   backgroundColor: Colors.white,
               // ),
-              child: Markdown(
-                data: data.content,
-                styleSheet: MarkdownStyleSheet(h1: TextStyle(fontSize: 16),
-                )
-              ),
+              child: MarkdownContent(data: data.content)
             ),
             data.imagePath != null
                 ? Column(
