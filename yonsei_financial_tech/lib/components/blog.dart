@@ -1063,8 +1063,8 @@ class _WorkArticleState extends State<WorkArticle> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        new BoardDetail(
-                                                          data: BoardItem(
+                                                        new WorkDetail(
+                                                          data: WorkItem(
                                                               title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['title'],
                                                               writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
