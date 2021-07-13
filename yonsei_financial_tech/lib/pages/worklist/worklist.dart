@@ -163,7 +163,7 @@ class _WorkPageState extends State<WorkPage> {
                                   )
                                 : SizedBox(height: 0),
                             // Board  ------------------------------------------------------------
-                            BoardArticle(
+                            WorkArticle(
                               board: data,
                               storage: 'work',
                               onRefresh: _refresh,
