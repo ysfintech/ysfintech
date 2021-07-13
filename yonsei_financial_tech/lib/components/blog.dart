@@ -14,6 +14,7 @@ import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
 import 'package:yonsei_financial_tech/pages/board_detail.dart';
+import 'package:yonsei_financial_tech/pages/work_detail.dart';
 // route
 import 'package:yonsei_financial_tech/routes.dart';
 
