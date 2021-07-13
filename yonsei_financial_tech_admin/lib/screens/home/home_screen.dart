@@ -93,6 +93,7 @@ class HomeScreenState extends State<HomeScreen>
                 PeopleScreen(),
                 ProjectScreen(),
                 PaperScreen(),
+                WorkScreen(),
               ],
             ),
           )
@@ -118,6 +119,10 @@ class HomeScreenState extends State<HomeScreen>
         listItemNavigator(drawerStatus,
             pageIndex: 3,
             title: "Working Papers",
+            icon: Icons.library_books_rounded),
+        listItemNavigator(drawerStatus,
+            pageIndex: 4,
+            title: "Worklist",
             icon: Icons.library_books_rounded),
       ],
     );
