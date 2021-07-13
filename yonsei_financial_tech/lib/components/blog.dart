@@ -884,3 +884,378 @@ class _BoardArticleState extends State<BoardArticle> {
     );
   }
 }
+
+class WorkArticle extends StatefulWidget {
+  final List<Map<String, dynamic>> board;
+  final String storage;
+  final Function onRefresh;
+
+  WorkArticle({this.board, this.storage, this.onRefresh});
+
+  @override
+  _WorkArticleState createState() => _WorkArticleState();
+}
+
+class _WorkArticleState extends State<WorkArticle> {
+/*
+ *  Board -> List<BoardItem> list;
+ *  BoardItem {
+ *    int number
+ *    String title
+ *    String writer
+ *    String date
+ *    int views
+ *    String contentPath
+ *  }
+ */
+  int selectedPageIndex = 1;
+  /*
+   *  Range to show in list = [ selectedPageIndex * 10, selectedPageIndex * 10 + 1, ... , selectedPageIndex * 10 + 9 ]
+   *  10 items in row
+   *  onPageChanged () => change range of index 
+   *    [ selectedPageIndex * 10 + 0 to selectedPageIndex * 10 + 9 ]
+   * 
+   *  widget.board.length / 10 => page index max
+   */
+  // page index list
+  List<List<int>> pageList = [];
+  int pageListRow = 0;
+
+  // firebase
+  CollectionReference works = FirebaseFirestore.instance.collection('work');
+
+  Future<void> updateView(String docID, int updatedView) {
+    return works
+        .doc(docID)
+        .update({'view': updatedView})
+        .then((value) => print('view updated'))
+        .catchError((onError) => print('view update failed : $onError'));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // print(widget.board.length / 10);
+    // set widget.board.length -> page index
+    int maxPage =
+        widget.board.length / 10 > 1 ? (widget.board.length / 10).ceil() : 1;
+
+    List<int> temp = [];
+    for (int i = 1; i <= maxPage; ++i) {
+      if (i % 5 == 1 && i > 1) {
+        pageList.add(temp);
+        temp = [];
+      }
+      temp.add(i);
+    }
+    pageList.add(temp);
+    // print(pageList);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final md = MediaQuery.of(context).size;
+
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            // head space
+            width: md.width,
+            height: 100,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              color: themeBlue,
+              margin: marginHorizontal(md.width),
+              padding: paddingH20V20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // no
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '번호',
+                        style: bodyWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // title
+                  Expanded(
+                      flex: 3,
+                      child: Text(
+                        '제목',
+                        style: bodyWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // writer
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '작성자',
+                        style: bodyWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // date
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '날짜',
+                        style: bodyWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                  // view
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        '조회수',
+                        style: bodyWhiteTextStyle,
+                        textAlign: TextAlign.center,
+                      )),
+                ],
+              ),
+            ),
+          ),
+          widget.board.length != 0
+              ? ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  reverse: true,
+                  shrinkWrap: true,
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    if ((selectedPageIndex - 1) * 10 + (index + 1) <=
+                        widget.board.length) {
+                      // posts
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: <Widget>[
+                            // post
+                            Container(
+                              margin: marginHorizontal(md.width),
+                              padding: paddingH20V20,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  // no
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        // widget.board[
+                                        //         (selectedPageIndex - 1) * 10 +
+                                        //             (index)]['id']
+                                        (index + 1).toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // title -> only clickable
+                                  Expanded(
+                                      flex: 3,
+                                      child: Hover(
+                                          onTap: () {
+                                            // page route
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        new BoardDetail(
+                                                          data: BoardItem(
+                                                              title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['title'],
+                                                              writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['writer'],
+                                                              number: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['number'],
+                                                              date: widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['date'],
+                                                              view:
+                                                                  widget.board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                      ['view'],
+                                                              content: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['content'],
+                                                              imagePath: widget
+                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                                  ['imagePath']),
+                                                        ))).then(
+                                                this.widget.onRefresh);
+                                            // increase view
+                                            updateView(
+                                                widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['docID'],
+                                                widget.board[
+                                                        (selectedPageIndex -
+                                                                    1) *
+                                                                10 +
+                                                            (index)]['view'] +
+                                                    1);
+                                          },
+                                          child: Text(
+                                            widget.board[
+                                                    (selectedPageIndex - 1) *
+                                                            10 +
+                                                        (index)]['title']
+                                                .toString(),
+                                            style: bodyTextStyle,
+                                            textAlign: TextAlign.left,
+                                          ))),
+                                  // writer
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['writer']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // date
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['date']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                  // view
+                                  Expanded(
+                                      flex: 1,
+                                      child: Text(
+                                        widget.board[
+                                                (selectedPageIndex - 1) * 10 +
+                                                    (index)]['view']
+                                            .toString(),
+                                        style: bodyTextStyle,
+                                        textAlign: TextAlign.center,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            // divider
+                            Container(
+                              margin: marginHorizontal(md.width),
+                              child: divider,
+                            )
+                          ],
+                        ),
+                      );
+                    }
+                  },
+                )
+              : Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 100,
+                      ),
+                      Text('정보가 없습니다.', style: h2TextStyle),
+                      SizedBox(
+                        height: 100,
+                      ),
+                    ],
+                  ),
+                ),
+          // page Index
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+              width: 400,
+              padding: paddingH20V20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // left
+                  TextButton(
+                    child: Icon(
+                      Icons.arrow_left_rounded,
+                      size: 24,
+                      color: ligthGray,
+                    ),
+                    onPressed: () {
+                      if (pageListRow > 0) {
+                        setState(() {
+                          pageListRow -= 1;
+                          print(pageListRow);
+                          selectedPageIndex = pageList[pageListRow]
+                              [pageList[pageListRow].length - 1];
+                        });
+                      }
+                    },
+                  ),
+                  // page index
+                  Container(
+                      width: 200,
+                      height: 50,
+                      alignment: Alignment.center,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        physics: new NeverScrollableScrollPhysics(),
+                        itemCount: pageList[pageListRow].length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 40,
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  selectedPageIndex =
+                                      pageList[pageListRow][index];
+                                });
+                              },
+                              child: Text(
+                                pageList[pageListRow][index].toString(),
+                                style: TextStyle(
+                                    color: pageList[pageListRow][index] ==
+                                            selectedPageIndex
+                                        ? themeBlue
+                                        : ligthGray,
+                                    fontWeight: pageList[pageListRow][index] ==
+                                            selectedPageIndex
+                                        ? FontWeight.bold
+                                        : FontWeight.normal),
+                              ),
+                            ),
+                          );
+                        },
+                      )),
+                  // right
+                  TextButton(
+                    child: Icon(Icons.arrow_right_rounded,
+                        size: 24, color: ligthGray),
+                    onPressed: () {
+                      if (pageListRow < pageList.length) {
+                        setState(() {
+                          pageListRow += 1;
+                          selectedPageIndex = pageList[pageListRow][0];
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            // footer space
+            width: md.width,
+            height: 100,
+          ),
+        ],
+      ),
+    );
+  }
+}
