@@ -8,12 +8,12 @@ import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 import 'package:ysfintech_admin/widgets/post.dart';
 
-class PaperScreen extends StatefulWidget {
+class WorkScreen extends StatefulWidget {
   @override
-  _PaperScreenState createState() => _PaperScreenState();
+  _WorkScreenState createState() => _WorkScreenState();
 }
 
-class _PaperScreenState extends State<PaperScreen> {
+class _WorkScreenState extends State<WorkScreen> {
   // firebase firestore
   CollectionReference work = FirebaseFirestore.instance.collection('work');
 
