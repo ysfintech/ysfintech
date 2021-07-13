@@ -73,7 +73,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                   children: [
                                     Icon(Icons.post_add_rounded),
                                     SizedBox(width: 10),
-                                    Text('Post new Paper',
+                                    Text('Post new Work',
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
