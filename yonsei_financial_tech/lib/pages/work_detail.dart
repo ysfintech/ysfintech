@@ -41,7 +41,7 @@ class _WorkDetailState extends State<WorkDetail> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         MenuBar(),
-                        BoardDetailArticle(data: widget.data),
+                        WorkDetailArticle(data: widget.data),
                         Footer(),
                       ]))),
         ],
