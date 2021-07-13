@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 
-class PaperPage extends StatefulWidget {
+class WorkPage extends StatefulWidget {
   @override
-  _PaperPageState createState() => _PaperPageState();
+  _WorkPageState createState() => _WorkPageState();
 }
 
-class _PaperPageState extends State<PaperPage> {
+class _WorkPageState extends State<WorkPage> {
   ScrollController _controller = new ScrollController();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
