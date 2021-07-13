@@ -144,6 +144,16 @@ class MenuBar extends StatelessWidget {
                                 overlayColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.transparent))),
                         TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.work),
+                            child: Text(
+                              "Worklist",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
                             onPressed: () async {
                               var dest = 'https://www.facebook.com/groups/ahn.yonsei/';
                               await canLaunch(dest)
