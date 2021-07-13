@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/screens/board/paper_screen.dart';
+import 'package:ysfintech_admin/screens/work/work_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
 import 'package:ysfintech_admin/screens/project/project_screen.dart';
 import 'package:ysfintech_admin/screens/info/info_screen.dart';
