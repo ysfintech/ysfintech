@@ -61,32 +61,32 @@ class WorkDetailArticle extends StatefulWidget {
 class _WorkDetailArticleState extends State<WorkDetailArticle> {
   WorkItem data;
 
-  final String storageURL = "gs://ysfintech-homepage.appspot.com/work/";
+  //final String storageURL = "gs://ysfintech-homepage.appspot.com/work/";
 
-  @override
-  void initState() {
-    super.initState();
-    data = widget.data;
-  }
+  //@override
+  //void initState() {
+  //  super.initState();
+  //  data = widget.data;
+  //}
 
-  String getOnlyTitle(String imagePath) {
-    String res;
-    res = imagePath
-        .substring('gs://ysfintech-homepage.appspot.com/work/'.length);
-    return res;
-  }
+  //String getOnlyTitle(String imagePath) {
+  //  String res;
+  // res = imagePath
+  //      .substring('gs://ysfintech-homepage.appspot.com/work/'.length);
+  //  return res;
+  //}
 
-  Future<void> downloadFile(String imagePath) async {
+  //Future<void> downloadFile(String imagePath) async {
     // 1) set url
-    String downloadURL = await firebaseStorage.FirebaseStorage.instance
-        .ref(imagePath)
-        .getDownloadURL();
+  //  String downloadURL = await firebaseStorage.FirebaseStorage.instance
+  //      .ref(imagePath)
+  //      .getDownloadURL();
     // 2) request
-    html.AnchorElement anchorElement =
-        new html.AnchorElement(href: downloadURL);
-    anchorElement.download = downloadURL;
-    anchorElement.click();
-  }
+  //  html.AnchorElement anchorElement =
+  //      new html.AnchorElement(href: downloadURL);
+  //  anchorElement.download = downloadURL;
+  //  anchorElement.click();
+  //}
 
   @override
   Widget build(BuildContext context) {
