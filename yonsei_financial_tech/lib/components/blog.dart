@@ -899,8 +899,8 @@ class WorkArticle extends StatefulWidget {
 
 class _WorkArticleState extends State<WorkArticle> {
 /*
- *  Board -> List<BoardItem> list;
- *  BoardItem {
+ *  Works -> List<WorkItem> list;
+ *  WorkItem {
  *    int number
  *    String title
  *    String writer
@@ -1065,7 +1065,7 @@ class _WorkArticleState extends State<WorkArticle> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         new WorkDetail(
-                                                          data: BoardItem(
+                                                          data: WorkItem(
                                                               title: widget.board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['title'],
                                                               writer: widget.board[(selectedPageIndex - 1) * 10 + (index)]
