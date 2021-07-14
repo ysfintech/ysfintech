@@ -10,7 +10,7 @@ import 'package:yonsei_financial_tech/model/board.dart';
 
 // 2021/04/15 added
 class WorkDetail extends StatefulWidget {
-  final BoardItem data;
+  final WorkItem data;
   WorkDetail({@required this.data});
 
   @override
@@ -51,7 +51,7 @@ class _WorkDetailState extends State<WorkDetail> {
 }
 
 class WorkDetailArticle extends StatefulWidget {
-  final BoardItem data;
+  final WorkItem data;
   WorkDetailArticle({@required this.data});
 
   @override
@@ -59,7 +59,7 @@ class WorkDetailArticle extends StatefulWidget {
 }
 
 class _WorkDetailArticleState extends State<WorkDetailArticle> {
-  BoardItem data;
+  WorkItem data;
 
   final String storageURL = "gs://ysfintech-homepage.appspot.com/work/";
 
