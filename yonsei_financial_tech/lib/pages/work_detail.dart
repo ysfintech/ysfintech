@@ -191,15 +191,15 @@ class _WorkDetailArticleState extends State<WorkDetailArticle> {
                 data.content, style: bodyTextStyle
               )
             ),
-            data.imagePath != null
-                ? Column(
-                    children: <Align>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 20,
-                        ),
-                      ),
+            //data.imagePath != null
+            //    ? Column(
+            //        children: <Align>[
+            //          Align(
+            //            alignment: Alignment.center,
+            //            child: SizedBox(
+            //              height: 20,
+            //            ),
+            //          ),
             //          Align(
             //            // 첨부파일 다운받기
             //            alignment: Alignment.centerRight,
