@@ -200,31 +200,31 @@ class _WorkDetailArticleState extends State<WorkDetailArticle> {
                           height: 20,
                         ),
                       ),
-                      Align(
-                        // 첨부파일 다운받기
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () => downloadFile(data.imagePath),
-                          style: TextButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12)),
-                              padding: paddingH20V20,
-                              side: BorderSide(color: lightWhite)),
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceBetween,
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            spacing: 12.0,
-                            children: <Widget>[
-                              Icon(Icons.file_download),
-                              Text(getOnlyTitle(data.imagePath),
-                                  style: bodyTextStyle)
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : SizedBox(),
+            //          Align(
+            //            // 첨부파일 다운받기
+            //            alignment: Alignment.centerRight,
+            //            child: TextButton(
+            //              onPressed: () => downloadFile(data.imagePath),
+            //              style: TextButton.styleFrom(
+            //                  shape: RoundedRectangleBorder(
+            //                      borderRadius: BorderRadius.circular(12)),
+            //                  padding: paddingH20V20,
+            //                  side: BorderSide(color: lightWhite)),
+            //              child: Wrap(
+            //                alignment: WrapAlignment.spaceBetween,
+            //                crossAxisAlignment: WrapCrossAlignment.center,
+            //                spacing: 12.0,
+            //                children: <Widget>[
+            //                  Icon(Icons.file_download),
+            //                  Text(getOnlyTitle(data.imagePath),
+            //                      style: bodyTextStyle)
+            //                ],
+            //              ),
+            //            ),
+            //          ),
+            //        ],
+            //      )
+            //    : SizedBox(),
             Align(
               alignment: Alignment.center,
               child: SizedBox(
