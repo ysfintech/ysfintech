@@ -1081,9 +1081,9 @@ class _WorkArticleState extends State<WorkArticle> {
                                                               content: widget
                                                                       .board[(selectedPageIndex - 1) * 10 + (index)]
                                                                   ['content'],
-                                                              imagePath: widget
-                                                                      .board[(selectedPageIndex - 1) * 10 + (index)]
-                                                                  ['imagePath']),
+                                                              //imagePath: widget
+                                                              //        .board[(selectedPageIndex - 1) * 10 + (index)]
+                                                              //    ['imagePath']),
                                                         ))).then(
                                                 this.widget.onRefresh);
                                             // increase view
