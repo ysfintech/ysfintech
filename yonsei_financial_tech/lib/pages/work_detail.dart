@@ -61,13 +61,13 @@ class WorkDetailArticle extends StatefulWidget {
 class _WorkDetailArticleState extends State<WorkDetailArticle> {
   WorkItem data;
 
-  //final String storageURL = "gs://ysfintech-homepage.appspot.com/work/";
+  final String storageURL = "gs://ysfintech-homepage.appspot.com/work/";
 
-  //@override
-  //void initState() {
-  //  super.initState();
-  //  data = widget.data;
-  //}
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+  }
 
   //String getOnlyTitle(String imagePath) {
   //  String res;
