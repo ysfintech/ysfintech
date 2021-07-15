@@ -180,7 +180,7 @@ class _WorkDetailArticleState extends State<WorkDetailArticle> {
             ),
             // ARTICLE
             Align(
-              alignment: Alignment.center,
+              alignment: Alignment.centerLeft,
               // child: Article(
               //   false, // no Image condition
               //   content: "content",
