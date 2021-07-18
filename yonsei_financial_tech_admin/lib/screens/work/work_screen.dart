@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/model/board.dart';
-import 'package:ysfintech_admin/screens/board/work_detail.dart';
-import 'package:ysfintech_admin/screens/project/project_detail.dart';
+import 'package:ysfintech_admin/screens/work/work_detail.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
@@ -77,7 +76,7 @@ class _WorkScreenState extends State<WorkScreen> {
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
-                            onPressed: () => showBottomSheet(context: context, builder: (context) => Post(id: list.length + 1)),
+                            onPressed: () => showBottomSheet(context: context, builder: (context) => Post(id: list.length + 1, collection: 'work',)),
                           ))),
                   SizedBox(
                     height: 20,
@@ -93,7 +92,7 @@ class _WorkScreenState extends State<WorkScreen> {
                           borderRadius: BorderRadius.circular(12)),
                       tileColor: Colors.white,
                       onTap: () => showBottomSheet(context: context,
-                        builder: (context) => BoardDetail(
+                        builder: (context) => WorkBoardDetail(
                           data: list[index], pathID: snapshot.data.docs[index].id,
                         ),                      
                       ),

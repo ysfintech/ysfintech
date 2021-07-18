@@ -24,7 +24,7 @@ class HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     tabController = new TabController(
-        vsync: this, length: 4, initialIndex: widget.tap_index)
+        vsync: this, length: 5, initialIndex: widget.tap_index)
       ..addListener(() {
         setState(() {
           active = tabController.index;

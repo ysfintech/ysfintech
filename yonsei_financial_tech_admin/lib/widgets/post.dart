@@ -12,7 +12,8 @@ import 'package:ysfintech_admin/utils/typography.dart';
 
 class Post extends StatefulWidget {
   final int id;
-  Post({@required this.id});
+  final String collection;
+  Post({@required this.id, @required this.collection});
   @override
   _PostState createState() => _PostState();
 }
@@ -31,7 +32,7 @@ class _PostState extends State<Post> {
     super.initState();
     title = new TextEditingController();
     content = new TextEditingController();
-    _field = new Field(collection: 'paper');
+    _field = new Field(collection: this.widget.collection);
   }
 
   @override
@@ -44,87 +45,116 @@ class _PostState extends State<Post> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-      controller: controller,
-      child:
-    Container(
-      constraints: BoxConstraints(minHeight: size.height, maxHeight: double.infinity),
-        padding: paddingH20V20,
-        color: Colors.white,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 50),
-            // buttons
-            Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TextButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: Icon(Icons.close, color: Colors.black),
-                    label: SizedBox(),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: Colors.orange),
-                    child: Container(
-                        width: 80,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Icon(Icons.post_add_rounded),
-                            SizedBox(width: 10),
-                            Text('POST', style: bodyWhiteTextStyle)
-                          ],
-                        )),
-                    onPressed: () {
-                      Board data = new Board(
-                          id: widget.id,
-                          title: title.text,
-                          writer: '관리자',
-                          date: DateTime.now().year.toString().substring(2, 4) +
-                              '.' +
-                              (DateTime.now().month.toString().length == 1
-                                  ? '0' + DateTime.now().month.toString()
-                                  : DateTime.now().month.toString()) +
-                              '.' +
-                              (DateTime.now().day.toString().length == 1
-                                  ? '0' + DateTime.now().day.toString()
-                                  : DateTime.now().day.toString()),
-                          view: 0,
-                          content: '''${content.text}
-                            ''',
-                          imagePath: _field.getImagePath(this.uploadFile));
-                      setState(() {
-                        _field.uploadDocument(uploadFile, data, context).then(
-                            (value) => ScaffoldMessenger.of(context)
-                                    .showSnackBar(SnackBar(
-                                        content: Wrap(
-                                            alignment:
-                                                WrapAlignment.spaceBetween,
-                                            children: [
-                                      Text('새로운 게시글이 등록되었습니다.'),
-                                      TextButton.icon(
-                                          icon: Icon(Icons.refresh_rounded),
-                                          label: Text(
-                                            "새로고침해주세요",
-                                            style: bodyWhiteTextStyle,
-                                          ),
-                                          onPressed: () =>
-                                              print('parent refresh needed'))
-                                    ]))));
-                      });
-                    },
-                  )
-                ]),
-            SizedBox(height: 50),
-            // show title
-            Align(
-                // title and writer
-
-                child: Wrap(
-              alignment: WrapAlignment.spaceBetween,
+        controller: controller,
+        child: Container(
+            constraints: BoxConstraints(
+                minHeight: size.height, maxHeight: double.infinity),
+            padding: paddingH20V20,
+            color: Colors.white,
+            child: Column(
               children: <Widget>[
-                TextFormField(
-                  maxLines: 2,
-                  controller: title,
+                SizedBox(height: 50),
+                // buttons
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      TextButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(Icons.close, color: Colors.black),
+                        label: SizedBox(),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.orange),
+                        child: Container(
+                            width: 80,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Icon(Icons.post_add_rounded),
+                                SizedBox(width: 10),
+                                Text('POST', style: bodyWhiteTextStyle)
+                              ],
+                            )),
+                        onPressed: () {
+                          Board data = new Board(
+                              id: widget.id,
+                              title: title.text,
+                              writer: '관리자',
+                              date: DateTime.now()
+                                      .year
+                                      .toString()
+                                      .substring(2, 4) +
+                                  '.' +
+                                  (DateTime.now().month.toString().length == 1
+                                      ? '0' + DateTime.now().month.toString()
+                                      : DateTime.now().month.toString()) +
+                                  '.' +
+                                  (DateTime.now().day.toString().length == 1
+                                      ? '0' + DateTime.now().day.toString()
+                                      : DateTime.now().day.toString()),
+                              view: 0,
+                              content: '''${content.text}
+                            ''',
+                              imagePath: this.widget.collection == 'paper'
+                                  ? _field.getImagePath(this.uploadFile)
+                                  : null);
+                          setState(() {
+                            _field
+                                .uploadDocument(uploadFile, data, context)
+                                .then((value) => ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                            content: Wrap(
+                                                alignment:
+                                                    WrapAlignment.spaceBetween,
+                                                children: [
+                                          Text('새로운 게시글이 등록되었습니다.'),
+                                          TextButton.icon(
+                                              icon: Icon(Icons.refresh_rounded),
+                                              label: Text(
+                                                "새로고침해주세요",
+                                                style: bodyWhiteTextStyle,
+                                              ),
+                                              onPressed: () => print(
+                                                  'parent refresh needed'))
+                                        ]))));
+                          });
+                        },
+                      )
+                    ]),
+                SizedBox(height: 50),
+                // show title
+                Align(
+                    // title and writer
+
+                    child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  children: <Widget>[
+                    TextFormField(
+                      maxLines: 2,
+                      controller: title,
+                      autofocus: true,
+                      enabled: true,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              gapPadding: 16.0,
+                              borderSide: BorderSide(color: ligthGray)),
+                          filled: true,
+                          fillColor: lightWhite,
+                          icon: Icon(Icons.title_rounded)),
+                    ),
+                    Text(
+                      'written by ' + '관리자',
+                      style: bodyTextStyle,
+                      textAlign: TextAlign.end,
+                    )
+                  ],
+                )),
+                SizedBox(height: 20),
+                Align(
+                    // content
+                    child: TextFormField(
+                  maxLines: null,
+                  controller: content,
                   autofocus: true,
                   enabled: true,
                   decoration: InputDecoration(
@@ -133,71 +163,46 @@ class _PostState extends State<Post> {
                           borderSide: BorderSide(color: ligthGray)),
                       filled: true,
                       fillColor: lightWhite,
-                      icon: Icon(Icons.title_rounded)),
-                ),
-                Text(
-                  'written by ' + '관리자',
-                  style: bodyTextStyle,
-                  textAlign: TextAlign.end,
-                )
+                      icon: Icon(Icons.article_rounded)),
+                )),
+                SizedBox(height: 20),
+                this.widget.collection == 'paper'
+                    ? Align(
+                        // file upload
+                        child: TextButton(
+                          onPressed: () async {
+                            html.InputElement uploadInput =
+                                html.FileUploadInputElement();
+                            uploadInput.click();
+                            await uploadInput.onChange.first;
+                            final files = uploadInput.files;
+                            try {
+                              setState(() {
+                                uploadFile = files[0];
+                              });
+                            } catch (e) {}
+                          },
+                          style: TextButton.styleFrom(
+                              padding: paddingH20V20,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              side: BorderSide(color: lightWhite)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Icon(Icons.upload_rounded),
+                              Text(
+                                  uploadFile == null
+                                      ? '파일 업로드'
+                                      : uploadFile.name,
+                                  style: bodyTextStyle)
+                            ],
+                          ),
+                        ),
+                      )
+                    : SizedBox(),
+                SizedBox(height: 50),
               ],
-            )),
-            SizedBox(height: 20),
-            Align(
-                // content
-                child: TextFormField(
-              maxLines: null,
-              controller: content,
-              autofocus: true,
-              enabled: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      gapPadding: 16.0,
-                      borderSide: BorderSide(color: ligthGray)),
-                  filled: true,
-                  fillColor: lightWhite,
-                  icon: Icon(Icons.article_rounded)),
-            )),
-            SizedBox(height: 20),
-            Align(
-              // file upload
-              child: TextButton(
-                onPressed: () async {
-                  html.InputElement uploadInput = html.FileUploadInputElement();
-                  uploadInput.click();
-                  await uploadInput.onChange.first;
-                  final files = uploadInput.files;
-                  try {
-                    setState(() {
-                      uploadFile = files[0];
-                    });
-                  } catch (e) {
-                  }
-                  // final _picked =
-                  //     await ImagePickerWeb.getImage(outputType: ImageType.file);
-                  // try {
-                  //   setState(() {
-                  //     uploadFile = _picked;
-                  //   });
-                  // } catch (e) {}
-                },
-                style: TextButton.styleFrom(
-                    padding: paddingH20V20,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    side: BorderSide(color: lightWhite)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Icon(Icons.upload_rounded),
-                    Text(uploadFile == null ? '파일 업로드' : uploadFile.name,
-                        style: bodyTextStyle)
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 50),
-          ],
-        )));
+            )));
   }
 }

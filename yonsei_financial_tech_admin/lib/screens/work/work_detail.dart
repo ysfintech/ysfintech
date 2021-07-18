@@ -8,22 +8,21 @@ import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
-class BoardDetail extends StatefulWidget {
+class WorkBoardDetail extends StatefulWidget {
   final String pathID;
   final Board data;
-  BoardDetail({this.data, this.pathID});
+  WorkBoardDetail({this.data, this.pathID});
   @override
-  _BoardDetailState createState() => _BoardDetailState();
+  _WorkBoardDetailState createState() => _WorkBoardDetailState();
 }
 
-class _BoardDetailState extends State<BoardDetail> {
+class _WorkBoardDetailState extends State<WorkBoardDetail> {
   TextEditingController title;
   TextEditingController content;
 
   ScrollController controller = new ScrollController();
 
   bool _editable = false;
-  html.File _file;
   Field _field;
 
   @override
@@ -90,27 +89,10 @@ class _BoardDetailState extends State<BoardDetail> {
                             if (_editable) {
                               _field
                                   .updateDocument(context,
-                                      file: _file != null ? _file : null,
                                       pathID: widget.pathID,
                                       content: content.text,
-                                      title: title.text,
-                                      imagePath: _file != null
-                                          ? _field.getImagePath(_file)
-                                          : widget.data.imagePath)
-                                  .then((value) {
-                                if (_file != null) {
-                                  if (widget.data.imagePath != null) {
-                                    if (_file.name !=
-                                        _field.getImageName(
-                                            widget.data.imagePath)) {
-                                      _field
-                                          .removeStorage(widget.data.imagePath)
-                                          .then((value) =>
-                                              print('prev file deleted'));
-                                    }
-                                  }
-                                }
-                              }).then((value) => ScaffoldMessenger.of(context)
+                                      title: title.text)
+                                  .then((value) => ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                           content: Text(
                                               '${widget.data.title}의 내용이 수정되었습니다.'))));
@@ -181,49 +163,6 @@ class _BoardDetailState extends State<BoardDetail> {
                             icon: Icon(Icons.article_rounded)),
                       )),
             SizedBox(height: 20),
-            Expanded(
-              flex: 1,
-              child: TextButton(
-                onPressed: _editable
-                    ? () async {
-                        final _picked = await ImagePickerWeb.getImage(
-                            outputType: ImageType.file);
-                        try {
-                          setState(() {
-                            _file = _picked;
-                          });
-                        } catch (e) {}
-                      }
-                    : widget.data.imagePath == null
-                        ? null
-                        : () => _field.downloadFile(widget.data.imagePath),
-                style: TextButton.styleFrom(
-                    padding: paddingH20V20,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
-                    side: BorderSide(color: lightWhite)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(!_editable
-                        ? Icons.download_rounded
-                        : Icons.upload_rounded),
-                    Text(
-                        !_editable
-                            ? widget.data.imagePath == null
-                                ? '업로드된 파일이 없습니다.'
-                                : _field.getImageName(widget.data.imagePath)
-                            : _file == null
-                                ? widget.data.imagePath == null
-                                    ? '파일 업로드 및 수정'
-                                    : _field.getImageName(widget.data.imagePath)
-                                : _file.name,
-                        style: bodyTextStyle)
-                  ],
-                ),
-              ),
-            )
           ],
         ));
   }

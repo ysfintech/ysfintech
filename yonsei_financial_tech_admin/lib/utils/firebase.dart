@@ -46,19 +46,34 @@ class Field {
   // upload Document
   Future<void> uploadDocument(
       html.File uploadFile, Board data, BuildContext context) {
-    return uploadImage(uploadFile).then((value) => FirebaseFirestore.instance
-        .collection('paper')
-        .add({
-          'id' : data.id,
-          'content': data.content,
-          'date': data.date,
-          'title': data.title,
-          'view': data.view,
-          'writer': data.writer,
-          'imagePath': data.imagePath
-        })
-        .then((value) => print("project updated"))
-        .then((value) => Navigator.pop(context, true)));
+    if (this.collection == 'paper') {
+      return uploadImage(uploadFile).then((value) => FirebaseFirestore.instance
+          .collection('paper')
+          .add({
+            'id': data.id,
+            'content': data.content,
+            'date': data.date,
+            'title': data.title,
+            'view': data.view,
+            'writer': data.writer,
+            'imagePath': data.imagePath
+          })
+          .then((value) => print("project updated"))
+          .then((value) => Navigator.pop(context, true)));
+    } else {
+      return FirebaseFirestore.instance
+          .collection('work')
+          .add({
+            'id': data.id,
+            'content': data.content,
+            'date': data.date,
+            'title': data.title,
+            'view': data.view,
+            'writer': data.writer,
+          })
+          .then((value) => print("project updated"))
+          .then((value) => Navigator.pop(context, true));
+    }
   }
 
   // update field

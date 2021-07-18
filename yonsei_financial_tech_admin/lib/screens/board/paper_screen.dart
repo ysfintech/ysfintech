@@ -77,7 +77,7 @@ class _PaperScreenState extends State<PaperScreen> {
                                         style: bodyWhiteTextStyle)
                                   ],
                                 )),
-                            onPressed: () => showBottomSheet(context: context, builder: (context) => Post(id: list.length + 1)),
+                            onPressed: () => showBottomSheet(context: context, builder: (context) => Post(id: list.length + 1, collection: 'paper',)),
                           ))),
                   SizedBox(
                     height: 20,
