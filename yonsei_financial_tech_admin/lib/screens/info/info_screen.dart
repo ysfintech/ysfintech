@@ -40,6 +40,43 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+        future: introData,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('ERROR 500'));
+          } else if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          print(snapshot.data.docs[0]);
+          return SingleChildScrollView(
+            controller: _controller,
+            child: Container(
+                padding: paddingH20V20,
+                child: Column(
+                  children: <Widget>[
+                    ItemEditor(
+                      data: new Information(
+                          title: snapshot.data.docs[0].data()['title'],
+                          content: snapshot.data.docs[0].data()['content']),
+                      editable: false,
+                      id: snapshot.data.docs[0].id,
+                    ),
+                    SizedBox(
+                      height: 50,
+                      child: divider,
+                    ),
+                    ItemEditor(
+                      data: new Information(
+                          title: snapshot.data.docs[1].data()['title'],
+                          content: snapshot.data.docs[1].data()['content']),
+                      editable: false,
+                      id: snapshot.data.docs[1].id,
+                    )
+                  ],
+                )),
+          );
+        });
+    return FutureBuilder(
       future: Future.wait([introData, eduData]),
       builder: (context, AsyncSnapshot<List<QuerySnapshot>> snapshot) {
         if (snapshot.hasError) {
@@ -49,6 +86,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: Container(
                   width: 30, height: 30, child: CircularProgressIndicator()));
         } else {
+          print(snapshot.data.length);
           return SingleChildScrollView(
             controller: _controller,
             child: Container(

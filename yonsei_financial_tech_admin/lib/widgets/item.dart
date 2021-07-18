@@ -29,15 +29,19 @@ class _ItemEditorState extends State<ItemEditor> {
   // data update
   Future<void> updateDocument(String collection, String id,
       {String title, String content}) {
-    if (collection == 'Introduction') {
-      // print('update introduction');
-      return intro.doc(id).update({'content': content}).then(
+    // if (collection == 'Introduction') {
+    //   // print('update introduction');
+    //   return intro.doc(id).update({'content': content}).then(
+    //       (value) => print("introduction updated"));
+    // } else {
+    //   // print('update education');
+    //   return edu.doc(id).update({'content': content}).then(
+    //       (value) => print("introduction updated"));
+    // }
+    /// since July, 18 only [intro] is used in admin
+    /// send data to [intro] firestore
+    return intro.doc(id).update({'content': content}).then(
           (value) => print("introduction updated"));
-    } else {
-      // print('update education');
-      return edu.doc(id).update({'content': content}).then(
-          (value) => print("introduction updated"));
-    }
   }
 
   @override
