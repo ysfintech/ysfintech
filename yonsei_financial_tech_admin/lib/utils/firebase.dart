@@ -52,7 +52,7 @@ class Field {
           .add({
             'id': data.id,
             'content': data.content,
-            'date': data.date,
+            'date': Timestamp.fromDate(data.date),
             'title': data.title,
             'view': data.view,
             'writer': data.writer,
@@ -66,7 +66,7 @@ class Field {
           .add({
             'id': data.id,
             'content': data.content,
-            'date': data.date,
+            'date': Timestamp.fromDate(data.date),
             'title': data.title,
             'view': data.view,
             'writer': data.writer,

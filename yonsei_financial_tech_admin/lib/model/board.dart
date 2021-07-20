@@ -22,7 +22,8 @@ class Project {
 class Board {
   final int id;
   final String content;
-  final String date;
+  // final String date;
+  final DateTime date;
   final String title;
   final int view;
   final String writer;
@@ -38,10 +39,12 @@ class Board {
       this.imagePath});
 
   factory Board.from(QueryDocumentSnapshot snapshot) {
+    Timestamp timestamp = snapshot.data()['date'];
+    DateTime dateTime = timestamp.toDate();
     return Board(
         id: snapshot.data()['id'],
         content: snapshot.data()['content'],
-        date: snapshot.data()['date'],
+        date: dateTime,
         title: snapshot.data()['title'],
         view: snapshot.data()['view'],
         writer: snapshot.data()['writer'],

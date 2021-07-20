@@ -150,7 +150,7 @@ class _BoardDetailState extends State<BoardDetail> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  Text('date ' + widget.data.date, style: bodyTextStyle),
+                  Text('date ' + widget.data.date.toIso8601String(), style: bodyTextStyle),
                   SizedBox(width: 10),
                   Text('view ' + widget.data.view.toString(),
                       style: bodyTextStyle),

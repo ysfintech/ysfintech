@@ -114,7 +114,7 @@ class _WorkScreenState extends State<WorkScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            '작성일자 ' + list[index].date,
+                            '작성일자 ' + list[index].date.toIso8601String(),
                           ),
                           SizedBox(width: 10),
                           Text(
