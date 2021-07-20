@@ -96,6 +96,7 @@ class _WorkPageState extends State<WorkPage> {
                             }
                           }
                         });
+                        data = data.reversed.toList();
                         return Column(
                           children: <Widget>[
                             // MENU BAR ----------------------------------------------------------
@@ -163,7 +164,7 @@ class _WorkPageState extends State<WorkPage> {
                                   )
                                 : SizedBox(height: 0),
                             // Board  ------------------------------------------------------------
-                            WorkArticle(
+                            BoardArticle(
                               board: data,
                               storage: 'work',
                               onRefresh: _refresh,

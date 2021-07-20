@@ -96,6 +96,7 @@ class _PaperPageState extends State<PaperPage> {
                             }
                           }
                         });
+                        data = data.reversed.toList();
                         return Column(
                           children: <Widget>[
                             // MENU BAR ----------------------------------------------------------
@@ -129,21 +130,23 @@ class _PaperPageState extends State<PaperPage> {
                                                 MainAxisAlignment.end,
                                             children: <Widget>[
                                               TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    filterText = '';
-                                                  });
-                                                },
-                                                child: Text("'" +
-                                                    filterText +
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      filterText = '';
+                                                    });
+                                                  },
+                                                  child: Text(
                                                     "'" +
-                                                    ' 관련 검색 결과 초기화',
+                                                        filterText +
+                                                        "'" +
+                                                        ' 관련 검색 결과 초기화',
                                                     style: h3WhiteTextStyle,
-                                                ),
-                                                style: ButtonStyle(
-                                                  overlayColor: MaterialStateColor.resolveWith(
-                                                    (states) => Colors.transparent))
-                                              ),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                      overlayColor: MaterialStateColor
+                                                          .resolveWith(
+                                                              (states) => Colors
+                                                                  .transparent))),
                                               TextButton.icon(
                                                   onPressed: () {
                                                     setState(() {

@@ -10,8 +10,9 @@ import 'package:yonsei_financial_tech/model/board.dart';
 
 // 2021/04/15 added
 class BoardDetail extends StatefulWidget {
+  final String storage;
   final BoardItem data;
-  BoardDetail({@required this.data});
+  BoardDetail({@required this.data, @required this.storage});
 
   @override
   _BoardDetailState createState() => _BoardDetailState();
@@ -41,7 +42,7 @@ class _BoardDetailState extends State<BoardDetail> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         MenuBar(),
-                        BoardDetailArticle(data: widget.data),
+                        BoardDetailArticle(data: widget.data, storage: widget.storage,),
                         Footer(),
                       ]))),
         ],
@@ -52,7 +53,8 @@ class _BoardDetailState extends State<BoardDetail> {
 
 class BoardDetailArticle extends StatefulWidget {
   final BoardItem data;
-  BoardDetailArticle({@required this.data});
+  final String storage;
+  BoardDetailArticle({@required this.data, @required this.storage});
 
   @override
   _BoardDetailArticleState createState() => _BoardDetailArticleState();
@@ -61,18 +63,19 @@ class BoardDetailArticle extends StatefulWidget {
 class _BoardDetailArticleState extends State<BoardDetailArticle> {
   BoardItem data;
 
-  final String storageURL = "gs://ysfintech-homepage.appspot.com/paper/";
+  String storageURL;
 
   @override
   void initState() {
     super.initState();
     data = widget.data;
+    storageURL = "gs://ysfintech-homepage.appspot.com/${widget.storage}/";
   }
 
   String getOnlyTitle(String imagePath) {
     String res;
     res = imagePath
-        .substring('gs://ysfintech-homepage.appspot.com/paper/'.length);
+        .substring(storageURL.length);
     return res;
   }
 
@@ -161,7 +164,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                           spacing: 20.0,
                           // DATE | VIEW
                           children: <Widget>[
-                            Text('작성일자:  ' + data.date, style: bodyTextStyle),
+                            Text('작성일자:  ' + data.date.toIso8601String().substring(0,10), style: bodyTextStyle),
                             Text('조회수: ' + data.view.toString(),
                                 style: bodyTextStyle),
                             Text('작성자: ' + data.writer, style: bodyTextStyle)
