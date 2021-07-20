@@ -1,13 +1,21 @@
 # Yonsei-Financial-Technology-Center
 Web page build by Flutter, Yonsei University Center for Financial-Technology
 
-**published beta version** 🚀
+**published admin version** 🚀
 
-[Go to link 👉](https://ysfintech-homepage.web.app/#/) 
+[Go to link 👉](https://ysfintech-homepage-admin.web.app) 
 
 **published release version** 🚀
 
 [Go to link 👉](https://fintech.yonsei.ac.kr/#/)
+
+
+## Recent Update
+- WorkingPaper와 WorkingList 게시판 내 순서를 수정하였습니다.
+  - 따라서 Firebase 내 Field 값을 조정하였습니다. `String` → `Timestamp`
+*07.20.21 seunghwanly updated*
+
+---
 
 # Usage
 [Notion link](https://www.notion.so/Guideline-99d08d08c7b24403b1813cd735000468)
