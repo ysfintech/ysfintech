@@ -150,7 +150,7 @@ class MenuBar extends StatelessWidget {
                             onPressed: () =>
                                 Navigator.pushNamed(context, Routes.work),
                             child: Text(
-                              "Worklist",
+                              "Collaboration",
                               style: buttonTextStyle,
                             ),
                             style: ButtonStyle(
