@@ -192,7 +192,7 @@ class _WorkPageState extends State<WorkPage> {
           SizedBox(height: 100),
           Container(
             child: Text(
-              'Worklist',
+              'Collaboration',
               style: h1TextStyle,
             ),
           ),
