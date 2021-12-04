@@ -126,9 +126,26 @@ class MenuBar extends StatelessWidget {
                             style: ButtonStyle(
                                 overlayColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.transparent))),
+                        //TextButton(
+                        //    onPressed: () =>
+                        //        Navigator.pushNamed(context, Routes.publish),
+                        //    child: Text(
+                        //      "Publication",
+                        //      style: buttonTextStyle,
+                        //    ),
+                        //    style: ButtonStyle(
+                        //        overlayColor: MaterialStateColor.resolveWith(
+                        //            (states) => Colors.transparent))),
                         TextButton(
-                            onPressed: () =>
-                                Navigator.pushNamed(context, Routes.publish),
+                            onPressed: () async {
+                              var dest =
+                                  'https://orcid.org/0000-0003-3611-183X';
+                              await canLaunch(dest)
+                                  .then((value) => launch(dest))
+                                  // ignore: return_of_invalid_type_from_catch_error
+                                  .catchError(
+                                      (err) => print('could not launch'));
+                            },
                             child: Text(
                               "Publication",
                               style: buttonTextStyle,
