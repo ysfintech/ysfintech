@@ -20,7 +20,7 @@ class _PublishPageState extends State<PublishPage> {
   @override
   void initState() {
     super.initState();
-    _iFrameElement.src = 'https://orcid.org/0000-0003-3611-183X';
+    _iFrameElement.src = 'https://scholar.google.co.kr/citations?user=Snutek0AAAAJ&hl=en';
     _iFrameElement.style.border = 'none';
 
     /**
