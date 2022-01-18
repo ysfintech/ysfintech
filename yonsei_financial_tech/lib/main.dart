@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
               return PublishPage();
             case Routes.work:
               return WorkPage();
-            case Routes.work:
+            case Routes.seminar:
               return SeminarPage();
             default:
               return SizedBox.shrink();
