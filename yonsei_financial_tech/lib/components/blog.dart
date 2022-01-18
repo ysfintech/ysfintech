@@ -94,7 +94,7 @@ class MenuBar extends StatelessWidget {
                       child: Container(
                     alignment: Alignment.centerRight,
                     child: Wrap(
-                      spacing: 30,
+                      spacing: 20,
                       children: <Widget>[
                         TextButton(
                             onPressed: () =>
