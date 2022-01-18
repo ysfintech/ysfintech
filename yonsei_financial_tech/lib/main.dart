@@ -8,6 +8,7 @@ import 'package:yonsei_financial_tech/pages/project/project.dart';
 import 'package:yonsei_financial_tech/pages/publication/publication.dart';
 import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
 import 'package:yonsei_financial_tech/pages/worklist/worklist.dart';
+import 'package:yonsei_financial_tech/pages/seminar/seminar.dart';
 // routes
 import './routes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -49,6 +50,8 @@ class MyApp extends StatelessWidget {
               return PublishPage();
             case Routes.work:
               return WorkPage();
+            case Routes.work:
+              return SeminarPage();
             default:
               return SizedBox.shrink();
           }
