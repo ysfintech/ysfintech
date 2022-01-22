@@ -13,13 +13,16 @@ class SignInController extends GetxController {
 
   @override
   void onInit() {
-    /// sth to init
-    emailController.text = 'example@gmail.com';
+    emailController.text = '';
+    passwordController.text = '';
     super.onInit();
   }
 
   @override
   void onClose() {
+    // TODO: reason why dispose is making issue "textEditingController is being used after disposed"
+    // emailController.dispose();
+    // passwordController.dispose();
     super.onClose();
   }
 
@@ -38,7 +41,12 @@ class SignInController extends GetxController {
         password: passwordController.text.trim(),
       );
     } else {
-      Get.snackbar('오류', '다시 시도해주세요');
+      Get.snackbar(
+        '오류',
+        '다시 시도해주세요',
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
+      );
     }
   }
 }
