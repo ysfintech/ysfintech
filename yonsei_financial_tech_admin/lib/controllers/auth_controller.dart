@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -46,14 +47,26 @@ class AuthController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        Get.snackbar('Not Registered User', e.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Not Registered User',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
+        );
       } else if (e.code == 'wrong-password') {
-        Get.snackbar('Wrong Password!', e.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Wrong Password!',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
+        );
       } else {
-        Get.snackbar('Unknwon', e.toString(),
-            snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Unknown',
+          e.toString(),
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
+        );
       }
     }
   }
