@@ -26,9 +26,9 @@ class AuthController extends GetxController {
   /// if the user is none, bring the screen to initial screen
   _setInitialScreen(User? user) {
     if (user == null)
-      Get.toNamed('/');
+      Get.offAllNamed('/');
     else
-      Get.toNamed('/home');
+      Get.offAllNamed('/home');
   }
 
   /// sign-in with firebase on email

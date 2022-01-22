@@ -9,6 +9,7 @@ final helpButton = InkWell(
     '문의하기',
     '준비중이에요 😄',
     snackPosition: SnackPosition.BOTTOM,
+    margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
   ),
   child: Container(
     decoration: BoxDecoration(

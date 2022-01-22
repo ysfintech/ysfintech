@@ -9,21 +9,25 @@ const lightWhite = Color.fromRGBO(242, 242, 242, 1.0);
 const ligthBlack = Color.fromRGBO(51, 51, 51, 1.0);
 const ligthGray = Color.fromRGBO(119, 119, 119, 1.0);
 
-enum ThemeColor { primary, second, title, body, caption }
+enum ThemeColor { primary, second, title, body, caption, gradient }
 
 extension ThemeColorExtension on ThemeColor {
-  Color get color {
+  dynamic get color {
     switch (this) {
       case ThemeColor.primary:
-        return Color(0xFF0083B0);
+        return Color(0xFF3a7bd5);
       case ThemeColor.second:
-        return Color(0xFF00B4DB);
+        return Color(0xFF00d2ff);
       case ThemeColor.title:
         return Color(0xFF111111);
       case ThemeColor.body:
         return Color(0xFF3A3A3A);
       case ThemeColor.caption:
         return Color.fromRGBO(119, 119, 119, 1.0);
+      case ThemeColor.gradient:
+        return LinearGradient(
+          colors: [ThemeColor.primary.color, ThemeColor.second.color],
+        );
       default:
         return Color.fromRGBO(0, 55, 111, 1.0);
     }

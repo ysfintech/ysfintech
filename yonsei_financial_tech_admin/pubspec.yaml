@@ -20,6 +20,8 @@ dependencies:
   # updated at 1.1.0 + 1
   get:
   google_fonts: ^2.0.0
+  # json 
+  json_annotation:
   # auth
   firebase_auth: ^1.1.4
   firebase_core: "^1.0.3"
@@ -41,6 +43,9 @@ dependencies:
   flutter_svg: ^1.0.3
 
 dev_dependencies:
+  # json
+  build_runner:
+  json_serializable:
   flutter_test:
     sdk: flutter
 
