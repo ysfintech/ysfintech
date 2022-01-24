@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/controllers/intro_edu_controller.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/color.dart';
@@ -93,13 +97,28 @@ class IntroBottomSheet extends StatelessWidget {
                 Center(
                   child: Padding(
                     padding: padding(0, 32),
-                    child: Image.network(controller.imagePath.value,
-                        width: Get.width * 0.25, height: Get.height * 0.25,
-                        errorBuilder: (context, error, stackTrace) {
-                      final res = controller.imagePath.string;
-                      print(res);
-                      return Text('LOAD FAILED 🥶');
-                    }),
+
+                    /// check if user has selected image to upload
+                    /// if not get the image from firebase first
+                    child: controller.imageFile.value.isEmpty
+                        ? CachedNetworkImage(
+                            imageUrl: controller.imagePath.value,
+                            placeholder: (_, url) =>
+                                CircularProgressIndicator.adaptive(),
+                            errorWidget: (_, url, err) =>
+                                Text('LOAD FAILED 🥶\n$err'),
+
+                            /// size
+                            width: Get.width * 0.25,
+                            height: Get.height * 0.25,
+                          )
+                        : Image.memory(
+                            controller.imageFile.value,
+
+                            /// size
+                            width: Get.width * 0.25,
+                            height: Get.height * 0.25,
+                          ),
                   ),
                 ),
                 TextButton.icon(
@@ -109,7 +128,7 @@ class IntroBottomSheet extends StatelessWidget {
                     color: Colors.white,
                   ),
                   label: Text(
-                    '파일 선택하기',
+                    '파일 선택 후 덮어쓰기',
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),

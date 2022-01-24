@@ -1,8 +1,10 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'dart:html' as html;
 
 /// custom code
 import 'package:ysfintech_admin/model/introduction.dart';
@@ -42,7 +44,7 @@ class IntroEditController extends GetxController {
   final introRoleCtlr = TextEditingController();
   final introTitleCtlr = TextEditingController();
 
-  var imageFile = html.File([], '').obs;
+  Rx<Uint8List> imageFile = Uint8List(0).obs;
 
   var imagePath = ''.obs;
 
@@ -62,18 +64,19 @@ class IntroEditController extends GetxController {
     introNameCtlr.text = intro.name;
     introRoleCtlr.text = intro.role;
     introTitleCtlr.text = intro.title;
-    // final downloadURL = await FireStoreDB.getDownloadURL(intro.imagePath);
-    final downloadURL = await FireStoreDB.getDownloadURL('gs://ysfintech-homepage.appspot.com/introduction/1.jpg');
+    final downloadURL = await FireStoreDB.getDownloadURL(
+        'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
     if (downloadURL != '') imagePath.value = downloadURL;
     update();
   }
 
   /// select image file from PC
   void selectFile() async {
-    final picked = await ImagePickerWeb.getImage(outputType: ImageType.file);
-    if (picked != null) {
-      imageFile = picked;
-      update([imageFile]);
+    final Uint8List picked =
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    if (picked.isNotEmpty) {
+      imageFile.value = picked;
+      update();
     }
   }
 }
