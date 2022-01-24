@@ -10,6 +10,9 @@ import 'package:ysfintech_admin/widgets/common.dart';
 class IntroEduScreen extends GetResponsiveView<IntroEduController> {
   @override
   Widget build(BuildContext context) {
+    // TODO: put controller here?
+    Get.put(IntroEditController());
+
     return Scaffold(
       /// common Widgets
       appBar: CommonWidget.appBar,

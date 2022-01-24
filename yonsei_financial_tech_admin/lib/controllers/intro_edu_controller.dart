@@ -9,6 +9,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 /// custom code
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
+import 'package:ysfintech_admin/utils/spacing.dart';
 
 class IntroEduController extends GetxController {
   /// map is need for updating and removing the document from the colletion
@@ -37,6 +38,8 @@ class IntroEduController extends GetxController {
 }
 
 class IntroEditController extends GetxController {
+  bool isLoading = false;
+
   final introKey = GlobalKey<FormFieldState>();
 
   final introContentCtlr = TextEditingController();
@@ -44,8 +47,9 @@ class IntroEditController extends GetxController {
   final introRoleCtlr = TextEditingController();
   final introTitleCtlr = TextEditingController();
 
+  RxInt introID = 0.obs;
+  RxString docID = ''.obs;
   Rx<Uint8List> imageFile = Uint8List(0).obs;
-
   var imagePath = ''.obs;
 
   @override
@@ -59,11 +63,13 @@ class IntroEditController extends GetxController {
     super.onClose();
   }
 
-  void initTextControllers(Intro intro) async {
+  void initTextControllers(String passedDocID, Intro intro) async {
     introContentCtlr.text = intro.content;
     introNameCtlr.text = intro.name;
     introRoleCtlr.text = intro.role;
     introTitleCtlr.text = intro.title;
+    introID.value = intro.id;
+    docID.value = passedDocID;
     final downloadURL = await FireStoreDB.getDownloadURL(
         'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
     if (downloadURL != '') imagePath.value = downloadURL;
@@ -77,6 +83,50 @@ class IntroEditController extends GetxController {
     if (picked.isNotEmpty) {
       imageFile.value = picked;
       update();
+    }
+  }
+
+  void updateIntro() async {
+    /// send loading is `true`
+    isLoading = true;
+    update();
+
+    final hasImage = imageFile.value.isNotEmpty;
+    final data = Intro(
+      content: introContentCtlr.text,
+      id: introID.value,
+      imagePath: imagePath.value, // will be updated at next procedure
+      name: introNameCtlr.text,
+      role: introRoleCtlr.text,
+      title: introTitleCtlr.text,
+    );
+    late final result;
+    if (hasImage) {
+      result =
+          await FireStoreDB.updateIntro(docID.value, data, imageFile.value);
+    } else {
+      result = await FireStoreDB.updateIntroWithoutImage(docID.value, data);
+    }
+
+    /// after all procedures
+    isLoading = false;
+    update();
+
+    if (result) {
+      Get.back();
+      Get.snackbar(
+        'Introduction 수정',
+        '성공적으로 업데이트 했습니다!',
+        snackPosition: SnackPosition.BOTTOM,
+        margin: marginH40V40,
+      );
+    } else {
+      Get.snackbar(
+        'Introduction 수정',
+        '업데이트 실패 🤯',
+        snackPosition: SnackPosition.BOTTOM,
+        margin: marginH40V40,
+      );
     }
   }
 }

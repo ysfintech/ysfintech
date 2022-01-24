@@ -1,4 +1,6 @@
 import 'dart:html' as html;
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -44,23 +46,40 @@ class FireStoreDB {
     await fireStoreInst.collection('introduction').add(data.toJson());
   }
 
-  static updateIntro(String docID, Intro data, html.File file) async {
-    final imagePath = baseURL + 'introduction' + '/' + file.name;
+  static updateIntro(String docID, Intro data, Uint8List file) async {
+    // TODO: image type has been hard coded!
+    final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
     final introStorage = fireStorageInst.ref(imagePath);
 
     /// upload image first and get the result
-    final uploadResult = await introStorage.putBlob(file);
+    final uploadResult = await introStorage.putData(
+      file,
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
 
     if (uploadResult.state == TaskState.success) {
       Intro updatedData = Intro.clone(data)
         ..shallowCopyWithImagePath(imagePath);
 
       /// update document's fields
-      fireStoreInst
+      return await fireStoreInst
           .collection('introduction')
           .doc(docID)
-          .update(updatedData.toJson());
+          .update(updatedData.toJson())
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
     }
+    return Future.value(false);
+  }
+
+  static updateIntroWithoutImage(String docID, Intro data) async {
+    return await fireStoreInst
+        .collection('introduction')
+        .doc(docID)
+        .update(data.toJson())
+        // return bool for the result
+        .then((value) => Future.value(true))
+        .catchError((err) => Future.value(false));
   }
 
   static removeIntro(String docID) {

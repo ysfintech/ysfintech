@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/controllers/intro_edu_controller.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/color.dart';
@@ -11,15 +8,15 @@ import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
-class IntroBottomSheet extends StatelessWidget {
-  static final controller = Get.put(IntroEditController());
+class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
+  // static final controller = Get.put(IntroEditController());
 
   late final String docID;
   late final Intro passedData;
   late final double parentHeight;
 
   IntroBottomSheet(this.docID, this.passedData, this.parentHeight) {
-    controller.initTextControllers(passedData);
+    controller.initTextControllers(docID, passedData);
   }
 
   @override
@@ -35,112 +32,128 @@ class IntroBottomSheet extends StatelessWidget {
         color: Colors.white,
       ),
       // needs ListView and Forms
-      child: Form(
-        key: controller.introKey,
-        child: Obx(() => ListView(
-              children: [
-                Text(
-                  '수정하기',
-                  style: ThemeTyphography.subTitle.style
-                      .copyWith(color: ThemeColor.primary.color),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
+      child:
 
-                /// title
-                ListTile(
-                  leading: Icon(Icons.title_rounded),
-                  title: TextFormField(
-                    controller: controller.introTitleCtlr,
-                    decoration: CommonWidget.inputDecoration('제목을 입력해주세요...'),
-                    style: ThemeTyphography.body.style,
-                  ),
-                  minLeadingWidth: Get.size.width * 0.05,
-                ),
-
-                /// content
-                ListTile(
-                  leading: Icon(Icons.article_rounded),
-                  title: TextFormField(
-                    controller: controller.introContentCtlr,
-                    decoration: CommonWidget.inputDecoration('내용을 입력해주세요...'),
-                    style: ThemeTyphography.body.style,
-                    maxLines: null,
-                  ),
-                  minLeadingWidth: Get.size.width * 0.05,
-                ),
-
-                /// writer's name
-                ListTile(
-                  leading: Icon(Icons.person),
-                  title: TextFormField(
-                    controller: controller.introNameCtlr,
-                    decoration: CommonWidget.inputDecoration('작성자를 입력해주세요...'),
-                    style: ThemeTyphography.body.style,
-                  ),
-                  minLeadingWidth: Get.size.width * 0.05,
-                ),
-
-                /// writer's role
-                ListTile(
-                  leading: Icon(Icons.star_outline_rounded),
-                  title: TextFormField(
-                    controller: controller.introRoleCtlr,
-                    decoration: CommonWidget.inputDecoration('역할를 입력해주세요...'),
-                    style: ThemeTyphography.body.style,
-                  ),
-                  minLeadingWidth: Get.size.width * 0.05,
-                ),
-
-                /// image upload
-                Center(
-                  child: Padding(
-                    padding: padding(0, 32),
-
-                    /// check if user has selected image to upload
-                    /// if not get the image from firebase first
-                    child: controller.imageFile.value.isEmpty
-                        ? CachedNetworkImage(
-                            imageUrl: controller.imagePath.value,
-                            placeholder: (_, url) =>
-                                CircularProgressIndicator.adaptive(),
-                            errorWidget: (_, url, err) =>
-                                Text('LOAD FAILED 🥶\n$err'),
-
-                            /// size
-                            width: Get.width * 0.25,
-                            height: Get.height * 0.25,
-                          )
-                        : Image.memory(
-                            controller.imageFile.value,
-
-                            /// size
-                            width: Get.width * 0.25,
-                            height: Get.height * 0.25,
+          /// check if the update process is being running
+          controller.isLoading
+              ? CircularProgressIndicator.adaptive()
+              : Form(
+                  key: controller.introKey,
+                  child: Obx(() => ListView(
+                        children: [
+                          Text(
+                            '수정하기',
+                            style: ThemeTyphography.subTitle.style
+                                .copyWith(color: ThemeColor.primary.color),
                           ),
-                  ),
+                          SizedBox(
+                            height: 32,
+                          ),
+
+                          /// title
+                          ListTile(
+                            leading: Icon(Icons.title_rounded),
+                            title: TextFormField(
+                              controller: controller.introTitleCtlr,
+                              decoration:
+                                  CommonWidget.inputDecoration('제목을 입력해주세요...'),
+                              style: ThemeTyphography.body.style,
+                            ),
+                            minLeadingWidth: Get.size.width * 0.05,
+                          ),
+
+                          /// content
+                          ListTile(
+                            leading: Icon(Icons.article_rounded),
+                            title: TextFormField(
+                              controller: controller.introContentCtlr,
+                              decoration:
+                                  CommonWidget.inputDecoration('내용을 입력해주세요...'),
+                              style: ThemeTyphography.body.style,
+                              maxLines: null,
+                            ),
+                            minLeadingWidth: Get.size.width * 0.05,
+                          ),
+
+                          /// writer's name
+                          ListTile(
+                            leading: Icon(Icons.person),
+                            title: TextFormField(
+                              controller: controller.introNameCtlr,
+                              decoration: CommonWidget.inputDecoration(
+                                  '작성자를 입력해주세요...'),
+                              style: ThemeTyphography.body.style,
+                            ),
+                            minLeadingWidth: Get.size.width * 0.05,
+                          ),
+
+                          /// writer's role
+                          ListTile(
+                            leading: Icon(Icons.star_outline_rounded),
+                            title: TextFormField(
+                              controller: controller.introRoleCtlr,
+                              decoration:
+                                  CommonWidget.inputDecoration('역할를 입력해주세요...'),
+                              style: ThemeTyphography.body.style,
+                            ),
+                            minLeadingWidth: Get.size.width * 0.05,
+                          ),
+
+                          /// image upload
+                          Center(
+                            child: Padding(
+                              padding: padding(0, 32),
+
+                              /// check if user has selected image to upload
+                              /// if not get the image from firebase first
+                              child: controller.imageFile.value.isEmpty
+                                  ? CachedNetworkImage(
+                                      imageUrl: controller.imagePath.value,
+                                      placeholder: (_, url) =>
+                                          CircularProgressIndicator.adaptive(),
+                                      errorWidget: (_, url, err) =>
+                                          Text('LOAD FAILED 🥶\n$err'),
+
+                                      /// size
+                                      width: Get.width * 0.25,
+                                      height: Get.height * 0.25,
+                                    )
+                                  : Image.memory(
+                                      controller.imageFile.value,
+
+                                      /// size
+                                      width: Get.width * 0.25,
+                                      height: Get.height * 0.25,
+                                    ),
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: controller.selectFile,
+                            icon: Icon(
+                              Icons.file_upload_rounded,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              '파일 선택 후 덮어쓰기',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            style: TextButton.styleFrom(
+                              backgroundColor: ThemeColor.primary.color,
+                              shape: StadiumBorder(),
+                              padding: padding(0, 16),
+                            ),
+                          ),
+
+                          /// save
+                          TextButton(
+                            onPressed: controller.updateIntro,
+                            child: Text('저장하기'),
+                          ),
+                        ],
+                      )),
                 ),
-                TextButton.icon(
-                  onPressed: controller.selectFile,
-                  icon: Icon(
-                    Icons.file_upload_rounded,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    '파일 선택 후 덮어쓰기',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  style: TextButton.styleFrom(
-                    backgroundColor: ThemeColor.primary.color,
-                    shape: StadiumBorder(),
-                    padding: padding(0, 16),
-                  ),
-                ),
-              ],
-            )),
-      ),
     );
   }
 }
