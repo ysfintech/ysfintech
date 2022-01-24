@@ -34,11 +34,44 @@ class IntroEduController extends GetxController {
   List<Intro> get intros => introList.value;
   Map<int, String> get docIDs => introDocIDMap.value;
 
-  void editIntroContent(Intro data) {}
+  void removeIntro(String docID, int id) async {
+    bool userResponse = false;
+    await Get.defaultDialog(
+      title: '삭제하기',
+      middleText: '해당 Introduction을 삭제하시겠어요?',
+      textCancel: '취소',
+      textConfirm: '삭제',
+      confirmTextColor: Colors.white,
+      onConfirm: () {
+        userResponse = true;
+        Get.back();
+      },
+    );
+    if (userResponse) {
+      final res = await FireStoreDB.removeIntro(docID, id);
+      if (res) {
+        Get.snackbar(
+          'Introduction 삭제',
+          '성공적으로 삭제 됐습니다!',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: marginH40V40,
+        );
+      } else {
+        Get.snackbar(
+          'Introduction 삭제',
+          '삭제하지 못했어요..!',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: marginH40V40,
+        );
+      }
+    }
+  }
 }
 
 class IntroEditController extends GetxController {
-  bool isLoading = false;
+  RxBool isLoading = false.obs;
+
+  RxBool isNewData = false.obs;
 
   final introKey = GlobalKey<FormFieldState>();
 
@@ -50,7 +83,7 @@ class IntroEditController extends GetxController {
   RxInt introID = 0.obs;
   RxString docID = ''.obs;
   Rx<Uint8List> imageFile = Uint8List(0).obs;
-  var imagePath = ''.obs;
+  RxString imagePath = ''.obs;
 
   @override
   void onInit() {
@@ -63,16 +96,25 @@ class IntroEditController extends GetxController {
     super.onClose();
   }
 
-  void initTextControllers(String passedDocID, Intro intro) async {
+  void initTextControllers(
+    bool isNew,
+    String passedDocID,
+    Intro intro,
+  ) async {
+    isNewData.value = isNew;
     introContentCtlr.text = intro.content;
     introNameCtlr.text = intro.name;
     introRoleCtlr.text = intro.role;
     introTitleCtlr.text = intro.title;
     introID.value = intro.id;
     docID.value = passedDocID;
-    final downloadURL = await FireStoreDB.getDownloadURL(
-        'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
-    if (downloadURL != '') imagePath.value = downloadURL;
+    if (intro.imagePath != '') {
+      final downloadURL = await FireStoreDB.getDownloadURL(
+          'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
+      if (downloadURL != '') imagePath.value = downloadURL;
+    } else {
+      imagePath.value = '';
+    }
     update();
   }
 
@@ -88,7 +130,7 @@ class IntroEditController extends GetxController {
 
   void updateIntro() async {
     /// send loading is `true`
-    isLoading = true;
+    isLoading.value = true;
     update();
 
     final hasImage = imageFile.value.isNotEmpty;
@@ -101,15 +143,22 @@ class IntroEditController extends GetxController {
       title: introTitleCtlr.text,
     );
     late final result;
-    if (hasImage) {
-      result =
-          await FireStoreDB.updateIntro(docID.value, data, imageFile.value);
+
+    /// update procedure
+    if (!isNewData.value) {
+      if (hasImage) {
+        result =
+            await FireStoreDB.updateIntro(docID.value, data, imageFile.value);
+      } else {
+        result = await FireStoreDB.updateIntroWithoutImage(docID.value, data);
+      }
     } else {
-      result = await FireStoreDB.updateIntroWithoutImage(docID.value, data);
+      print('add new intro');
+      result = await FireStoreDB.addNewIntro(data, imageFile.value);
     }
 
     /// after all procedures
-    isLoading = false;
+    isLoading.value = false;
     update();
 
     if (result) {

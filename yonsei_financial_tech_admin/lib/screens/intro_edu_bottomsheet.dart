@@ -11,12 +11,18 @@ import 'package:ysfintech_admin/widgets/common.dart';
 class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
   // static final controller = Get.put(IntroEditController());
 
-  late final String docID;
-  late final Intro passedData;
-  late final double parentHeight;
+  final String docID;
+  final Intro passedData;
+  final double parentHeight;
+  final bool isNewData;
 
-  IntroBottomSheet(this.docID, this.passedData, this.parentHeight) {
-    controller.initTextControllers(docID, passedData);
+  IntroBottomSheet(
+      this.isNewData, this.docID, this.passedData, this.parentHeight) {
+    controller.initTextControllers(
+      isNewData,
+      docID,
+      passedData,
+    );
   }
 
   @override
@@ -35,14 +41,14 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
       child:
 
           /// check if the update process is being running
-          controller.isLoading
+          controller.isLoading.isTrue
               ? CircularProgressIndicator.adaptive()
               : Form(
                   key: controller.introKey,
                   child: Obx(() => ListView(
                         children: [
                           Text(
-                            '수정하기',
+                            isNewData ? '작성하기' : '수정하기',
                             style: ThemeTyphography.subTitle.style
                                 .copyWith(color: ThemeColor.primary.color),
                           ),
@@ -108,7 +114,9 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                               /// if not get the image from firebase first
                               child: controller.imageFile.value.isEmpty
                                   ? CachedNetworkImage(
-                                      imageUrl: controller.imagePath.value,
+                                      imageUrl: controller.imagePath.value != ''
+                                          ? controller.imagePath.value
+                                          : 'https://picsum.photos/id/237/200/300', // TODO: basic image has been hard-coded !
                                       placeholder: (_, url) =>
                                           CircularProgressIndicator.adaptive(),
                                       errorWidget: (_, url, err) =>
@@ -136,8 +144,9 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             label: Text(
                               '파일 선택 후 덮어쓰기',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                             style: TextButton.styleFrom(
                               backgroundColor: ThemeColor.primary.color,
@@ -145,11 +154,23 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                               padding: padding(0, 16),
                             ),
                           ),
+                          SizedBox(height: 16),
 
                           /// save
                           TextButton(
                             onPressed: controller.updateIntro,
-                            child: Text('저장하기'),
+                            child: Text(
+                              '저장하기',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                            style: TextButton.styleFrom(
+                              backgroundColor: ThemeColor.highlight.color,
+                              shape: StadiumBorder(),
+                              padding: padding(0, 16),
+                            ),
                           ),
                         ],
                       )),

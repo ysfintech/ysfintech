@@ -42,24 +42,42 @@ class FireStoreDB {
     });
   }
 
-  static addNewIntro(Intro data) async {
-    await fireStoreInst.collection('introduction').add(data.toJson());
-  }
+  static Future<bool> uploadImage(String filePath, Uint8List file) async {
+    final storageRef = fireStorageInst.ref(filePath);
 
-  static updateIntro(String docID, Intro data, Uint8List file) async {
-    // TODO: image type has been hard coded!
-    final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
-    final introStorage = fireStorageInst.ref(imagePath);
-
-    /// upload image first and get the result
-    final uploadResult = await introStorage.putData(
+    /// upload image
+    final uploadResult = await storageRef.putData(
       file,
       SettableMetadata(contentType: 'image/jpeg'),
     );
 
-    if (uploadResult.state == TaskState.success) {
-      Intro updatedData = Intro.clone(data)
-        ..shallowCopyWithImagePath(imagePath);
+    if (uploadResult.state == TaskState.success)
+      return true;
+    else
+      return false;
+  }
+
+  static addNewIntro(Intro data, Uint8List file) async {
+    final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
+    final imageUploadResult = await uploadImage(imagePath, file);
+    if (imageUploadResult) {
+      Intro updatedData = Intro.clone(data).shallowCopyWithImagePath(imagePath);
+      return await fireStoreInst
+          .collection('introduction')
+          .add(updatedData.toJson())
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+    }
+    return Future.value(false);
+  }
+
+  static updateIntro(String docID, Intro data, Uint8List file) async {
+    final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
+
+    final imageUploadResult = await uploadImage(imagePath, file);
+
+    if (imageUploadResult) {
+      Intro updatedData = Intro.clone(data).shallowCopyWithImagePath(imagePath);
 
       /// update document's fields
       return await fireStoreInst
@@ -82,8 +100,24 @@ class FireStoreDB {
         .catchError((err) => Future.value(false));
   }
 
-  static removeIntro(String docID) {
-    fireStoreInst.collection('introduction').doc(docID).delete();
+  static Future<bool> removeIntro(String docID, int id) async {
+    /// remove storage first
+    final storageResult = await fireStorageInst
+        .ref(baseURL + 'introduction' + '/$id.jpg')
+        .delete()
+        .then((value) => Future.value(true))
+        .catchError((err) => Future.value(false));
+
+    if (storageResult) {
+      return await fireStoreInst
+          .collection('introduction')
+          .doc(docID)
+          .delete()
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+    } else {
+      return Future.value(false);
+    }
   }
 }
 
