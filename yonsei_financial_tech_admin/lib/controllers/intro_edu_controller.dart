@@ -69,10 +69,15 @@ class IntroEduController extends GetxController {
 }
 
 class IntroEditController extends GetxController {
+  /// for CircularProgressingIndicator in Presentation Layer
   RxBool isLoading = false.obs;
 
+  /// to use this method with 2 different state
+  /// First, updating the existing data in the FireStore
+  /// Second, adding new data into FireStore and Storage as well
   RxBool isNewData = false.obs;
 
+  /// for TextFormFields and validators
   final introKey = GlobalKey<FormFieldState>();
 
   final introContentCtlr = TextEditingController();
@@ -80,19 +85,15 @@ class IntroEditController extends GetxController {
   final introRoleCtlr = TextEditingController();
   final introTitleCtlr = TextEditingController();
 
+  /// for values that needs to be observable
   RxInt introID = 0.obs;
   RxString docID = ''.obs;
   Rx<Uint8List> imageFile = Uint8List(0).obs;
   RxString imagePath = ''.obs;
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onClose() {
-    // TODO: implement onClose
+    // TODO: TextEditingController needs to be disposed?
     super.onClose();
   }
 
@@ -102,11 +103,15 @@ class IntroEditController extends GetxController {
     Intro intro,
   ) async {
     isNewData.value = isNew;
+
+    /// form data
     introContentCtlr.text = intro.content;
     introNameCtlr.text = intro.name;
     introRoleCtlr.text = intro.role;
     introTitleCtlr.text = intro.title;
     introID.value = intro.id;
+
+    /// observable data
     docID.value = passedDocID;
     if (intro.imagePath != '') {
       final downloadURL = await FireStoreDB.getDownloadURL(
@@ -120,8 +125,9 @@ class IntroEditController extends GetxController {
 
   /// select image file from PC
   void selectFile() async {
-    final Uint8List picked =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+    final Uint8List picked = await ImagePickerWeb.getImage(
+      outputType: ImageType.bytes,
+    );
     if (picked.isNotEmpty) {
       imageFile.value = picked;
       update();
@@ -153,7 +159,6 @@ class IntroEditController extends GetxController {
         result = await FireStoreDB.updateIntroWithoutImage(docID.value, data);
       }
     } else {
-      print('add new intro');
       result = await FireStoreDB.addNewIntro(data, imageFile.value);
     }
 

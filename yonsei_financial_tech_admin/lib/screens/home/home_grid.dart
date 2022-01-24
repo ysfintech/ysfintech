@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ysfintech_admin/controllers/auth_controller.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 
 import 'package:ysfintech_admin/utils/spacing.dart';

@@ -24,6 +24,27 @@ class FireStoreDB {
           .getDownloadURL()
           .then((result) => result, onError: (err) => '');
 
+  /// Upload Image to the specific reference
+  /// which will be different by collections
+  /// this methods handles data in the Cloud Storage
+  static Future<bool> uploadImage(String filePath, Uint8List file) async {
+    final storageRef = fireStorageInst.ref(filePath);
+
+    /// upload image
+    final uploadResult = await storageRef.putData(
+      file,
+      SettableMetadata(contentType: 'image/jpeg'),
+    );
+
+    if (uploadResult.state == TaskState.success)
+      return true;
+    else
+      return false;
+  }
+
+  /// # `Introduction` methods: CRUD =======================================================================
+
+  /// `READ` retrieve all Introduction
   /// returns `List<Intro>` at first index of List
   /// and `Map<int, String>` at the second index, which maps Intro's `id` with FireStore's `document id`
   static Stream<List<dynamic>> getIntroStream() {
@@ -42,21 +63,7 @@ class FireStoreDB {
     });
   }
 
-  static Future<bool> uploadImage(String filePath, Uint8List file) async {
-    final storageRef = fireStorageInst.ref(filePath);
-
-    /// upload image
-    final uploadResult = await storageRef.putData(
-      file,
-      SettableMetadata(contentType: 'image/jpeg'),
-    );
-
-    if (uploadResult.state == TaskState.success)
-      return true;
-    else
-      return false;
-  }
-
+  /// `CREATE` add a new Introduction
   static addNewIntro(Intro data, Uint8List file) async {
     final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
     final imageUploadResult = await uploadImage(imagePath, file);
@@ -71,6 +78,7 @@ class FireStoreDB {
     return Future.value(false);
   }
 
+  /// `UPDATE` update existing Introduction with new Image
   static updateIntro(String docID, Intro data, Uint8List file) async {
     final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
 
@@ -90,6 +98,7 @@ class FireStoreDB {
     return Future.value(false);
   }
 
+  /// `UPDATE` update existing Introduction without uploading new image
   static updateIntroWithoutImage(String docID, Intro data) async {
     return await fireStoreInst
         .collection('introduction')
@@ -100,6 +109,8 @@ class FireStoreDB {
         .catchError((err) => Future.value(false));
   }
 
+  /// `DELETE` remove existing Introduction
+  /// and also stored Image file in the storage
   static Future<bool> removeIntro(String docID, int id) async {
     /// remove storage first
     final storageResult = await fireStorageInst
@@ -119,6 +130,22 @@ class FireStoreDB {
       return Future.value(false);
     }
   }
+
+  /// # `Project` methods: CRUD =======================================================================
+  
+  /// `READ` retrieve all the documents in the Project
+  // static Stream<List<Project>> getProjectStream() async {
+
+  // }
+  /// `CREATE` add a new document to the Project
+  
+  /// `UPDATE` update the specific document in the Project with a new File
+  
+  /// `UPDATE` update the specific document in the Project without a new File
+   
+  /// `DELETE` remove existing document in the Project 
+  /// as well as File in the Storage
+  
 }
 
 // class Field {
