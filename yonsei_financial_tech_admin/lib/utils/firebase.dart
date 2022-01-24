@@ -6,7 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // model
-import 'package:ysfintech_admin/model/board.dart';
+import 'package:ysfintech_admin/model/project.dart';
 
 /// models
 import '../model/introduction.dart';
