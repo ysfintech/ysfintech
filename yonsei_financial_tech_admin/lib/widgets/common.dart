@@ -13,7 +13,7 @@ class CommonWidget {
   static final mapper = {
     'Introduction & Education': ['/home/intro_edu', Icons.info_outline_rounded],
     'People': ['', Icons.people_alt_rounded],
-    'Project': ['', Icons.science_rounded],
+    'Project': ['/home/project', Icons.science_rounded],
     'Papers': ['', Icons.contact_page_rounded],
     'Worklist': ['', Icons.workspaces_rounded],
     'Seminars': ['', Icons.present_to_all_rounded],

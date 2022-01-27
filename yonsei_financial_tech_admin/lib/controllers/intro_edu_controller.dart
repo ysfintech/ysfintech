@@ -19,8 +19,6 @@ class IntroEduController extends GetxController {
   /// value - FireStore document id
   Rx<Map<int, String>> introDocIDMap = Rx<Map<int, String>>({});
 
-  late RxString eduContent;
-
   @override
   void onInit() {
     final fetched = FireStoreDB.getIntroStream();

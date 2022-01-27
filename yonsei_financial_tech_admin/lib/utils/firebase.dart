@@ -132,20 +132,56 @@ class FireStoreDB {
   }
 
   /// # `Project` methods: CRUD =======================================================================
-  
-  /// `READ` retrieve all the documents in the Project
-  // static Stream<List<Project>> getProjectStream() async {
 
-  // }
+  /// `READ` retrieve all the documents in the Project
+  /// returns `documents` and `mapper` to link with
+  /// `docID` and `id` field in the document
+  static Stream<List<dynamic>> getProjectStream() {
+    return fireStoreInst
+        .collection('project')
+        .snapshots()
+        .map((QuerySnapshot query) {
+      /// create return values
+      List<Project> projects = [];
+      Map<int, String> mapper = {};
+      for (var doc in query.docs) {
+        Project parsedDoc = Project.fromJson(doc.data());
+        projects.add(parsedDoc); // project
+        mapper.addAll({parsedDoc.id: doc.id}); // mapper
+      }
+      return [projects, mapper];
+    });
+  }
+
   /// `CREATE` add a new document to the Project
-  
+  static addNewProject(Project data, Uint8List file) async {
+    // store file(image) into storage first
+    final imagePath = baseURL + 'project' + '/${data.id}.jpg';
+
+    final imageUploadResult = await uploadImage(imagePath, file);
+
+    if (imageUploadResult) {
+      /// if the file(image) has been uploaded successfully,
+      /// then add new document to FireStore
+      final Project newProject = Project.cloneWithNewImagePath(data, imagePath);
+      return await fireStoreInst
+          .collection('project')
+          .add(newProject.toJson())
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+    }
+
+    /// else return failure
+    return Future.value(false);
+  }
+
   /// `UPDATE` update the specific document in the Project with a new File
-  
+  // static 
   /// `UPDATE` update the specific document in the Project without a new File
-   
-  /// `DELETE` remove existing document in the Project 
+
+  /// `DELETE` remove existing document in the Project
   /// as well as File in the Storage
-  
+
 }
 
 // class Field {

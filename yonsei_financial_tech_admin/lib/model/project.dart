@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'project.g.dart';
 
 @JsonSerializable()
@@ -23,9 +22,20 @@ class Project {
     required this.title,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json) => _$ProjectFromJson(json);
+  factory Project.fromJson(Map<String, dynamic> json) =>
+      _$ProjectFromJson(json);
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 
+  factory Project.cloneWithNewImagePath(Project p, String newImagePath) =>
+      Project(
+        content: p.content,
+        from: p.from,
+        id: p.id,
+        imageDesc: p.imageDesc,
+        imagePath: newImagePath,
+        period: p.period,
+        title: p.title,
+      );
 }
 
 

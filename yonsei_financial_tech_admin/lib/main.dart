@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/bindings/auth_binding.dart';
 import 'package:ysfintech_admin/bindings/intro_edu_binding.dart';
+import 'package:ysfintech_admin/bindings/project_binding.dart';
 import 'package:ysfintech_admin/bindings/sigin_binding.dart';
 
 import 'package:ysfintech_admin/controllers/auth_controller.dart';
@@ -13,6 +14,7 @@ import 'package:ysfintech_admin/screens/intro_edu_bottomsheet.dart';
 import 'package:ysfintech_admin/screens/intro_edu_edit.dart';
 import 'package:ysfintech_admin/screens/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ysfintech_admin/screens/projects.dart';
 
 import 'screens/home/home_grid.dart';
 
@@ -71,10 +73,14 @@ class Home extends StatelessWidget {
           // binding: AuthBinding(),
         ),
         GetPage(
-          name: '/home/intro_edu',
-          page: () => IntroEduScreen(),
-          binding: IntroEduBinding()
-        )
+            name: '/home/intro_edu',
+            page: () => IntroEduScreen(),
+            binding: IntroEduBinding()),
+        GetPage(
+          name: '/home/project',
+          page: () => ProjectScreen(),
+          binding: ProjectBinding(),
+        ),
       ],
       defaultTransition: Transition.zoom,
     );
