@@ -10,8 +10,8 @@ import 'package:ysfintech_admin/bindings/sigin_binding.dart';
 import 'package:ysfintech_admin/controllers/auth_controller.dart';
 
 import 'package:ysfintech_admin/screens/home/home_screen.dart';
-import 'package:ysfintech_admin/screens/intro_edu_bottomsheet.dart';
-import 'package:ysfintech_admin/screens/intro_edu_edit.dart';
+import 'package:ysfintech_admin/screens/introduction_edit.dart';
+import 'package:ysfintech_admin/screens/introduction.dart';
 import 'package:ysfintech_admin/screens/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ysfintech_admin/screens/projects.dart';

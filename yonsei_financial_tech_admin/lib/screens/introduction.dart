@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/controllers/intro_edu_controller.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
-import 'package:ysfintech_admin/screens/intro_edu_bottomsheet.dart';
+import 'package:ysfintech_admin/screens/introduction_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/controllers/project_controller.dart';
 import 'package:ysfintech_admin/model/project.dart';
+import 'package:ysfintech_admin/screens/project_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
@@ -10,8 +11,40 @@ import 'package:ysfintech_admin/utils/typography.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
 class ProjectScreen extends GetResponsiveView<ProjectController> {
+  void openEditScreen(Project? project) {
+    if (project != null) {
+      final hasDocID = controller.docIDs.containsKey(project.id);
+      if (hasDocID) {
+        final docID = controller.docIDs[project.id]!;
+
+        /// open the bottom sheet
+        Get.bottomSheet(ProjectBottomSheet(
+          docID: docID,
+          parentHeight: Get.height,
+          project: project,
+        ));
+      } else {
+        Get.snackbar('오류', '해당 Document ID가 존재하지 않습니다.');
+      }
+    }
+
+    /// new data
+    else {
+      final newID = controller.projects.length + 1;
+
+      /// open the bottom sheet
+      Get.bottomSheet(ProjectBottomSheet(
+        docID: newID,
+        parentHeight: Get.height,
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    /// put dependency for bottom sheet
+    Get.put(ProjectEditController());
+
     return Scaffold(
       appBar: CommonWidget.appBar,
       drawer: CommonWidget.drawer,
@@ -34,6 +67,7 @@ class ProjectScreen extends GetResponsiveView<ProjectController> {
                   controller.projects
                       .map(
                         (e) => ListTile(
+                          onTap: () => openEditScreen(e),
                           leading: CircleAvatar(
                             backgroundColor: ThemeColor.primary.color,
                             child: Text(
