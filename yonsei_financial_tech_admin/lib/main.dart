@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ysfintech_admin/bindings/auth_binding.dart';
+import 'package:ysfintech_admin/bindings/board_binding.dart';
 import 'package:ysfintech_admin/bindings/intro_edu_binding.dart';
 import 'package:ysfintech_admin/bindings/project_binding.dart';
 import 'package:ysfintech_admin/bindings/sigin_binding.dart';
 
 import 'package:ysfintech_admin/controllers/auth_controller.dart';
+import 'package:ysfintech_admin/screens/collaboration.dart';
 
 import 'package:ysfintech_admin/screens/home/home_screen.dart';
 import 'package:ysfintech_admin/screens/introduction_edit.dart';
@@ -80,6 +82,11 @@ class Home extends StatelessWidget {
           name: '/home/project',
           page: () => ProjectScreen(),
           binding: ProjectBinding(),
+        ),
+        GetPage(
+          name: '/home/collaboration',
+          page: () => CollaborationScreen(),
+          binding: CollaborationBinding(),
         ),
       ],
       defaultTransition: Transition.zoom,

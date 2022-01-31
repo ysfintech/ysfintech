@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:ysfintech_admin/model/board.dart';
 
 /// model
 import 'package:ysfintech_admin/model/project.dart';
@@ -13,7 +14,7 @@ import '../model/introduction.dart';
 /// Every data used for update, which includes [Intro], [Project], ...
 /// the inner property called `imagePath` is updated via this class (`FireStoreDB`)
 /// not from any different class
-/// 
+///
 /// [UPDATE] always use `cloneCLASSNAMEWithNewImagePath` function and make shallow copy or deep copy
 /// to make update in FireStore
 /// or else the image cannot be rendered at the main page, client and admin in both sites
@@ -248,6 +249,34 @@ class FireStoreDB {
     } else {
       return Future.value(false);
     }
+  }
+
+  /// # `Working Papers`, `Collaboration` and `Seminars`
+  /// the pages that use `Board` for data-model
+  ///
+  /// need the colllection names for database management
+
+  /// returns `List<Board>` at the first object of return
+  /// and `Map<int, String>` at the last object of the returned object
+  /// bind it with your controller's observable data !
+  static Stream<List<dynamic>> getItemsOfBoard(String collectionName) {
+    return fireStoreInst.collection(collectionName).snapshots().map((query) {
+      /// parse the items with `Board`
+      /// variables to save items and return in `Stream` format
+      List<Board> boards = [];
+      Map<int, String> mapper = {};
+
+      for (var doc in query.docs) {
+        final Board parsedDoc = Board.fromJson(doc);
+        boards.add(parsedDoc);
+        mapper.addAll({
+          parsedDoc.id: doc.id
+        }); //  add document ID (hashed ID) and id(key) inside the document
+      }
+
+      /// return List<Stream>
+      return [boards, mapper];
+    });
   }
 }
 

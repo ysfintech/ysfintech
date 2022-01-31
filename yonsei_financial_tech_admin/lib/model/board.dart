@@ -7,7 +7,7 @@ class Board {
   final String title;
   final int view;
   final String writer;
-  final String imagePath;
+  final String? imagePath;
 
   Board({
     required this.id,
@@ -16,7 +16,7 @@ class Board {
     required this.title,
     required this.view,
     required this.writer,
-    required this.imagePath,
+    this.imagePath,
   });
 
   factory Board.fromJson(QueryDocumentSnapshot snapshot) {
