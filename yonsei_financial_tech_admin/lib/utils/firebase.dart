@@ -1,16 +1,22 @@
-import 'dart:html' as html;
-import 'dart:io';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-// model
+
+/// model
 import 'package:ysfintech_admin/model/project.dart';
 
 /// models
 import '../model/introduction.dart';
 
+/// * REMEMBER *
+/// Every data used for update, which includes [Intro], [Project], ...
+/// the inner property called `imagePath` is updated via this class (`FireStoreDB`)
+/// not from any different class
+/// 
+/// [UPDATE] always use `cloneCLASSNAMEWithNewImagePath` function and make shallow copy or deep copy
+/// to make update in FireStore
+/// or else the image cannot be rendered at the main page, client and admin in both sites
 class FireStoreDB {
   static String baseURL = 'gs://ysfintech-homepage.appspot.com/';
 
@@ -183,13 +189,52 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update the specific document in the Project with a new File
-  // static
+  static updateProject(String docID, Project data, Uint8List file) async {
+    final imagePath = baseURL + 'project' + '/${data.id}.png';
+
+    /// remove previous image in the store first
+    final hasRemoved = await deleteImage(imagePath);
+
+    /// then upload image at the same path due to the result
+    if (hasRemoved) {
+      final isUploaded = await uploadImage(imagePath, file);
+      final clonedDatat = Project.cloneWithNewImagePath(data, imagePath);
+
+      /// check if the image has been uploaded successfully
+      if (isUploaded) {
+        /// then update new data to FireStore
+        return await fireStoreInst
+            .collection('project')
+            .doc(docID)
+            .update(data.toJson())
+            .then((value) => Future.value(true))
+            .catchError((err) => Future.value(false));
+      }
+      log('the image has not been uploaded successfully', name: 'PROJECT');
+      return Future.value(false);
+    }
+    log('the image has not been removed successfully', name: 'PROJECT');
+    return Future.value(false);
+  }
+
   /// `UPDATE` update the specific document in the Project without a new File
+  static updateProjectWithoutImage(String docID, Project data) async {
+    final imagePath = baseURL + 'project/${data.id}.png';
+    final clonedData = Project.cloneWithNewImagePath(data, imagePath);
+
+    /// only update FireStore
+    return await fireStoreInst
+        .collection('project')
+        .doc(docID)
+        .update(clonedData.toJson())
+        .then((value) => Future.value(true))
+        .catchError((err) => Future.value(false));
+  }
 
   /// `DELETE` remove existing document in the Project
   /// as well as File in the Storage
   static removeProject(String hashedID, int docID) async {
-     /// remove storage first
+    /// remove storage first
     final storageResult =
         await deleteImage(baseURL + 'project' + '/$docID.png');
 

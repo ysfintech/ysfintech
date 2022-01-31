@@ -36,6 +36,16 @@ class Project {
         period: p.period,
         title: p.title,
       );
+
+  factory Project.cloneWithNewID(Project p, int id) => Project(
+        content: p.content,
+        from: p.from,
+        id: id,
+        imageDesc: p.imageDesc,
+        imagePath: p.imagePath,
+        period: p.period,
+        title: p.title,
+      );
 }
 
 
