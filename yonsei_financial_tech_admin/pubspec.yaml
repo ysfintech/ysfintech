@@ -19,7 +19,6 @@ environment:
 dependencies:
   # updated at 1.1.0 + 1
   get:
-  google_fonts: ^2.0.0
   # json 
   json_annotation:
   # auth

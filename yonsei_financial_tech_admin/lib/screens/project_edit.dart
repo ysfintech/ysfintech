@@ -21,13 +21,12 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
   }) {
     /// init data
     controller.getInfoFrom(docID, project);
-  }
+  }  
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: parentHeight * 0.8,
-      width: Get.width,
+      height: parentHeight * 0.9,
       padding: padding(32, 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -73,6 +72,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      /// image part
                       Text(
                         'Image',
                         style: ThemeTyphography.subTitle.style,
@@ -99,6 +99,27 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                         ),
                       ),
                       SizedBox(height: 16),
+                      TextButton.icon(
+                        onPressed: controller.uploadNewImage,
+                        label: Text(
+                          '업로드 및 덮어쓰기',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.upload_rounded,
+                          color: Colors.white,
+                        ),
+                        style: TextButton.styleFrom(
+                          backgroundColor: ThemeColor.highlight.color,
+                          padding: padding(16, 8),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+
+                      /// image description part
                       Text(
                         'Description',
                         style: ThemeTyphography.subTitle.style,

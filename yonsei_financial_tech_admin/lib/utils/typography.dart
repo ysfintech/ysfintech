@@ -1,86 +1,87 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 
-// HEAD LINE 1
-TextStyle h1TextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 30,
-        color: textPrimary,
-        letterSpacing: 1.5,
-        fontWeight: FontWeight.w700));
+// import 'package:google_fonts/google_fonts.dart';
 
-TextStyle h1WhiteTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 30,
-        color: Colors.white,
-        letterSpacing: 1.5,
-        fontWeight: FontWeight.w700));
+// // HEAD LINE 1
+// TextStyle h1TextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 30,
+//         color: textPrimary,
+//         letterSpacing: 1.5,
+//         fontWeight: FontWeight.w700));
 
-// HEAD LINE 2
-TextStyle h2TextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-  fontSize: 24,
-  color: textPrimary,
-  fontWeight: FontWeight.w600,
-  letterSpacing: 1,
-));
+// TextStyle h1WhiteTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 30,
+//         color: Colors.white,
+//         letterSpacing: 1.5,
+//         fontWeight: FontWeight.w700));
 
-TextStyle h2WhiteTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-  fontSize: 24,
-  color: lightWhite,
-  fontWeight: FontWeight.w600,
-  letterSpacing: 1,
-));
+// // HEAD LINE 2
+// TextStyle h2TextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//   fontSize: 24,
+//   color: textPrimary,
+//   fontWeight: FontWeight.w600,
+//   letterSpacing: 1,
+// ));
 
-// HEAD LINE 3
-TextStyle h3TextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 20,
-        color: textSecondary,
-        letterSpacing: 1,
-        fontWeight: FontWeight.w500));
+// TextStyle h2WhiteTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//   fontSize: 24,
+//   color: lightWhite,
+//   fontWeight: FontWeight.w600,
+//   letterSpacing: 1,
+// ));
 
-TextStyle h3WhiteTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 20,
-        color: lightWhite,
-        letterSpacing: 1,
-        fontWeight: FontWeight.w500));
+// // HEAD LINE 3
+// TextStyle h3TextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 20,
+//         color: textSecondary,
+//         letterSpacing: 1,
+//         fontWeight: FontWeight.w500));
 
-// CONTENT
-TextStyle bodyTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 16, color: textPrimary, fontWeight: FontWeight.w400));
+// TextStyle h3WhiteTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 20,
+//         color: lightWhite,
+//         letterSpacing: 1,
+//         fontWeight: FontWeight.w500));
 
-TextStyle bodyWhiteTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 16, color: lightWhite, fontWeight: FontWeight.w400));
+// // CONTENT
+// TextStyle bodyTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 16, color: textPrimary, fontWeight: FontWeight.w400));
 
-// button
-TextStyle buttonTextStyle = GoogleFonts.nunito(
-    textStyle: TextStyle(
-        fontSize: 14,
-        color: textPrimary,
-        letterSpacing: 1,
-        fontWeight: FontWeight.w500));
+// TextStyle bodyWhiteTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 16, color: lightWhite, fontWeight: FontWeight.w400));
 
-// image DESC
-TextStyle imageDescTextStyle =
-    GoogleFonts.nunito(textStyle: TextStyle(fontSize: 12, color: ligthGray));
+// // button
+// TextStyle buttonTextStyle = GoogleFonts.nunito(
+//     textStyle: TextStyle(
+//         fontSize: 14,
+//         color: textPrimary,
+//         letterSpacing: 1,
+//         fontWeight: FontWeight.w500));
 
-TextStyle imageDescTexWhitetStyle =
-    GoogleFonts.nunito(textStyle: TextStyle(fontSize: 12, color: lightWhite));
+// // image DESC
+// TextStyle imageDescTextStyle =
+//     GoogleFonts.nunito(textStyle: TextStyle(fontSize: 12, color: ligthGray));
 
-// Advanced
-TextStyle titleIntroductionTextStyle = TextStyle(
-    fontSize: 40,
-    color: Colors.white,
-    fontWeight: FontWeight.w800,
-    // fontFamily: 'Yonsei'
-    fontFamily: GoogleFonts.nunito().fontFamily);
+// TextStyle imageDescTexWhitetStyle =
+//     GoogleFonts.nunito(textStyle: TextStyle(fontSize: 12, color: lightWhite));
+
+// // Advanced
+// TextStyle titleIntroductionTextStyle = TextStyle(
+//     fontSize: 40,
+//     color: Colors.white,
+//     fontWeight: FontWeight.w800,
+//     // fontFamily: 'Yonsei'
+//     fontFamily: GoogleFonts.nunito().fontFamily);
 
 enum ThemeTyphography { title, subTitle, body, caption }
 
