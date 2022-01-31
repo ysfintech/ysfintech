@@ -21,7 +21,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
   }) {
     /// init data
     controller.getInfoFrom(docID, project);
-  }  
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +210,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
             ),
             SizedBox(height: 32),
 
-            /// save button
+            /// `onSAVE` ============================================================
             ElevatedButton(
               onPressed: controller.save,
               child: Text(
@@ -225,7 +225,29 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                 elevation: 8.0,
                 primary: ThemeColor.highlight.color,
               ),
-            )
+            ),
+
+            /// `onDELETE` ============================================================
+            SizedBox(height: 32),
+
+            /// save button
+            project != null
+                ? ElevatedButton(
+                    onPressed: () => controller.removeProject(project!.id),
+                    child: Text(
+                      '삭제하기',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      shape: StadiumBorder(),
+                      elevation: 8.0,
+                      primary: ThemeColor.second.color,
+                    ),
+                  )
+                : SizedBox(),
           ],
         ),
       ),

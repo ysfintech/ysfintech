@@ -42,6 +42,13 @@ class FireStoreDB {
       return false;
   }
 
+  static Future<bool> deleteImage(String filePath) async =>
+      await fireStorageInst
+          .ref(filePath)
+          .delete()
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+
   /// # `Introduction` methods: CRUD =======================================================================
 
   /// `READ` retrieve all Introduction
@@ -113,11 +120,8 @@ class FireStoreDB {
   /// and also stored Image file in the storage
   static Future<bool> removeIntro(String docID, int id) async {
     /// remove storage first
-    final storageResult = await fireStorageInst
-        .ref(baseURL + 'introduction' + '/$id.jpg')
-        .delete()
-        .then((value) => Future.value(true))
-        .catchError((err) => Future.value(false));
+    final storageResult =
+        await deleteImage(baseURL + 'introduction' + '/$id.jpg');
 
     if (storageResult) {
       return await fireStoreInst
@@ -156,7 +160,7 @@ class FireStoreDB {
   /// `CREATE` add a new document to the Project
   static addNewProject(Project data, Uint8List file) async {
     // store file(image) into storage first
-    final imagePath = baseURL + 'project' + '/${data.id}.jpg';
+    final imagePath = baseURL + 'project' + '/${data.id}.png';
 
     final imageUploadResult = await uploadImage(imagePath, file);
 
@@ -168,7 +172,10 @@ class FireStoreDB {
           .collection('project')
           .add(newProject.toJson())
           .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+          .catchError((err) {
+        print(err);
+        Future.value(false);
+      });
     }
 
     /// else return failure
@@ -176,12 +183,27 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update the specific document in the Project with a new File
-  // static 
+  // static
   /// `UPDATE` update the specific document in the Project without a new File
 
   /// `DELETE` remove existing document in the Project
   /// as well as File in the Storage
+  static removeProject(String hashedID, int docID) async {
+     /// remove storage first
+    final storageResult =
+        await deleteImage(baseURL + 'project' + '/$docID.png');
 
+    if (storageResult) {
+      return await fireStoreInst
+          .collection('project')
+          .doc(hashedID)
+          .delete()
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+    } else {
+      return Future.value(false);
+    }
+  }
 }
 
 // class Field {
