@@ -57,7 +57,8 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
               if (key != '')
                 Get.toNamed(key);
               else
-                Get.snackbar('route', 'preparing');
+                // TODO : Route with pages
+                CommonWidget.bottomSnackBar('route', 'preparing');
             },
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),

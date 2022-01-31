@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ysfintech_admin/widgets/common.dart';
 
 class AuthController extends GetxController {
   /// to use in single-ton
@@ -47,25 +48,19 @@ class AuthController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        Get.snackbar(
+        CommonWidget.bottomSnackBar(
           'Not Registered User',
           e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
         );
       } else if (e.code == 'wrong-password') {
-        Get.snackbar(
+        CommonWidget.bottomSnackBar(
           'Wrong Password!',
           e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
         );
       } else {
-        Get.snackbar(
+        CommonWidget.bottomSnackBar(
           'Unknown',
           e.toString(),
-          snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
         );
       }
     }

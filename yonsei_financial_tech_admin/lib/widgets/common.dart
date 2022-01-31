@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 /// custom data
@@ -33,7 +34,8 @@ class CommonWidget {
       padding: padding(0, 32),
       children: mapper.entries
           .map<Widget>((e) => ListTile(
-                onTap: () => Get.snackbar('r', 'message'),
+                // TODO: route pages
+                onTap: () => bottomSnackBar('title', 'msg'),
                 hoverColor: ThemeColor.second.color,
                 leading: Icon(
                   e.value.last as IconData,
@@ -79,11 +81,9 @@ class CommonWidget {
   );
 
   static var floatingButton = InkWell(
-    onTap: () => Get.snackbar(
+    onTap: () => bottomSnackBar(
       '문의하기',
-      '준비중이에요',
-      snackPosition: SnackPosition.BOTTOM,
-      // margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      '준비중이에요 ☺️',
     ),
     child: Container(
       decoration: BoxDecoration(
@@ -114,5 +114,21 @@ class CommonWidget {
           borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide(color: Colors.blueGrey),
         ),
+      );
+
+  /// for same snackbar to be revealed
+  static bottomSnackBar(String title, String msg) => Get.snackbar(
+        title,
+        msg,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
+        icon: SvgPicture.asset(
+          'yonsei_logo.svg',
+          key: UniqueKey(),
+          width: 40,
+          height: 40,
+        ),
+        padding: padding(32, 16),
+        backgroundColor: Colors.white.withOpacity(0.5),
       );
 }

@@ -10,6 +10,7 @@ import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
+import 'package:ysfintech_admin/widgets/common.dart';
 
 class IntroEduController extends GetxController {
   /// map is need for updating and removing the document from the colletion
@@ -48,18 +49,14 @@ class IntroEduController extends GetxController {
     if (userResponse) {
       final res = await FireStoreDB.removeIntro(docID, id);
       if (res) {
-        Get.snackbar(
+        CommonWidget.bottomSnackBar(
           'Introduction 삭제',
           '성공적으로 삭제 됐습니다!',
-          snackPosition: SnackPosition.BOTTOM,
-          margin: marginH40V40,
         );
       } else {
-        Get.snackbar(
+        CommonWidget.bottomSnackBar(
           'Introduction 삭제',
           '삭제하지 못했어요..!',
-          snackPosition: SnackPosition.BOTTOM,
-          margin: marginH40V40,
         );
       }
     }
@@ -166,18 +163,14 @@ class IntroEditController extends GetxController {
 
     if (result) {
       Get.back();
-      Get.snackbar(
+      CommonWidget.bottomSnackBar(
         'Introduction 수정',
         '성공적으로 업데이트 했습니다!',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: marginH40V40,
       );
     } else {
-      Get.snackbar(
+      CommonWidget.bottomSnackBar(
         'Introduction 수정',
         '업데이트 실패 🤯',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: marginH40V40,
       );
     }
   }

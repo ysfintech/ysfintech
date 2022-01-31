@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ysfintech_admin/widgets/common.dart';
 
 /// auth controller
 import 'auth_controller.dart';
@@ -41,11 +42,9 @@ class SignInController extends GetxController {
         password: passwordController.text.trim(),
       );
     } else {
-      Get.snackbar(
+      CommonWidget.bottomSnackBar(
         '오류',
         '다시 시도해주세요',
-        snackPosition: SnackPosition.BOTTOM,
-        margin: EdgeInsets.fromLTRB(16, 0, 16, 32),
       );
     }
   }
