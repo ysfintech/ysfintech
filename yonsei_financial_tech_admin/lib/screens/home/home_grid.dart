@@ -22,7 +22,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
   void onSelected(int index) {
     setState(() {
       if (gridViewColors[index] == unSelectedColor) {
-        gridViewColors[index] = ThemeColor.second.color;
+        gridViewColors[index] = ThemeColor.highlight.color;
       } else {
         gridViewColors[index] = unSelectedColor;
       }
@@ -38,48 +38,53 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
       floatingActionButton: CommonWidget.floatingButton,
 
       /// grid view body
-      body: Center(
-        child: GridView.builder(
-          shrinkWrap: true,
-          padding: padding(16, 16),
-          itemCount: CommonWidget.mapper.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3, // 3 x 3
-            childAspectRatio: 1, // width 1 / height 1
-            mainAxisSpacing: 16.0,
-            crossAxisSpacing: 16.0,
-          ),
-          itemBuilder: (context, index) => InkWell(
-            onHover: (value) => onSelected(index),
-            onTap: () {
-              final key =
-                  CommonWidget.mapper.values.elementAt(index).first.toString();
-              if (key != '')
-                Get.toNamed(key);
-              else
-                // TODO : Route with pages
-                CommonWidget.bottomSnackBar('route', 'preparing');
-            },
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: GridTile(
-                footer: GridTileBar(
-                  backgroundColor: gridViewColors[index],
-                  title: Text(
-                    CommonWidget.mapper.keys.elementAt(index),
-                    style: ThemeTyphography.subTitle.style,
-                    textAlign: TextAlign.center,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: ThemeColor.gradient.color,
+        ),
+        child: Center(
+          child: GridView.builder(
+            shrinkWrap: true,
+            padding: padding(16, 16),
+            itemCount: CommonWidget.mapper.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3, // 3 x 3
+              childAspectRatio: 1, // width 1 / height 1
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
+            ),
+            itemBuilder: (context, index) => InkWell(
+              onHover: (value) => onSelected(index),
+              onTap: () {
+                final key =
+                    CommonWidget.mapper.values.elementAt(index).first.toString();
+                if (key != '')
+                  Get.toNamed(key);
+                else
+                  // TODO : Route with pages
+                  CommonWidget.bottomSnackBar('route', 'preparing');
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: GridTile(
+                  footer: GridTileBar(
+                    backgroundColor: gridViewColors[index],
+                    title: Text(
+                      CommonWidget.mapper.keys.elementAt(index),
+                      style: ThemeTyphography.subTitle.style,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Icon(
-                    CommonWidget.mapper.values.elementAt(index).last
-                        as IconData,
-                    size: Get.width * 0.125,
-                    color: gridViewColors[index],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Icon(
+                      CommonWidget.mapper.values.elementAt(index).last
+                          as IconData,
+                      size: Get.width * 0.125,
+                      color: gridViewColors[index],
+                    ),
                   ),
                 ),
               ),

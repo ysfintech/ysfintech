@@ -77,7 +77,7 @@ class CommonWidget {
       decoration: BoxDecoration(gradient: ThemeColor.gradient.color),
     ),
     centerTitle: true,
-    elevation: 1.0,
+    elevation: 0.0,
   );
 
   static var floatingButton = InkWell(
