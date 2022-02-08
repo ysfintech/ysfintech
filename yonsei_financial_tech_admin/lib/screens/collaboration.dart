@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
 import 'package:ysfintech_admin/screens/board_list.dart';
+import 'package:ysfintech_admin/screens/collaboration_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
-import 'package:ysfintech_admin/widgets/common.dart';
+
 
 class CollaborationScreen extends GetResponsiveView<CollaborationController> {
   @override
   Widget build(BuildContext context) {
+
+    /// insert dependency
+    Get.put(CollaborationEditController());
+
     return Scaffold(
       body: CustomScrollView(
           controller: controller.scrollController.value,
@@ -39,8 +44,8 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
                       controller.scrollController.value.position.pixels > 0
                           ? SizedBox()
                           : Padding(
-                            padding: padding(8, 16),
-                            child: Form(
+                              padding: padding(8, 16),
+                              child: Form(
                                 key: UniqueKey(),
                                 child: TextFormField(
                                   controller: controller.searchController,
@@ -65,14 +70,19 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
                                   ),
                                 ),
                               ),
-                          ),
+                            ),
                     ],
                   ),
                 ),
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () => Get.bottomSheet(
+                    CollaborationBottomSheet(
+                      indexOfDoc: controller.parentBoards.length + 1,
+                      parentSize: Get.size,
+                    ),
+                  ),
                   icon: Icon(Icons.plus_one_rounded),
                 )
               ],

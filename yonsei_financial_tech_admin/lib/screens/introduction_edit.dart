@@ -17,7 +17,11 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
   final bool isNewData;
 
   IntroBottomSheet(
-      this.isNewData, this.docID, this.passedData, this.parentHeight) {
+    this.isNewData,
+    this.docID,
+    this.passedData,
+    this.parentHeight,
+  ) {
     controller.initTextControllers(
       isNewData,
       docID,

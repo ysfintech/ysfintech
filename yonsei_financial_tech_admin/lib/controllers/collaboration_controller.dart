@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/model/board.dart';
@@ -20,6 +22,8 @@ class CollaborationController extends BoardController {
 
   @override
   List<Board> get boards => parsedBoards.value;
+  
+  List<Board> get parentBoards => super.boards;
 
   @override
   void onInit() {
@@ -61,4 +65,41 @@ class CollaborationController extends BoardController {
     searchController.dispose();
     super.onClose();
   }
+}
+
+class CollaborationEditController extends GetxController {
+  /// needs [content], [date], [id], [title], [view], [writer]
+  TextEditingController contentController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+
+  Rx<int> indexOfDocument = Rx<int>(-1);
+  Rx<String?> docID = Rx<String?>(null);
+
+  @override
+  void onInit() {
+    contentController.text = '';
+    titleController.text = '';
+    super.onInit();
+  }
+
+  /// take input data as initializer
+  void init(Board? data, String? id, int docIdx) {
+    /// not related to `Board` Object
+    docID.value = id;
+    indexOfDocument.value = docIdx;
+
+    if (data != null) {
+      // existing document
+      contentController.text = data.content;
+      titleController.text = data.title;
+    } else {
+      // new document
+      // ...
+    }
+    update();
+  }
+
+  /// save document
+  /// send [imagePath] to null
+  void save() {}
 }
