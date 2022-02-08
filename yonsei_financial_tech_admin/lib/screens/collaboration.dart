@@ -20,7 +20,7 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
               floating: false,
               pinned: true,
               snap: false,
-              expandedHeight: 160,
+              expandedHeight: 220,
               flexibleSpace: Obx(
                 () => FlexibleSpaceBar(
                   centerTitle: true,
@@ -28,40 +28,44 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
                   title: Wrap(
                     spacing: 16.0,
                     children: [
-                      Text(
-                        '연세대학교 금융기술센터 Collaboration',
-                        style: ThemeTyphography.subTitle.style,
+                      Center(
+                        child: Text(
+                          '연세대학교 금융기술센터 Collaboration',
+                          style: ThemeTyphography.subTitle.style,
+                        ),
                       ),
 
                       /// search bar
                       controller.scrollController.value.position.pixels > 0
                           ? SizedBox()
-                          : Form(
-                              key: UniqueKey(),
-                              child: TextFormField(
-                                controller: controller.searchController,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2.0,
+                          : Padding(
+                            padding: padding(8, 16),
+                            child: Form(
+                                key: UniqueKey(),
+                                child: TextFormField(
+                                  controller: controller.searchController,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: BorderSide.none,
                                     ),
-                                  ),
+                                    fillColor: Colors.white,
+                                    filled: true,
 
-                                  hintText: '제목을 입력해주세요...',
-                                  labelStyle: ThemeTyphography.body.style,
+                                    hintText: '제목을 입력해주세요...',
+                                    labelStyle: ThemeTyphography.body.style,
 
-                                  /// [Button]
-                                  suffixIcon: TextButton.icon(
-                                    onPressed: () =>
-                                        controller.searchController.clear(),
-                                    icon: Icon(Icons.clear_rounded),
-                                    label: SizedBox(),
+                                    /// [Button]
+                                    suffixIcon: TextButton.icon(
+                                      onPressed: () =>
+                                          controller.searchController.clear(),
+                                      icon: Icon(Icons.clear_rounded),
+                                      label: SizedBox(),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
+                          ),
                     ],
                   ),
                 ),

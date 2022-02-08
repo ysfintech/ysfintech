@@ -3,7 +3,7 @@ import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
 
 /// `BoardController` gonna be the parent class of the other classes
-abstract class BoardController extends GetxController {
+class BoardController extends GetxController {
   final String collection;
 
   BoardController(this.collection);
@@ -21,6 +21,7 @@ abstract class BoardController extends GetxController {
         .bindStream(fetchedItems.map((e) => e.first as List<Board>).cast());
     boardMapper
         .bindStream(fetchedItems.map((e) => e.last as Map<int, String>).cast());
+    update();
     super.onInit();
   }
 }
