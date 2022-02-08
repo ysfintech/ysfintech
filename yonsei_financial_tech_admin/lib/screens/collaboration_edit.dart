@@ -14,8 +14,7 @@ class CollaborationBottomSheet
     extends GetResponsiveView<CollaborationEditController> {
   final Board? board;
   final String? docID;
-  final int indexOfDoc;
-  final Size parentSize;
+  final int docNumericID;
 
   /// if the `board` and `docID` are `null` then it means [new work]
   /// or else it must be editing an [exisiting work]
@@ -23,8 +22,7 @@ class CollaborationBottomSheet
     Key? key,
     this.board,
     this.docID,
-    required this.indexOfDoc,
-    required this.parentSize,
+    required this.docNumericID,
   })  : assert(
           (board != null && docID != null) || (board == null && docID == null),
         ),
@@ -44,12 +42,12 @@ class CollaborationBottomSheet
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: parentSize.height * 0.8,
+      height: Get.size.height * 0.8,
       padding: padding(16, 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(parentSize.width * 0.015),
-          topRight: Radius.circular(parentSize.width * 0.015),
+          topLeft: Radius.circular(Get.size.width * 0.015),
+          topRight: Radius.circular(Get.size.width * 0.015),
         ),
         color: Colors.white,
       ),
@@ -68,7 +66,7 @@ class CollaborationBottomSheet
 
             /// id
             Text(
-              'ID : $indexOfDoc',
+              'ID : $docNumericID',
               style: ThemeTyphography.subTitle.style,
             ),
             SizedBox(
@@ -122,6 +120,7 @@ class CollaborationBottomSheet
             ),
 
             if (docID != null)
+              SizedBox(height: 16),
               TextButton(
                 onPressed: () {},
                 child: Text(

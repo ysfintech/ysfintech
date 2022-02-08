@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
 import 'package:ysfintech_admin/model/board.dart';
 
 /// utils
@@ -25,9 +26,14 @@ import 'package:ysfintech_admin/utils/typography.dart';
 /// finally returns `SliverList`, must be wrapped it `CustomListView`
 
 class BoardListScreen extends StatelessWidget {
-
+  final Function withIndexOnPressed;
   final List<Board> list;
-  BoardListScreen({Key? key, required this.list}) : super(key: key);
+
+  BoardListScreen({
+    Key? key,
+    required this.list,
+    required this.withIndexOnPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +50,7 @@ class BoardListScreen extends StatelessWidget {
                   tileColor: Colors.white,
 
                   // TODO: get the `onTap` function via parameter
-                  onTap: () {},
+                  onTap: () => withIndexOnPressed(list.indexOf(item)),
 
                   /// `id`
                   leading: CircleAvatar(

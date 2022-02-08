@@ -42,4 +42,13 @@ class Board {
         "writer": writer,
         "imagePath": imagePath
       };
+
+  factory Board.clone(Board board) => Board(
+        id: board.id,
+        content: board.content,
+        date: board.date,
+        title: board.title,
+        view: board.view,
+        writer: board.writer,
+      );
 }

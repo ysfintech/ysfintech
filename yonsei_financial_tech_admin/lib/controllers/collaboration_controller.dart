@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/model/board.dart';
+import 'package:ysfintech_admin/screens/collaboration_edit.dart';
 
 import 'board_controller.dart';
 
@@ -10,7 +11,11 @@ class CollaborationController extends BoardController {
   static const String collectionName = 'work';
 
   CollaborationController() : super(collectionName) {
+    /// parent data fetch
     Get.put(() => BoardController(collectionName));
+
+    /// for editing
+    Get.lazyPut(() => CollaborationEditController());
   }
 
   /// for search bar
@@ -22,7 +27,7 @@ class CollaborationController extends BoardController {
 
   @override
   List<Board> get boards => parsedBoards.value;
-  
+
   List<Board> get parentBoards => super.boards;
 
   @override
@@ -64,6 +69,23 @@ class CollaborationController extends BoardController {
     scrollController.value.dispose();
     searchController.dispose();
     super.onClose();
+  }
+
+  /// for bottom sheet
+  void openBottomSheet(
+    final int index,
+  ) {
+    Get.bottomSheet(
+      index > parentBoards.length
+          ? CollaborationBottomSheet(
+              docNumericID: index,
+            )
+          : CollaborationBottomSheet(
+              board: boards[index],
+              docID: mapper[boards[index].id],
+              docNumericID: boards[index].id,
+            ),
+    );
   }
 }
 

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
+import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/screens/board_list.dart';
 import 'package:ysfintech_admin/screens/collaboration_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
-
 class CollaborationScreen extends GetResponsiveView<CollaborationController> {
   @override
   Widget build(BuildContext context) {
-
     /// insert dependency
     Get.put(CollaborationEditController());
 
@@ -77,12 +76,8 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () => Get.bottomSheet(
-                    CollaborationBottomSheet(
-                      indexOfDoc: controller.parentBoards.length + 1,
-                      parentSize: Get.size,
-                    ),
-                  ),
+                  onPressed: () => controller
+                      .openBottomSheet(controller.parentBoards.length + 1),
                   icon: Icon(Icons.plus_one_rounded),
                 )
               ],
@@ -90,7 +85,10 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
 
             /// list of boards
             Obx(
-              () => BoardListScreen(list: controller.boards),
+              () => BoardListScreen(
+                list: controller.boards,
+                withIndexOnPressed: controller.openBottomSheet,
+              ),
             ),
           ]),
     );
