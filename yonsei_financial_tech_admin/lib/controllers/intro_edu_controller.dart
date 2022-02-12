@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker_web/image_picker_web.dart';
@@ -9,10 +7,15 @@ import 'package:image_picker_web/image_picker_web.dart';
 /// custom code
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
-import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
 class IntroEduController extends GetxController {
+  late final fireStore;
+
+  IntroEduController() {
+    fireStore = FireStoreDB();
+  }
+
   /// map is need for updating and removing the document from the colletion
   Rx<List<Intro>> introList = Rx<List<Intro>>([]);
 
@@ -22,7 +25,7 @@ class IntroEduController extends GetxController {
 
   @override
   void onInit() {
-    final fetched = FireStoreDB.getIntroStream();
+    final fetched = fireStore.getIntroStream();
     introList
         .bindStream(fetched.map((event) => event.first as List<Intro>).cast());
     introDocIDMap.bindStream(
@@ -47,14 +50,14 @@ class IntroEduController extends GetxController {
       },
     );
     if (userResponse) {
-      final res = await FireStoreDB.removeIntro(docID, id);
+      final res = await fireStore.removeIntro(docID, id);
       if (res) {
-        CommonWidget.bottomSnackBar(
+        bottomSnackBar(
           'Introduction 삭제',
           '성공적으로 삭제 됐습니다!',
         );
       } else {
-        CommonWidget.bottomSnackBar(
+        bottomSnackBar(
           'Introduction 삭제',
           '삭제하지 못했어요..!',
         );
@@ -64,6 +67,10 @@ class IntroEduController extends GetxController {
 }
 
 class IntroEditController extends GetxController {
+  late final fireStore;
+  IntroEditController() {
+    fireStore = FireStoreDB();
+  }
   /// for CircularProgressingIndicator in Presentation Layer
   RxBool isLoading = false.obs;
 
@@ -109,7 +116,7 @@ class IntroEditController extends GetxController {
     /// observable data
     docID.value = passedDocID;
     if (intro.imagePath != '') {
-      final downloadURL = await FireStoreDB.getDownloadURL(
+      final downloadURL = await fireStore.getDownloadURL(
           'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
       if (downloadURL != '') imagePath.value = downloadURL;
     } else {
@@ -149,12 +156,12 @@ class IntroEditController extends GetxController {
     if (!isNewData.value) {
       if (hasImage) {
         result =
-            await FireStoreDB.updateIntro(docID.value, data, imageFile.value);
+            await fireStore.updateIntro(docID.value, data, imageFile.value);
       } else {
-        result = await FireStoreDB.updateIntroWithoutImage(docID.value, data);
+        result = await fireStore.updateIntroWithoutImage(docID.value, data);
       }
     } else {
-      result = await FireStoreDB.addNewIntro(data, imageFile.value);
+      result = await fireStore.addNewIntro(data, imageFile.value);
     }
 
     /// after all procedures
@@ -163,12 +170,12 @@ class IntroEditController extends GetxController {
 
     if (result) {
       Get.back();
-      CommonWidget.bottomSnackBar(
+      bottomSnackBar(
         'Introduction 수정',
         '성공적으로 업데이트 했습니다!',
       );
     } else {
-      CommonWidget.bottomSnackBar(
+      bottomSnackBar(
         'Introduction 수정',
         '업데이트 실패 🤯',
       );

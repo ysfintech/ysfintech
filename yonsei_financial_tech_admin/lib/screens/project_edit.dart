@@ -60,7 +60,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
             TextFormField(
               controller: controller.titleController,
               style: ThemeTyphography.subTitle.style,
-              decoration: CommonWidget.inputDecoration('제목을 입력해주세요...'),
+              decoration: inputDecoration('제목을 입력해주세요...'),
             ),
             SizedBox(height: 16),
 
@@ -128,7 +128,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                       TextFormField(
                         controller: controller.imageDescController,
                         style: ThemeTyphography.caption.style,
-                        decoration: CommonWidget.inputDecoration(
+                        decoration: inputDecoration(
                             '첨부한 이미지에 대한 설명을 입력해주세요...'),
                       ),
                     ],
@@ -154,7 +154,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                           style: ThemeTyphography.body.style,
                           maxLines: null,
                           decoration:
-                              CommonWidget.inputDecoration('내용을 입력해주세요...'),
+                              inputDecoration('내용을 입력해주세요...'),
                         ),
                         SizedBox(height: 16),
 
@@ -168,7 +168,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                           controller: controller.organController,
                           style: ThemeTyphography.body.style,
                           decoration:
-                              CommonWidget.inputDecoration('기관을 입력해주세요...'),
+                              inputDecoration('기관을 입력해주세요...'),
                         ),
                         SizedBox(height: 16),
 
@@ -186,7 +186,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                               child: TextFormField(
                                 controller: controller.fromController,
                                 style: ThemeTyphography.body.style,
-                                decoration: CommonWidget.inputDecoration(
+                                decoration: inputDecoration(
                                     '시작년도 ex) 2022'),
                               ),
                             ),
@@ -196,7 +196,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                               child: TextFormField(
                                 controller: controller.toController,
                                 style: ThemeTyphography.body.style,
-                                decoration: CommonWidget.inputDecoration(
+                                decoration: inputDecoration(
                                     '종료년도 ex) 2022'),
                               ),
                             ),

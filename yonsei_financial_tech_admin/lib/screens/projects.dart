@@ -18,13 +18,18 @@ class ProjectScreen extends GetResponsiveView<ProjectController> {
         final docID = controller.docIDs[project.id]!;
 
         /// open the bottom sheet
-        Get.bottomSheet(ProjectBottomSheet(
-          docID: docID,
-          parentHeight: Get.height,
-          project: project,
-        ));
+        Get.bottomSheet(
+          ProjectBottomSheet(
+            docID: docID,
+            parentHeight: Get.height,
+            project: project,
+          ),
+        ).then((value) {
+          final editController = Get.find<ProjectEditController>();
+          editController.onReset();
+        });
       } else {
-        Get.snackbar('오류', '해당 Document ID가 존재하지 않습니다.');
+        bottomSnackBar('오류', '해당 Document ID가 존재하지 않습니다.');
       }
     }
 
@@ -36,7 +41,10 @@ class ProjectScreen extends GetResponsiveView<ProjectController> {
       Get.bottomSheet(ProjectBottomSheet(
         docID: newID,
         parentHeight: Get.height,
-      ));
+      )).then((value) {
+        final editController = Get.find<ProjectEditController>();
+        editController.onReset();
+      });
     }
   }
 
@@ -46,44 +54,58 @@ class ProjectScreen extends GetResponsiveView<ProjectController> {
     Get.put(ProjectEditController());
 
     return Scaffold(
-      appBar: CommonWidget.appBar,
-      drawer: CommonWidget.drawer,
-      floatingActionButton: CommonWidget.floatingButton,
+      // appBar: CommonWidget.appBar,
+      // drawer: CommonWidget.drawer,
+      floatingActionButton: floatingButton,
 
       /// body
-      body: Padding(
-        padding: padding(8, 16),
-        child: CustomScrollView(
-          slivers: [
-            /// app bar
-            // SliverAppBar(
-            //   title: Text('Sliver App Bar'),
-            // ),
-
-            /// list
-            Obx(
-              () => SliverList(
-                delegate: SliverChildListDelegate(
-                  controller.projects
-                      .map(
-                        (e) => ListTile(
-                          onTap: () => openEditScreen(e),
-                          leading: CircleAvatar(
-                            backgroundColor: ThemeColor.primary.color,
-                            child: Text(
-                              '${e.id}',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          title: cardItem(e),
-                        ),
-                      )
-                      .toList(),
-                ),
+      body: CustomScrollView(
+        slivers: [
+          /// app bar
+          SliverAppBar(
+            backgroundColor: ThemeColor.primary.color,
+            floating: false,
+            pinned: true,
+            snap: false,
+            expandedHeight: 100,
+            flexibleSpace: FlexibleSpaceBar(
+              centerTitle: true,
+              title: Text(
+                '연세대학교 금융기술센터 Project',
+                style: ThemeTyphography.subTitle.style,
               ),
-            )
-          ],
-        ),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () => openEditScreen(null),
+                icon: Icon(Icons.plus_one_rounded),
+              )
+            ],
+          ),
+
+          /// list
+          Obx(
+            () => SliverList(
+              delegate: SliverChildListDelegate(
+                controller.projects
+                    .map(
+                      (e) => ListTile(
+                        onTap: () => openEditScreen(e),
+                        leading: CircleAvatar(
+                          backgroundColor: ThemeColor.primary.color,
+                          child: Text(
+                            '${e.id}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        title: cardItem(e),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

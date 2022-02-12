@@ -56,7 +56,7 @@ class SignInScreen extends GetView<SignInController> {
                     leading: Text('ID(이메일)'),
                     title: TextFormField(
                       controller: controller.emailController,
-                      decoration: CommonWidget.inputDecoration('example@gmail.com'),
+                      decoration: inputDecoration('example@gmail.com'),
                     ),
                     minLeadingWidth: Get.size.width * 0.1,
                   ),
@@ -66,7 +66,7 @@ class SignInScreen extends GetView<SignInController> {
                     leading: Text('PW'),
                     title: TextFormField(
                       controller: controller.passwordController,
-                      decoration: CommonWidget.inputDecoration('Password'),
+                      decoration: inputDecoration('Password'),
                       obscureText: true,
                     ),
                     minLeadingWidth: Get.size.width * 0.1,
@@ -97,7 +97,7 @@ class SignInScreen extends GetView<SignInController> {
       ),
 
       /// helper contact
-      floatingActionButton: CommonWidget.floatingButton,
+      floatingActionButton: floatingButton,
     );
   }
 }

@@ -66,7 +66,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             title: TextFormField(
                               controller: controller.introTitleCtlr,
                               decoration:
-                                  CommonWidget.inputDecoration('제목을 입력해주세요...'),
+                                  inputDecoration('제목을 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
                             minLeadingWidth: Get.size.width * 0.05,
@@ -78,7 +78,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             title: TextFormField(
                               controller: controller.introContentCtlr,
                               decoration:
-                                  CommonWidget.inputDecoration('내용을 입력해주세요...'),
+                                  inputDecoration('내용을 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                               maxLines: null,
                             ),
@@ -90,7 +90,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             leading: Icon(Icons.person),
                             title: TextFormField(
                               controller: controller.introNameCtlr,
-                              decoration: CommonWidget.inputDecoration(
+                              decoration: inputDecoration(
                                   '작성자를 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
@@ -103,7 +103,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             title: TextFormField(
                               controller: controller.introRoleCtlr,
                               decoration:
-                                  CommonWidget.inputDecoration('역할를 입력해주세요...'),
+                                  inputDecoration('역할를 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
                             minLeadingWidth: Get.size.width * 0.05,

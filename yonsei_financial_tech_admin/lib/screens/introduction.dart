@@ -55,9 +55,9 @@ class IntroEduScreen extends GetResponsiveView<IntroEduController> {
 
     return Scaffold(
       /// common Widgets
-      appBar: CommonWidget.appBar,
-      drawer: CommonWidget.drawer,
-      floatingActionButton: CommonWidget.floatingButton,
+      appBar: appBar,
+      drawer: drawer,
+      floatingActionButton: floatingButton,
 
       /// body
       body: ListView(

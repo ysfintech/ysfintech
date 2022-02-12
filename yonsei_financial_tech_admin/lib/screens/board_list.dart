@@ -50,7 +50,12 @@ class BoardListScreen extends StatelessWidget {
                   tileColor: Colors.white,
 
                   // TODO: get the `onTap` function via parameter
-                  onTap: () => withIndexOnPressed(list.indexOf(item)),
+                  // onTap: () => withIndexOnPressed(list.indexOf(item)),
+                  onTap: () {
+                    final index = list.indexOf(item);
+                    print('document index : $index');
+                    withIndexOnPressed(index);
+                  },
 
                   /// `id`
                   leading: CircleAvatar(

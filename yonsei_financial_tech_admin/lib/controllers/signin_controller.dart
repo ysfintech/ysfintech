@@ -42,7 +42,7 @@ class SignInController extends GetxController {
         password: passwordController.text.trim(),
       );
     } else {
-      CommonWidget.bottomSnackBar(
+      bottomSnackBar(
         '오류',
         '다시 시도해주세요',
       );

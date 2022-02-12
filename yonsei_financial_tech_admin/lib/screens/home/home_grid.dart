@@ -17,7 +17,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
   static Color unSelectedColor = Colors.grey.withOpacity(0.5);
 
   var gridViewColors =
-      List.generate(CommonWidget.mapper.length, (index) => unSelectedColor);
+      List.generate(mapper.length, (index) => unSelectedColor);
 
   void onSelected(int index) {
     setState(() {
@@ -33,9 +33,9 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       /// common Widgets
-      appBar: CommonWidget.appBar,
-      drawer: CommonWidget.drawer,
-      floatingActionButton: CommonWidget.floatingButton,
+      appBar: appBar,
+      drawer: drawer,
+      floatingActionButton: floatingButton,
 
       /// grid view body
       body: Container(
@@ -46,7 +46,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
           child: GridView.builder(
             shrinkWrap: true,
             padding: padding(16, 16),
-            itemCount: CommonWidget.mapper.length,
+            itemCount: mapper.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3, // 3 x 3
               childAspectRatio: 1, // width 1 / height 1
@@ -57,12 +57,12 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
               onHover: (value) => onSelected(index),
               onTap: () {
                 final key =
-                    CommonWidget.mapper.values.elementAt(index).first.toString();
+                    mapper.values.elementAt(index).first.toString();
                 if (key != '')
                   Get.toNamed(key);
                 else
                   // TODO : Route with pages
-                  CommonWidget.bottomSnackBar('route', 'preparing');
+                  bottomSnackBar('route', 'preparing');
               },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30),
@@ -70,7 +70,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
                   footer: GridTileBar(
                     backgroundColor: gridViewColors[index],
                     title: Text(
-                      CommonWidget.mapper.keys.elementAt(index),
+                      mapper.keys.elementAt(index),
                       style: ThemeTyphography.subTitle.style,
                       textAlign: TextAlign.center,
                     ),
@@ -80,7 +80,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
                       color: Colors.white,
                     ),
                     child: Icon(
-                      CommonWidget.mapper.values.elementAt(index).last
+                      mapper.values.elementAt(index).last
                           as IconData,
                       size: Get.width * 0.125,
                       color: gridViewColors[index],
