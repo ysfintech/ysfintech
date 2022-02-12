@@ -1,3 +1,5 @@
+import 'dart:html' as html;
+
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -49,19 +51,33 @@ class FireStoreDB {
       return false;
   }
 
-  static Future<bool> deleteImage(String filePath) async =>
-      await fireStorageInst
-          .ref(filePath)
-          .delete()
-          .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+  static Future<bool> uploadFile(String filePath, html.File file) async {
+    final storageRef = fireStorageInst.ref(filePath);
+
+    /// upload file
+    final uploadResult = await storageRef.putBlob(
+      file,
+      SettableMetadata(contentType: 'application/pdf'),
+    );
+
+    if (uploadResult.state == TaskState.success)
+      return true;
+    else
+      return false;
+  }
+
+  static Future<bool> deleteFile(String filePath) async => await fireStorageInst
+      .ref(filePath)
+      .delete()
+      .then((value) => Future.value(true))
+      .catchError((err) => Future.value(false));
 
   /// # `Introduction` methods: CRUD =======================================================================
 
   /// `READ` retrieve all Introduction
   /// returns `List<Intro>` at first index of List
   /// and `Map<int, String>` at the second index, which maps Intro's `id` with FireStore's `document id`
-  static Stream<List<dynamic>> getIntroStream() {
+  Stream<List<dynamic>> getIntroStream() {
     return fireStoreInst
         .collection('introduction')
         .snapshots()
@@ -78,7 +94,7 @@ class FireStoreDB {
   }
 
   /// `CREATE` add a new Introduction
-  static addNewIntro(Intro data, Uint8List file) async {
+  addNewIntro(Intro data, Uint8List file) async {
     final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
     final imageUploadResult = await uploadImage(imagePath, file);
     if (imageUploadResult) {
@@ -93,7 +109,7 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update existing Introduction with new Image
-  static updateIntro(String docID, Intro data, Uint8List file) async {
+  updateIntro(String docID, Intro data, Uint8List file) async {
     final imagePath = baseURL + 'introduction' + '/${data.id}.jpg';
 
     final imageUploadResult = await uploadImage(imagePath, file);
@@ -113,7 +129,7 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update existing Introduction without uploading new image
-  static updateIntroWithoutImage(String docID, Intro data) async {
+  updateIntroWithoutImage(String docID, Intro data) async {
     return await fireStoreInst
         .collection('introduction')
         .doc(docID)
@@ -125,10 +141,10 @@ class FireStoreDB {
 
   /// `DELETE` remove existing Introduction
   /// and also stored Image file in the storage
-  static Future<bool> removeIntro(String docID, int id) async {
+  Future<bool> removeIntro(String docID, int id) async {
     /// remove storage first
     final storageResult =
-        await deleteImage(baseURL + 'introduction' + '/$id.jpg');
+        await deleteFile(baseURL + 'introduction' + '/$id.jpg');
 
     if (storageResult) {
       return await fireStoreInst
@@ -147,7 +163,7 @@ class FireStoreDB {
   /// `READ` retrieve all the documents in the Project
   /// returns `documents` and `mapper` to link with
   /// `docID` and `id` field in the document
-  static Stream<List<dynamic>> getProjectStream() {
+  Stream<List<dynamic>> getProjectStream() {
     return fireStoreInst
         .collection('project')
         .snapshots()
@@ -165,7 +181,7 @@ class FireStoreDB {
   }
 
   /// `CREATE` add a new document to the Project
-  static addNewProject(Project data, Uint8List file) async {
+  addNewProject(Project data, Uint8List file) async {
     // store file(image) into storage first
     final imagePath = baseURL + 'project' + '/${data.id}.png';
 
@@ -190,16 +206,16 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update the specific document in the Project with a new File
-  static updateProject(String docID, Project data, Uint8List file) async {
+  updateProject(String docID, Project data, Uint8List file) async {
     final imagePath = baseURL + 'project' + '/${data.id}.png';
 
     /// remove previous image in the store first
-    final hasRemoved = await deleteImage(imagePath);
+    final hasRemoved = await deleteFile(imagePath);
 
     /// then upload image at the same path due to the result
     if (hasRemoved) {
       final isUploaded = await uploadImage(imagePath, file);
-      final clonedDatat = Project.cloneWithNewImagePath(data, imagePath);
+      final clonedData = Project.cloneWithNewImagePath(data, imagePath);
 
       /// check if the image has been uploaded successfully
       if (isUploaded) {
@@ -207,7 +223,7 @@ class FireStoreDB {
         return await fireStoreInst
             .collection('project')
             .doc(docID)
-            .update(data.toJson())
+            .update(clonedData.toJson())
             .then((value) => Future.value(true))
             .catchError((err) => Future.value(false));
       }
@@ -219,7 +235,7 @@ class FireStoreDB {
   }
 
   /// `UPDATE` update the specific document in the Project without a new File
-  static updateProjectWithoutImage(String docID, Project data) async {
+  updateProjectWithoutImage(String docID, Project data) async {
     final imagePath = baseURL + 'project/${data.id}.png';
     final clonedData = Project.cloneWithNewImagePath(data, imagePath);
 
@@ -234,10 +250,9 @@ class FireStoreDB {
 
   /// `DELETE` remove existing document in the Project
   /// as well as File in the Storage
-  static removeProject(String hashedID, int docID) async {
+  removeProject(String hashedID, int docID) async {
     /// remove storage first
-    final storageResult =
-        await deleteImage(baseURL + 'project' + '/$docID.png');
+    final storageResult = await deleteFile(baseURL + 'project' + '/$docID.png');
 
     if (storageResult) {
       return await fireStoreInst
@@ -259,7 +274,7 @@ class FireStoreDB {
   /// returns `List<Board>` at the first object of return
   /// and `Map<int, String>` at the last object of the returned object
   /// bind it with your controller's observable data !
-  static Stream<List<dynamic>> getItemsOfBoard(String collectionName) {
+  Stream<List<dynamic>> getItemsOfBoard(String collectionName) {
     return fireStoreInst.collection(collectionName).snapshots().map((query) {
       /// parse the items with `Board`
       /// variables to save items and return in `Stream` format
@@ -277,6 +292,45 @@ class FireStoreDB {
       /// return List<Stream>
       return [boards, mapper];
     });
+  }
+
+  /// `html.File` is used for uploading pdf/image both
+  Future<bool> addNewBoard(String collectionName, Board newBoard, html.File? file) async {
+    /// used for `Collaboration`
+    if (file == null && newBoard.imagePath == null) {
+      return await fireStoreInst
+          .collection(collectionName)
+          .add(newBoard.toJson())
+          .then((value) => Future.value(true))
+          .onError((error, stackTrace) => Future.value(false));
+    } else {
+      final imagePath = baseURL + collectionName + '/${file!.name}';
+      final uploadResult = await uploadFile(imagePath, file);
+
+      if (uploadResult) {
+        Board updatedBoard = Board.cloneWith(newBoard, imagePath);
+        return await fireStoreInst
+            .collection(collectionName)
+            .add(updatedBoard.toJson())
+            .then((value) => Future.value(true))
+            .onError((error, stackTrace) => Future.value(false));
+      }
+      return Future.value(false);
+    }
+  }
+
+  /// remove file first then remove document
+  removeBoard(String collectionName, String docID, String? imagePath) async {
+    if (imagePath != null) {
+      final deleteResult = await deleteFile(imagePath);
+      if (!deleteResult) throw FirebaseException(plugin: 'Delete from Storage');
+    }
+    return fireStoreInst
+        .collection(collectionName)
+        .doc(docID)
+        .delete()
+        .then((value) => Future.value(true))
+        .onError((error, stackTrace) => Future.value(false));
   }
 }
 

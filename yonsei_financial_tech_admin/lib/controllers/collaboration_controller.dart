@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/screens/collaboration_edit.dart';
+import 'package:ysfintech_admin/utils/firebase.dart';
+import 'package:ysfintech_admin/widgets/common.dart';
 
 import 'board_controller.dart';
 
+const String collectionName = 'work';
+
 class CollaborationController extends BoardController {
-  static const String collectionName = 'work';
-
   CollaborationController() : super(collectionName) {
-    /// parent data fetch
-    Get.put(() => BoardController(collectionName));
-
     /// for editing
     Get.lazyPut(() => CollaborationEditController());
   }
@@ -31,12 +30,7 @@ class CollaborationController extends BoardController {
   List<Board> get parentBoards => super.boards;
 
   @override
-  void onInit() {
-    /// super first for fetching the data
-    super.onInit();
-    print('onInit : ${boards.length} vs ${super.boardList.value.length}');
-    update();
-
+  void onReady() {
     /// then add events to Controller
     searchController.text = '';
 
@@ -62,6 +56,7 @@ class CollaborationController extends BoardController {
       update();
       print('update : ${boards.length} vs ${super.boardList.value.length}');
     });
+    super.onReady();
   }
 
   @override
@@ -81,15 +76,21 @@ class CollaborationController extends BoardController {
               docNumericID: index,
             )
           : CollaborationBottomSheet(
-              board: boards[index],
-              docID: mapper[boards[index].id],
-              docNumericID: boards[index].id,
+              board: super.boards[index],
+              docID: super.mapper[boards[index].id],
+              docNumericID: super.boards[index].id,
             ),
     );
   }
 }
 
-class CollaborationEditController extends GetxController {
+class CollaborationEditController extends GetxController
+    with BoardEditMixinController {
+  late final FireStoreDB fireStore;
+  CollaborationEditController() {
+    fireStore = FireStoreDB();
+  }
+
   /// needs [content], [date], [id], [title], [view], [writer]
   TextEditingController contentController = TextEditingController();
   TextEditingController titleController = TextEditingController();
@@ -106,6 +107,9 @@ class CollaborationEditController extends GetxController {
 
   /// take input data as initializer
   void init(Board? data, String? id, int docIdx) {
+    print(data);
+    selectedBoard.value = data != null ? Board.clone(data) : null;
+
     /// not related to `Board` Object
     docID.value = id;
     indexOfDocument.value = docIdx;
@@ -123,5 +127,46 @@ class CollaborationEditController extends GetxController {
 
   /// save document
   /// send [imagePath] to null
-  void save() {}
+  void save() async {
+    /// create new data
+    final Board newData = Board(
+      id: indexOfDocument.value,
+      content: contentController.text.trim(),
+      date: DateTime.now(),
+      title: titleController.text.trim(),
+      view: selectedBoard.value?.view ?? 0,
+      writer: selectedBoard.value?.writer ?? '관리자',
+      imagePath: selectedBoard.value?.imagePath,
+    );
+
+    /// existing data - update
+    if (docID.value != null) {
+      // update
+    } else {
+      // add
+      final uploadResult = await fireStore.addNewBoard(
+        collectionName,
+        newData,
+        null,
+      );
+      Get.back();
+      bottomSnackBar(
+        'Collaboration',
+        uploadResult ? '새롭게 추가되었어요 :)' : '오류가 발생했어요 :(',
+      );
+    }
+  }
+
+  /// this method is not shown in new data form
+  void delete() async {
+    if (docID.value != null) {
+      final result =
+          await fireStore.removeBoard(collectionName, docID.value!, null);
+      Get.back();
+      bottomSnackBar(
+        'Collaboration',
+        result ? '성공적으로 삭제되었어요 :)' : '오류가 발생했어요 :(',
+      );
+    }
+  }
 }

@@ -26,7 +26,9 @@ class CollaborationBottomSheet
   })  : assert(
           (board != null && docID != null) || (board == null && docID == null),
         ),
-        super(key: key);
+        super(key: key) {
+    controller.init(board, docID, docNumericID);
+  }
 
   static OutlineInputBorder outlineBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
@@ -42,7 +44,7 @@ class CollaborationBottomSheet
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.size.height * 0.8,
+      height: Get.size.height,
       padding: padding(16, 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
@@ -98,12 +100,13 @@ class CollaborationBottomSheet
             TextFormField(
               controller: controller.contentController,
               decoration: formDecoration,
+              maxLines: null,
             ),
             SizedBox(height: 32),
 
             /// save button
             TextButton(
-              onPressed: () {},
+              onPressed: controller.save,
               child: Text(
                 '저장하기',
                 style: TextStyle(
@@ -120,23 +123,28 @@ class CollaborationBottomSheet
             ),
 
             if (docID != null)
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: () {},
-                child: Text(
-                  '삭제하기',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    fontSize: 18,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 16),
+                  TextButton(
+                    onPressed: controller.delete,
+                    child: Text(
+                      '삭제하기',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                    style: TextButton.styleFrom(
+                      padding: padding(0, 16),
+                      backgroundColor: ThemeColor.highlight.color,
+                      shape: StadiumBorder(),
+                    ),
                   ),
-                ),
-                style: TextButton.styleFrom(
-                  padding: padding(0, 16),
-                  backgroundColor: ThemeColor.highlight.color,
-                  shape: StadiumBorder(),
-                ),
-              )
+                ],
+              ),
           ],
         ),
       ),

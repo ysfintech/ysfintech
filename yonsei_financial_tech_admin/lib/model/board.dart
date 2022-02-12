@@ -48,6 +48,17 @@ class Board {
         content: board.content,
         date: board.date,
         title: board.title,
+        imagePath: board.imagePath,
+        view: board.view,
+        writer: board.writer,
+      );
+
+  factory Board.cloneWith(Board board, String newPath) => Board(
+        id: board.id,
+        content: board.content,
+        date: board.date,
+        title: board.title,
+        imagePath: newPath,
         view: board.view,
         writer: board.writer,
       );
