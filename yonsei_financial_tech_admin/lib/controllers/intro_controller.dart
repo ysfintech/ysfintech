@@ -23,18 +23,18 @@ class IntroEduController extends GetxController {
   /// value - FireStore document id
   Rx<Map<int, String>> introDocIDMap = Rx<Map<int, String>>({});
 
-  @override
-  void onInit() {
-    final fetched = fireStore.getIntroStream();
-    introList
-        .bindStream(fetched.map((event) => event.first as List<Intro>).cast());
-    introDocIDMap.bindStream(
-        fetched.map((event) => event.last as Map<int, String>).cast());
-    super.onInit();
-  }
-
   List<Intro> get intros => introList.value;
   Map<int, String> get docIDs => introDocIDMap.value;
+
+  @override
+  void onInit() {
+    final Stream<List<dynamic>> fetched = fireStore.getIntroStream();
+    Stream<List<Intro>> introStream = fetched.map((event) => event.first);
+    Stream<Map<int, String>> mapperStream = fetched.map((event) => event.last);
+    introList.bindStream(introStream);
+    introDocIDMap.bindStream(mapperStream);
+    super.onInit();
+  }
 
   void removeIntro(String docID, int id) async {
     bool userResponse = false;
@@ -67,10 +67,11 @@ class IntroEduController extends GetxController {
 }
 
 class IntroEditController extends GetxController {
-  late final fireStore;
+  late final FireStoreDB fireStore;
   IntroEditController() {
     fireStore = FireStoreDB();
   }
+
   /// for CircularProgressingIndicator in Presentation Layer
   RxBool isLoading = false.obs;
 
@@ -89,7 +90,7 @@ class IntroEditController extends GetxController {
 
   /// for values that needs to be observable
   RxInt introID = 0.obs;
-  RxString docID = ''.obs;
+  Rx<String?> docID = Rx<String?>('');
   Rx<Uint8List> imageFile = Uint8List(0).obs;
   RxString imagePath = ''.obs;
 
@@ -100,23 +101,23 @@ class IntroEditController extends GetxController {
   }
 
   void initTextControllers(
-    bool isNew,
-    String passedDocID,
-    Intro intro,
+    String? passedDocID,
+    Intro? intro,
+    int indexOfDoc,
   ) async {
-    isNewData.value = isNew;
-
     /// form data
-    introContentCtlr.text = intro.content;
-    introNameCtlr.text = intro.name;
-    introRoleCtlr.text = intro.role;
-    introTitleCtlr.text = intro.title;
-    introID.value = intro.id;
+    introContentCtlr.text = intro?.content ?? '';
+    introNameCtlr.text = intro?.name ?? '';
+    introRoleCtlr.text = intro?.role ?? '';
+    introTitleCtlr.text = intro?.title ?? '';
+    introID.value = indexOfDoc;
 
     /// observable data
     docID.value = passedDocID;
-    if (intro.imagePath != '') {
-      final downloadURL = await fireStore.getDownloadURL(
+
+    /// image url conversion
+    if (intro != null && intro.imagePath != '') {
+      final downloadURL = await FireStoreDB.getDownloadURL(
           'gs://ysfintech-homepage.appspot.com/introduction/${intro.id}.jpg');
       if (downloadURL != '') imagePath.value = downloadURL;
     } else {
@@ -153,14 +154,15 @@ class IntroEditController extends GetxController {
     late final result;
 
     /// update procedure
-    if (!isNewData.value) {
+    if (docID.value != null) {
       if (hasImage) {
         result =
-            await fireStore.updateIntro(docID.value, data, imageFile.value);
+            await fireStore.updateIntro(docID.value!, data, imageFile.value);
       } else {
-        result = await fireStore.updateIntroWithoutImage(docID.value, data);
+        result = await fireStore.updateIntroWithoutImage(docID.value!, data);
       }
     } else {
+      print('added new intrio!');
       result = await fireStore.addNewIntro(data, imageFile.value);
     }
 

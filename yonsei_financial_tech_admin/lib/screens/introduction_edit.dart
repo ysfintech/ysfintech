@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ysfintech_admin/controllers/intro_edu_controller.dart';
+import 'package:ysfintech_admin/controllers/intro_controller.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
@@ -11,21 +11,21 @@ import 'package:ysfintech_admin/widgets/common.dart';
 class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
   // static final controller = Get.put(IntroEditController());
 
-  final String docID;
-  final Intro passedData;
+  final String? docID;
+  final int indexOfDoc;
+  final Intro? passedData;
   final double parentHeight;
-  final bool isNewData;
 
   IntroBottomSheet(
-    this.isNewData,
     this.docID,
+    this.indexOfDoc,
     this.passedData,
     this.parentHeight,
   ) {
     controller.initTextControllers(
-      isNewData,
       docID,
       passedData,
+      indexOfDoc,
     );
   }
 
@@ -52,7 +52,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                   child: Obx(() => ListView(
                         children: [
                           Text(
-                            isNewData ? '작성하기' : '수정하기',
+                            docID == null ? '작성하기' : '수정하기',
                             style: ThemeTyphography.subTitle.style
                                 .copyWith(color: ThemeColor.primary.color),
                           ),
@@ -65,8 +65,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             leading: Icon(Icons.title_rounded),
                             title: TextFormField(
                               controller: controller.introTitleCtlr,
-                              decoration:
-                                  inputDecoration('제목을 입력해주세요...'),
+                              decoration: inputDecoration('제목을 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
                             minLeadingWidth: Get.size.width * 0.05,
@@ -77,8 +76,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             leading: Icon(Icons.article_rounded),
                             title: TextFormField(
                               controller: controller.introContentCtlr,
-                              decoration:
-                                  inputDecoration('내용을 입력해주세요...'),
+                              decoration: inputDecoration('내용을 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                               maxLines: null,
                             ),
@@ -90,8 +88,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             leading: Icon(Icons.person),
                             title: TextFormField(
                               controller: controller.introNameCtlr,
-                              decoration: inputDecoration(
-                                  '작성자를 입력해주세요...'),
+                              decoration: inputDecoration('작성자를 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
                             minLeadingWidth: Get.size.width * 0.05,
@@ -102,8 +99,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                             leading: Icon(Icons.star_outline_rounded),
                             title: TextFormField(
                               controller: controller.introRoleCtlr,
-                              decoration:
-                                  inputDecoration('역할를 입력해주세요...'),
+                              decoration: inputDecoration('역할를 입력해주세요...'),
                               style: ThemeTyphography.body.style,
                             ),
                             minLeadingWidth: Get.size.width * 0.05,

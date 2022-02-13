@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ysfintech_admin/controllers/intro_edu_controller.dart';
+import 'package:ysfintech_admin/controllers/intro_controller.dart';
 import 'package:ysfintech_admin/model/introduction.dart';
 import 'package:ysfintech_admin/screens/introduction_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
@@ -11,16 +11,16 @@ import 'package:ysfintech_admin/widgets/common.dart';
 class IntroEduScreen extends GetResponsiveView<IntroEduController> {
   /// open bottom sheet
   moveToEditScreen({
-    required bool isNewData,
     required int id,
     Intro? e,
   }) {
+    final bool isNewData = id > controller.intros.length;
     if (!isNewData) {
       if (controller.docIDs.containsKey(id)) {
         Get.bottomSheet(
           IntroBottomSheet(
-            !isNewData,
             controller.docIDs[id]!,
+            id,
             e!,
             Get.height,
           ),
@@ -30,17 +30,9 @@ class IntroEduScreen extends GetResponsiveView<IntroEduController> {
     } else {
       Get.bottomSheet(
         IntroBottomSheet(
-          true,
-          (controller.intros.length + 1)
-              .toString(), // to be pushed at last element
-          new Intro(
-            content: '',
-            id: controller.intros.length + 1,
-            imagePath: '',
-            name: '',
-            role: '',
-            title: '',
-          ),
+          null, 
+          controller.intros.length + 1,// to be pushed at last element
+          null,
           Get.height,
         ),
         isScrollControlled: true,
@@ -80,7 +72,6 @@ class IntroEduScreen extends GetResponsiveView<IntroEduController> {
                   .map((e) => ListTile(
                         /// events
                         onTap: () => moveToEditScreen(
-                          isNewData: false,
                           id: e.id,
                           e: e,
                         ),
@@ -104,7 +95,6 @@ class IntroEduScreen extends GetResponsiveView<IntroEduController> {
                           children: [
                             TextButton(
                               onPressed: () => moveToEditScreen(
-                                isNewData: false,
                                 id: e.id,
                                 e: e,
                               ),
@@ -162,7 +152,6 @@ class IntroEduScreen extends GetResponsiveView<IntroEduController> {
           ),
           InkWell(
             onTap: () => moveToEditScreen(
-              isNewData: true,
               id: controller.intros.length + 1,
             ),
             child: CircleAvatar(

@@ -1,34 +1,33 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 import 'package:get/get.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
+import 'package:ysfintech_admin/widgets/common.dart';
 
 /// `BoardController` gonna be the parent class of the other classes
 class BoardController extends GetxController {
+  /// find the instance
+  static BoardController get to => Get.find<BoardController>();
+
   late final FireStoreDB firestore;
   final String collection;
 
   BoardController(this.collection) {
     firestore = new FireStoreDB();
-    /// data fetch - use in view layer
-    Get.put(() => BoardController(collection));
   }
 
-  Rx<List<Board>> boardList = Rx<List<Board>>([]);
-  Rx<Map<int, String>> boardMapper = Rx<Map<int, String>>({});
-
-  List<Board> get boards => boardList.value;
-  Map<int, String> get mapper => boardMapper.value;
+  late Stream<List<Board>> boardStream;
+  late Stream<Map<String, dynamic>> mapperStream;
 
   @override
-  Future<void> onInit() async {
+  onInit() {
+    print('BoardController onInit');
     final fetchedItems = firestore.getItemsOfBoard(collection);
-    boardList
-        .bindStream(fetchedItems.map((e) => e.first as List<Board>).cast());
-    boardMapper
-        .bindStream(fetchedItems.map((e) => e.last as Map<int, String>).cast());
+    boardStream = fetchedItems.map((e) => e.first as List<Board>).cast();
+    mapperStream = fetchedItems.map((e) => e.last as Map<int, String>).cast();
     super.onInit();
   }
 }

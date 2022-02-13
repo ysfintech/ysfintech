@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/model/board.dart';
@@ -22,20 +20,26 @@ class CollaborationController extends BoardController {
   Rx<ScrollController> scrollController = ScrollController().obs;
 
   /// variables
-  Rx<List<Board>> parsedBoards = Rx<List<Board>>([]);
+  Rx<List<Board>> fetchedBoardList = Rx<List<Board>>([]);
+  Rx<List<Board>> originBoardList = Rx<List<Board>>([]);
+  Rx<Map<String, dynamic>> fetchedMapper = Rx<Map<String, dynamic>>({});
 
-  @override
-  List<Board> get boards => parsedBoards.value;
-
-  List<Board> get parentBoards => super.boards;
+  /// getter methods
+  List<Board> get boards => fetchedBoardList.value;
+  List<Board> get fetchedBoards => fetchedBoardList.value;
+  Map<String, dynamic> get mapper => fetchedMapper.value;
 
   @override
   void onReady() {
+    print('Collaboration onReady');
+    super.onReady();
+
     /// then add events to Controller
     searchController.text = '';
 
     /// update existing list
-    parsedBoards.value = List.from(super.boardList.value);
+    originBoardList.bindStream(super.boardStream);
+    fetchedBoardList.value = List<Board>.from(originBoardList.value);
 
     // add listener to controller
     searchController.addListener(() {
@@ -43,20 +47,18 @@ class CollaborationController extends BoardController {
 
       if (title.isNotEmpty) {
         List<Board> tempList = [];
-        for (int i = 0; i < super.boardList.value.length; ++i) {
-          final Board bd = super.boardList.value[i];
+        for (int i = 0; i < originBoardList.value.length; ++i) {
+          final Board bd = originBoardList.value[i];
           if (bd.title.contains(title)) {
             tempList.add(bd);
           }
         }
-        parsedBoards.value = tempList;
+        fetchedBoardList.value = tempList;
       } else {
-        parsedBoards.value = super.boardList.value;
+        fetchedBoardList.value = List<Board>.from(originBoardList.value);
       }
       update();
-      print('update : ${boards.length} vs ${super.boardList.value.length}');
     });
-    super.onReady();
   }
 
   @override
@@ -71,14 +73,14 @@ class CollaborationController extends BoardController {
     final int index,
   ) {
     Get.bottomSheet(
-      index > parentBoards.length
+      index > fetchedBoards.length
           ? CollaborationBottomSheet(
               docNumericID: index,
             )
           : CollaborationBottomSheet(
-              board: super.boards[index],
-              docID: super.mapper[boards[index].id],
-              docNumericID: super.boards[index].id,
+              board: fetchedBoards[index],
+              docID: mapper[fetchedBoards[index].id],
+              docNumericID: fetchedBoards[index].id,
             ),
     );
   }
@@ -139,22 +141,30 @@ class CollaborationEditController extends GetxController
       imagePath: selectedBoard.value?.imagePath,
     );
 
+    late final uploadResult;
+
     /// existing data - update
     if (docID.value != null) {
       // update
+      uploadResult = await fireStore.updateBoard(
+        collectionName,
+        docID.value!,
+        newData,
+        binaryFile.value,
+      );
     } else {
       // add
-      final uploadResult = await fireStore.addNewBoard(
+      uploadResult = await fireStore.addNewBoard(
         collectionName,
         newData,
         null,
       );
-      Get.back();
-      bottomSnackBar(
-        'Collaboration',
-        uploadResult ? '새롭게 추가되었어요 :)' : '오류가 발생했어요 :(',
-      );
     }
+    Get.back();
+    bottomSnackBar(
+      'Collaboration',
+      uploadResult ? '새롭게 추가되었어요 :)' : '오류가 발생했어요 :(',
+    );
   }
 
   /// this method is not shown in new data form

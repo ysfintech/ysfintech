@@ -77,7 +77,7 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
               actions: [
                 IconButton(
                   onPressed: () => controller
-                      .openBottomSheet(controller.parentBoards.length + 1),
+                      .openBottomSheet(controller.fetchedBoards.length + 1),
                   icon: Icon(Icons.plus_one_rounded),
                 )
               ],

@@ -26,6 +26,7 @@ class ProjectController extends GetxController {
   void onInit() {
     /// load projects with using stream
     final fetched = fireStore.getProjectStream();
+    final projectStream = fetched.
     projectList.bindStream(
         fetched.map((event) => event.first as List<Project>).cast());
     docIDMap.bindStream(

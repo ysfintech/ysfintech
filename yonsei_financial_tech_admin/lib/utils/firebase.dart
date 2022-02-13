@@ -72,25 +72,59 @@ class FireStoreDB {
       .then((value) => Future.value(true))
       .catchError((err) => Future.value(false));
 
+  /// update document and if the result is fine return `true`
+  static Future<bool> updateDocument(
+    String collectionName,
+    String docID,
+    Map<String, dynamic> json,
+  ) async =>
+      await fireStoreInst
+          .collection(collectionName)
+          .doc(docID)
+          .update(json)
+          .then((value) => Future.value(true))
+          .onError((error, stackTrace) => Future.value(false));
+
+  /// add document and if the result isfin return `true`
+  static Future<bool> addDocument(
+    String collectionName,
+    Map<String, dynamic> json,
+  ) async =>
+      await fireStoreInst
+          .collection(collectionName)
+          .add(json)
+          .then((value) => Future.value(true))
+          .onError((error, stackTrace) => Future.value(false));
+
+  static Future<bool> deleteDocument(
+    String collectionName,
+    String docID,
+  ) async =>
+      await fireStoreInst
+          .collection(collectionName)
+          .doc(docID)
+          .delete()
+          .then((value) => Future.value(true))
+          .catchError((err) => Future.value(false));
+
   /// # `Introduction` methods: CRUD =======================================================================
 
   /// `READ` retrieve all Introduction
   /// returns `List<Intro>` at first index of List
   /// and `Map<int, String>` at the second index, which maps Intro's `id` with FireStore's `document id`
   Stream<List<dynamic>> getIntroStream() {
-    return fireStoreInst
-        .collection('introduction')
-        .snapshots()
-        .map((QuerySnapshot query) {
+    Stream<QuerySnapshot> stream =
+        fireStoreInst.collection('introduction').snapshots();
+    return stream.map((QuerySnapshot snapshot) {
       List<Intro> intros = [];
       Map<int, String> mapper = {};
-      for (var doc in query.docs) {
+      for (var doc in snapshot.docs) {
         final parsedIntro = Intro.fromJson(doc.data());
         intros.add(parsedIntro);
         mapper.addAll({parsedIntro.id: doc.id});
       }
       return [intros, mapper];
-    });
+    }).cast();
   }
 
   /// `CREATE` add a new Introduction
@@ -99,11 +133,7 @@ class FireStoreDB {
     final imageUploadResult = await uploadImage(imagePath, file);
     if (imageUploadResult) {
       Intro updatedData = Intro.clone(data).shallowCopyWithImagePath(imagePath);
-      return await fireStoreInst
-          .collection('introduction')
-          .add(updatedData.toJson())
-          .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+      return await addDocument('introduction', updatedData.toJson());
     }
     return Future.value(false);
   }
@@ -118,26 +148,14 @@ class FireStoreDB {
       Intro updatedData = Intro.clone(data).shallowCopyWithImagePath(imagePath);
 
       /// update document's fields
-      return await fireStoreInst
-          .collection('introduction')
-          .doc(docID)
-          .update(updatedData.toJson())
-          .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+      return await updateDocument('introduction', docID, updatedData.toJson());
     }
     return Future.value(false);
   }
 
   /// `UPDATE` update existing Introduction without uploading new image
-  updateIntroWithoutImage(String docID, Intro data) async {
-    return await fireStoreInst
-        .collection('introduction')
-        .doc(docID)
-        .update(data.toJson())
-        // return bool for the result
-        .then((value) => Future.value(true))
-        .catchError((err) => Future.value(false));
-  }
+  updateIntroWithoutImage(String docID, Intro data) async =>
+      await updateDocument('introduction', docID, data.toJson());
 
   /// `DELETE` remove existing Introduction
   /// and also stored Image file in the storage
@@ -147,12 +165,7 @@ class FireStoreDB {
         await deleteFile(baseURL + 'introduction' + '/$id.jpg');
 
     if (storageResult) {
-      return await fireStoreInst
-          .collection('introduction')
-          .doc(docID)
-          .delete()
-          .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+      return await deleteDocument('introduction', docID);
     } else {
       return Future.value(false);
     }
@@ -191,14 +204,7 @@ class FireStoreDB {
       /// if the file(image) has been uploaded successfully,
       /// then add new document to FireStore
       final Project newProject = Project.cloneWithNewImagePath(data, imagePath);
-      return await fireStoreInst
-          .collection('project')
-          .add(newProject.toJson())
-          .then((value) => Future.value(true))
-          .catchError((err) {
-        print(err);
-        Future.value(false);
-      });
+      return await addDocument('project', newProject.toJson());
     }
 
     /// else return failure
@@ -220,12 +226,7 @@ class FireStoreDB {
       /// check if the image has been uploaded successfully
       if (isUploaded) {
         /// then update new data to FireStore
-        return await fireStoreInst
-            .collection('project')
-            .doc(docID)
-            .update(clonedData.toJson())
-            .then((value) => Future.value(true))
-            .catchError((err) => Future.value(false));
+        return updateDocument('project', docID, clonedData.toJson());
       }
       log('the image has not been uploaded successfully', name: 'PROJECT');
       return Future.value(false);
@@ -240,12 +241,7 @@ class FireStoreDB {
     final clonedData = Project.cloneWithNewImagePath(data, imagePath);
 
     /// only update FireStore
-    return await fireStoreInst
-        .collection('project')
-        .doc(docID)
-        .update(clonedData.toJson())
-        .then((value) => Future.value(true))
-        .catchError((err) => Future.value(false));
+    return await updateDocument('project', docID, clonedData.toJson());
   }
 
   /// `DELETE` remove existing document in the Project
@@ -255,12 +251,7 @@ class FireStoreDB {
     final storageResult = await deleteFile(baseURL + 'project' + '/$docID.png');
 
     if (storageResult) {
-      return await fireStoreInst
-          .collection('project')
-          .doc(hashedID)
-          .delete()
-          .then((value) => Future.value(true))
-          .catchError((err) => Future.value(false));
+      return await deleteDocument('project', hashedID);
     } else {
       return Future.value(false);
     }
@@ -295,27 +286,53 @@ class FireStoreDB {
   }
 
   /// `html.File` is used for uploading pdf/image both
-  Future<bool> addNewBoard(String collectionName, Board newBoard, html.File? file) async {
+  Future<bool> addNewBoard(
+      String collectionName, Board newBoard, html.File? file) async {
     /// used for `Collaboration`
     if (file == null && newBoard.imagePath == null) {
-      return await fireStoreInst
-          .collection(collectionName)
-          .add(newBoard.toJson())
-          .then((value) => Future.value(true))
-          .onError((error, stackTrace) => Future.value(false));
+      return await addDocument(collectionName, newBoard.toJson());
     } else {
       final imagePath = baseURL + collectionName + '/${file!.name}';
       final uploadResult = await uploadFile(imagePath, file);
 
       if (uploadResult) {
         Board updatedBoard = Board.cloneWith(newBoard, imagePath);
-        return await fireStoreInst
-            .collection(collectionName)
-            .add(updatedBoard.toJson())
-            .then((value) => Future.value(true))
-            .onError((error, stackTrace) => Future.value(false));
+        return await addDocument(collectionName, updatedBoard.toJson());
       }
       return Future.value(false);
+    }
+  }
+
+  updateBoard(
+      String collectionName, String docID, Board board, html.File? file) async {
+    /// 1. remove existing file from Firebase Storage
+    final filePath = board.imagePath;
+    if (filePath != null && file != null) {
+      final deleteResult = await deleteFile(filePath);
+
+      /// 2. upload new file to Firebase Storage
+      if (deleteResult) {
+        final fileUploadResult = await uploadFile(filePath, file);
+
+        /// update document fields
+        if (fileUploadResult) {
+          final newFilePath = baseURL + collectionName + '/' + file.name;
+          final updatedBoard = Board.cloneWith(board, newFilePath);
+          return await updateDocument(
+              collectionName, docID, updatedBoard.toJson());
+        }
+      }
+
+      /// upload failure
+      else {
+        return Future.value(false);
+      }
+    }
+
+    /// 3. update to `docID` with `board`
+    else {
+      // no files to be updated
+      return await updateDocument(collectionName, docID, board.toJson());
     }
   }
 
@@ -325,12 +342,7 @@ class FireStoreDB {
       final deleteResult = await deleteFile(imagePath);
       if (!deleteResult) throw FirebaseException(plugin: 'Delete from Storage');
     }
-    return fireStoreInst
-        .collection(collectionName)
-        .doc(docID)
-        .delete()
-        .then((value) => Future.value(true))
-        .onError((error, stackTrace) => Future.value(false));
+    return await deleteDocument(collectionName, docID);
   }
 }
 
