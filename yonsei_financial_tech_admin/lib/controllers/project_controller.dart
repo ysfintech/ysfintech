@@ -8,11 +8,11 @@ import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
 class ProjectController extends GetxController {
-
   late final fireStore;
   ProjectController() {
     fireStore = FireStoreDB();
   }
+
   /// to list the uploaded projects
   Rx<List<Project>> projectList = Rx<List<Project>>([]);
   Rx<Map<int, String>> docIDMap = Rx<Map<int, String>>({});
@@ -25,12 +25,11 @@ class ProjectController extends GetxController {
   @override
   void onInit() {
     /// load projects with using stream
-    final fetched = fireStore.getProjectStream();
-    final projectStream = fetched.
-    projectList.bindStream(
-        fetched.map((event) => event.first as List<Project>).cast());
-    docIDMap.bindStream(
-        fetched.map((event) => event.last as Map<int, String>).cast());
+    final Stream<List<dynamic>> fetched = fireStore.getProjectStream();
+    Stream<List<Project>> projStream = fetched.map((event) => event.first);
+    Stream<Map<int, String>> mapperStream = fetched.map((event) => event.last);
+    projectList.bindStream(projStream);
+    docIDMap.bindStream(mapperStream);
     super.onInit();
   }
 
@@ -39,7 +38,6 @@ class ProjectController extends GetxController {
 }
 
 class ProjectEditController extends GetxController {
-
   late final fireStore;
   ProjectEditController() {
     fireStore = FireStoreDB();
