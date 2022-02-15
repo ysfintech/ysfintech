@@ -64,7 +64,7 @@ class CollaborationController extends BoardController {
 
   @override
   void onClose() {
-    scrollController.value.dispose();
+    scrollController.close();
     searchController.dispose();
     super.onClose();
   }

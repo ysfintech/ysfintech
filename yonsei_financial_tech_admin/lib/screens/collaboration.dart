@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
-import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/screens/board_list.dart';
-import 'package:ysfintech_admin/screens/collaboration_edit.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
@@ -56,7 +54,7 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
                                     fillColor: Colors.white,
                                     filled: true,
 
-                                    hintText: '제목을 입력해주세요...',
+                                    hintText: '여기를 클릭 후 사용해주세요 !',
                                     labelStyle: ThemeTyphography.body.style,
 
                                     /// [Button]
