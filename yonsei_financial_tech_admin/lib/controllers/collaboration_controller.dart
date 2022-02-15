@@ -22,12 +22,12 @@ class CollaborationController extends BoardController {
   /// variables
   Rx<List<Board>> fetchedBoardList = Rx<List<Board>>([]);
   Rx<List<Board>> originBoardList = Rx<List<Board>>([]);
-  Rx<Map<String, dynamic>> fetchedMapper = Rx<Map<String, dynamic>>({});
+  Rx<Map<int, String>> fetchedMapper = Rx<Map<int, String>>({});
 
   /// getter methods
   List<Board> get boards => fetchedBoardList.value;
   List<Board> get fetchedBoards => fetchedBoardList.value;
-  Map<String, dynamic> get mapper => fetchedMapper.value;
+  Map<int, String> get mapper => fetchedMapper.value;
 
   @override
   void onReady() {
@@ -40,6 +40,7 @@ class CollaborationController extends BoardController {
     /// update existing list
     originBoardList.bindStream(super.boardStream);
     fetchedBoardList.value = List<Board>.from(originBoardList.value);
+    fetchedMapper.bindStream(super.mapperStream);
 
     // add listener to controller
     searchController.addListener(() {
@@ -73,7 +74,7 @@ class CollaborationController extends BoardController {
     final int index,
   ) {
     Get.bottomSheet(
-      index > fetchedBoards.length
+      index > originBoardList.value.length
           ? CollaborationBottomSheet(
               docNumericID: index,
             )

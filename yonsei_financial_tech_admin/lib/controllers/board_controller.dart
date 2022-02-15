@@ -20,7 +20,7 @@ class BoardController extends GetxController {
   }
 
   late Stream<List<Board>> boardStream;
-  late Stream<Map<String, dynamic>> mapperStream;
+  late Stream<Map<int, String>> mapperStream;
 
   @override
   onInit() {
