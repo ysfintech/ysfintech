@@ -55,7 +55,7 @@ class ProjectEditController extends GetxController {
   final toController = TextEditingController();
 
   /// image
-  Rx<Uint8List?> binaryImage = Uint8List.fromList([]).obs;
+  Rx<Uint8List?> binaryImage = null.obs;
   Rx<String> imagePath = ''.obs;
 
   /// docID
@@ -82,7 +82,7 @@ class ProjectEditController extends GetxController {
     titleController.text = '';
     fromController.text = '';
     toController.text = '';
-    binaryImage.value = Uint8List.fromList([]);
+    binaryImage.value = null;
     imagePath.value = notFoundURL;
     docID.value = null;
     update();

@@ -91,7 +91,7 @@ class IntroEditController extends GetxController {
   /// for values that needs to be observable
   RxInt introID = 0.obs;
   Rx<String?> docID = Rx<String?>('');
-  Rx<Uint8List?> imageFile = Uint8List(0).obs;
+  Rx<Uint8List?> imageFile = null.obs;
   RxString imagePath = ''.obs;
 
   @override
