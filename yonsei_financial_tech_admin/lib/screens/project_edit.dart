@@ -85,7 +85,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: controller.binaryImage.value.isEmpty
+                          child: controller.binaryImage.value == null
                               ? CachedNetworkImage(
                                   imageUrl: controller.imagePath.value,
                                   width: Get.width * 0.3,
@@ -93,7 +93,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                                       CircularProgressIndicator.adaptive(),
                                 )
                               : Image.memory(
-                                  controller.binaryImage.value,
+                                  controller.binaryImage.value!,
                                   width: Get.width * 0.3,
                                 ),
                         ),
@@ -128,8 +128,8 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                       TextFormField(
                         controller: controller.imageDescController,
                         style: ThemeTyphography.caption.style,
-                        decoration: inputDecoration(
-                            '첨부한 이미지에 대한 설명을 입력해주세요...'),
+                        decoration:
+                            inputDecoration('첨부한 이미지에 대한 설명을 입력해주세요...'),
                       ),
                     ],
                   ),
@@ -153,8 +153,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                           controller: controller.contentController,
                           style: ThemeTyphography.body.style,
                           maxLines: null,
-                          decoration:
-                              inputDecoration('내용을 입력해주세요...'),
+                          decoration: inputDecoration('내용을 입력해주세요...'),
                         ),
                         SizedBox(height: 16),
 
@@ -167,8 +166,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                         TextFormField(
                           controller: controller.organController,
                           style: ThemeTyphography.body.style,
-                          decoration:
-                              inputDecoration('기관을 입력해주세요...'),
+                          decoration: inputDecoration('기관을 입력해주세요...'),
                         ),
                         SizedBox(height: 16),
 
@@ -186,8 +184,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                               child: TextFormField(
                                 controller: controller.fromController,
                                 style: ThemeTyphography.body.style,
-                                decoration: inputDecoration(
-                                    '시작년도 ex) 2022'),
+                                decoration: inputDecoration('시작년도 ex) 2022'),
                               ),
                             ),
                             Text(' ~ '),
@@ -196,8 +193,7 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                               child: TextFormField(
                                 controller: controller.toController,
                                 style: ThemeTyphography.body.style,
-                                decoration: inputDecoration(
-                                    '종료년도 ex) 2022'),
+                                decoration: inputDecoration('종료년도 ex) 2022'),
                               ),
                             ),
                           ],

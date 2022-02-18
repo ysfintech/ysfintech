@@ -119,7 +119,7 @@ class FireStoreDB {
       List<Intro> intros = [];
       Map<int, String> mapper = {};
       for (var doc in snapshot.docs) {
-        final parsedIntro = Intro.fromJson(doc.data());
+        final parsedIntro = Intro.fromJson(doc.data() as Map<String, dynamic>);
         intros.add(parsedIntro);
         mapper.addAll({parsedIntro.id: doc.id});
       }
@@ -185,7 +185,8 @@ class FireStoreDB {
       List<Project> projects = [];
       Map<int, String> mapper = {};
       for (var doc in query.docs) {
-        Project parsedDoc = Project.fromJson(doc.data());
+        Project parsedDoc =
+            Project.fromJson(doc.data() as Map<String, dynamic>);
         projects.add(parsedDoc); // project
         mapper.addAll({parsedDoc.id: doc.id}); // mapper
       }

@@ -20,17 +20,20 @@ class Board {
   });
 
   factory Board.fromJson(QueryDocumentSnapshot snapshot) {
-    final Timestamp timestamp = snapshot.data()['date'];
+    final Timestamp timestamp = snapshot.get('date');
     final DateTime dateTime = timestamp.toDate();
 
+    final Map<String, dynamic> json = snapshot.data() as Map<String, dynamic>;
+
     return Board(
-        id: snapshot.data()['id'],
-        content: snapshot.data()['content'],
-        date: dateTime,
-        title: snapshot.data()['title'],
-        view: snapshot.data()['view'],
-        writer: snapshot.data()['writer'],
-        imagePath: snapshot.data()['imagePath']);
+      id: snapshot.get('id'),
+      content: json['content'],
+      date: dateTime,
+      title: json['title'],
+      view: json['view'],
+      writer: json['writer'],
+      imagePath: json['imagePath'],
+    );
   }
 
   Map<String, dynamic> toJson() => {

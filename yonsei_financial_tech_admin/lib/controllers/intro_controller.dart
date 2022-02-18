@@ -91,7 +91,7 @@ class IntroEditController extends GetxController {
   /// for values that needs to be observable
   RxInt introID = 0.obs;
   Rx<String?> docID = Rx<String?>('');
-  Rx<Uint8List> imageFile = Uint8List(0).obs;
+  Rx<Uint8List?> imageFile = Uint8List(0).obs;
   RxString imagePath = ''.obs;
 
   @override
@@ -128,10 +128,8 @@ class IntroEditController extends GetxController {
 
   /// select image file from PC
   void selectFile() async {
-    final Uint8List picked = await ImagePickerWeb.getImage(
-      outputType: ImageType.bytes,
-    );
-    if (picked.isNotEmpty) {
+    final Uint8List? picked = await ImagePickerWeb.getImageAsBytes();
+    if (picked != null) {
       imageFile.value = picked;
       update();
     }
@@ -142,7 +140,7 @@ class IntroEditController extends GetxController {
     isLoading.value = true;
     update();
 
-    final hasImage = imageFile.value.isNotEmpty;
+    final hasImage = imageFile.value != null;
     final data = Intro(
       content: introContentCtlr.text,
       id: introID.value,
@@ -157,13 +155,13 @@ class IntroEditController extends GetxController {
     if (docID.value != null) {
       if (hasImage) {
         result =
-            await fireStore.updateIntro(docID.value!, data, imageFile.value);
+            await fireStore.updateIntro(docID.value!, data, imageFile.value!);
       } else {
         result = await fireStore.updateIntroWithoutImage(docID.value!, data);
       }
     } else {
-      print('added new intrio!');
-      result = await fireStore.addNewIntro(data, imageFile.value);
+      // new intro must have image
+      result = await fireStore.addNewIntro(data, imageFile.value!);
     }
 
     /// after all procedures

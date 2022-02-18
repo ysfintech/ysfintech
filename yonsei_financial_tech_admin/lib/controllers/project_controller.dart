@@ -55,7 +55,7 @@ class ProjectEditController extends GetxController {
   final toController = TextEditingController();
 
   /// image
-  Rx<Uint8List> binaryImage = Uint8List.fromList([]).obs;
+  Rx<Uint8List?> binaryImage = Uint8List.fromList([]).obs;
   Rx<String> imagePath = ''.obs;
 
   /// docID
@@ -128,12 +128,10 @@ class ProjectEditController extends GetxController {
 
   /// upload new image file
   void uploadNewImage() async {
-    final Uint8List selected = await ImagePickerWeb.getImage(
-      outputType: ImageType.bytes,
-    );
+    final Uint8List? selected = await ImagePickerWeb.getImageAsBytes();
 
     /// check if the image file is not empty
-    if (selected.isNotEmpty) {
+    if (selected != null) {
       binaryImage.value = selected;
       update();
     }
@@ -149,7 +147,7 @@ class ProjectEditController extends GetxController {
     if (docID.value is String) {
       /// update exisiting data
       /// check if the new image file has been upload via `binaryImage`
-      if (binaryImage.value.isEmpty) {
+      if (binaryImage.value != null) {
         /// update without image
         uploadResult = await fireStore.updateProjectWithoutImage(
           docID.value,

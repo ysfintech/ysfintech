@@ -39,10 +39,8 @@ mixin BoardEditMixinController on GetxController {
   Rx<Board?> selectedBoard = Rx<Board?>(null);
 
   void selectFile() async {
-    final html.File picked = await ImagePickerWeb.getImage(
-      outputType: ImageType.file,
-    );
-    if (picked.size > 0) {
+    final html.File? picked = await ImagePickerWeb.getImageAsFile();
+    if (picked != null) {
       binaryFile.value = picked;
       update();
     }
