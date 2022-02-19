@@ -1,64 +1,68 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Project {
-  final String content;
-  final String from;
-  final int id;
-  final String imageDesc;
-  final String imagePath;
-  final String period;
-  final String title;
-
-  Project(
-      {this.content,
-      this.from,
-      this.id,
-      this.imageDesc,
-      this.imagePath,
-      this.period,
-      this.title});
-}
-
 class Board {
   final int id;
   final String content;
-  // final String date;
   final DateTime date;
   final String title;
   final int view;
   final String writer;
-  final String imagePath;
+  final String? imagePath;
 
-  Board(
-      {this.id,
-      this.content,
-      this.date,
-      this.title,
-      this.view,
-      this.writer,
-      this.imagePath});
+  Board({
+    required this.id,
+    required this.content,
+    required this.date,
+    required this.title,
+    required this.view,
+    required this.writer,
+    this.imagePath,
+  });
 
-  factory Board.from(QueryDocumentSnapshot snapshot) {
-    Timestamp timestamp = snapshot.data()['date'];
-    DateTime dateTime = timestamp.toDate();
+  factory Board.fromJson(QueryDocumentSnapshot snapshot) {
+    final Timestamp timestamp = snapshot.get('date');
+    final DateTime dateTime = timestamp.toDate();
+
+    final Map<String, dynamic> json = snapshot.data() as Map<String, dynamic>;
+
     return Board(
-        id: snapshot.data()['id'],
-        content: snapshot.data()['content'],
-        date: dateTime,
-        title: snapshot.data()['title'],
-        view: snapshot.data()['view'],
-        writer: snapshot.data()['writer'],
-        imagePath: snapshot.data()['imagePath']);
+      id: snapshot.get('id'),
+      content: json['content'],
+      date: dateTime,
+      title: json['title'],
+      view: json['view'],
+      writer: json['writer'],
+      imagePath: json['imagePath'],
+    );
   }
-}
 
-class BoardCollection {
-  final List<Board> list;
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "content": content,
+        "date": Timestamp.fromDate(date),
+        "title": title,
+        "view": view,
+        "writer": writer,
+        "imagePath": imagePath
+      };
 
-  BoardCollection({this.list});
+  factory Board.clone(Board board) => Board(
+        id: board.id,
+        content: board.content,
+        date: board.date,
+        title: board.title,
+        imagePath: board.imagePath,
+        view: board.view,
+        writer: board.writer,
+      );
 
-  factory BoardCollection.from(List<QueryDocumentSnapshot> snapshot) {
-    List<Board> _list = snapshot.map((e) => Board.from(e)).toList();
-    return BoardCollection(list: _list);
-  }
+  factory Board.cloneWith(Board board, String newPath) => Board(
+        id: board.id,
+        content: board.content,
+        date: board.date,
+        title: board.title,
+        imagePath: newPath,
+        view: board.view,
+        writer: board.writer,
+      );
 }
