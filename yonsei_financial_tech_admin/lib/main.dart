@@ -13,11 +13,11 @@ import 'package:ysfintech_admin/controllers/auth_controller.dart';
 // screens
 import 'package:ysfintech_admin/screens/collaboration.dart';
 import 'package:ysfintech_admin/screens/introduction.dart';
-import 'package:ysfintech_admin/screens/login/login.dart';
+import 'package:ysfintech_admin/screens/login.dart';
 import 'package:ysfintech_admin/screens/board_with_file.dart';
 import 'package:ysfintech_admin/screens/projects.dart';
 
-import 'screens/home/home_grid.dart';
+import 'screens/home_grid.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

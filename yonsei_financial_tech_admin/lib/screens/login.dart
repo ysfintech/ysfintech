@@ -9,12 +9,11 @@ import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
-import '../../utils/spacing.dart';
+import '../utils/spacing.dart';
 
 /// updated 0121 Fri
 /// using GetX controller to make event
 class SignInScreen extends GetView<SignInController> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
