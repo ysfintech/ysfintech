@@ -1,42 +1,39 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'package:ysfintech_admin/widgets/common.dart';
-
-/// controller
-import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
-
-/// model
-import 'package:ysfintech_admin/model/board.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
-class CollaborationBottomSheet
-    extends GetResponsiveView<CollaborationEditController> {
+import 'package:ysfintech_admin/widgets/common.dart';
+
+import 'package:ysfintech_admin/controllers/paper_controller.dart';
+import 'package:ysfintech_admin/model/board.dart';
+
+class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
   final Board? board;
   final String? docId;
   final int docNumericId;
 
-  /// if the `board` and `docID` are `null` then it means [new work]
-  /// or else it must be editing an [exisiting work]
-  CollaborationBottomSheet({
-    Key? key,
+  PaperBottomSheet({
     this.board,
     this.docId,
     required this.docNumericId,
-  })  : assert(
+  }) : assert(
           (board != null && docId != null) || (board == null && docId == null),
-        ),
-        super(key: key) {
+        ) {
+    // init
     controller.init(board, docId, docNumericId);
+  }
+
+  void openURL(String url) async {
+    if (!await launch(url)) bottomSnackBar('Error', '파일을 찾을 수 없어요 :(');
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.size.height,
-      padding: padding(16, 32),
+      padding: padding(32, 32),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(Get.size.width * 0.015),
@@ -44,28 +41,15 @@ class CollaborationBottomSheet
         ),
         color: Colors.white,
       ),
-
-      /// needs [content], [date], [id], [title], [view], [writer]
       child: Form(
         // TODO: validator implementation
-        key: UniqueKey(),
         child: ListView(
-          padding: padding(16, 16),
           children: [
             Text(
               board == null ? '새롭게 작성하기' : '기존 글 수정하기',
               style: ThemeTyphography.title.style,
             ),
             SizedBox(height: 32),
-
-            /// id
-            Text(
-              'ID : $docNumericId',
-              style: ThemeTyphography.subTitle.style,
-            ),
-            SizedBox(
-              height: 16,
-            ),
 
             /// Title
             Text(
@@ -93,6 +77,60 @@ class CollaborationBottomSheet
               controller: controller.contentController,
               decoration: formDecoration,
               maxLines: null,
+            ),
+            SizedBox(height: 32),
+
+            /// existing file
+            Wrap(
+              spacing: 16,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    primary: ThemeColor.second.color,
+                    shape: StadiumBorder(),
+                    padding: padding(32, 16),
+                  ),
+                  icon: Icon(
+                    Icons.file_download,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    '파일 다운로드',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () =>
+                      openURL(controller.downloadableURL.value ?? ''),
+                ),
+                ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    primary: ThemeColor.highlight.color,
+                    shape: StadiumBorder(),
+                    padding: padding(32, 16),
+                  ),
+                  icon: Icon(
+                    Icons.file_upload_rounded,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    '파일 업로드',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: controller.selectFile,
+                ),
+                Obx(
+                  () => Text(
+                    controller.selectedFileBytes != null
+                        ? '업로드된 파일 : ${controller.selectedFileName}'
+                        : '업로드한 파일이 없어요',
+                    style: ThemeTyphography.body.style,
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 32),
 

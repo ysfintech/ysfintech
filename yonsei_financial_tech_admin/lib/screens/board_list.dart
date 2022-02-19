@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
+
 import 'package:ysfintech_admin/model/board.dart';
 
 /// utils

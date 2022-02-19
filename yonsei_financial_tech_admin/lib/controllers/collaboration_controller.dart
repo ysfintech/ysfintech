@@ -76,12 +76,12 @@ class CollaborationController extends BoardController {
     Get.bottomSheet(
       index > originBoardList.value.length
           ? CollaborationBottomSheet(
-              docNumericID: index,
+              docNumericId: index,
             )
           : CollaborationBottomSheet(
               board: fetchedBoards[index],
-              docID: mapper[fetchedBoards[index].id],
-              docNumericID: fetchedBoards[index].id,
+              docId: mapper[fetchedBoards[index].id],
+              docNumericId: fetchedBoards[index].id,
             ),
     );
   }
@@ -110,7 +110,6 @@ class CollaborationEditController extends GetxController
 
   /// take input data as initializer
   void init(Board? data, String? id, int docIdx) {
-    print(data);
     selectedBoard.value = data != null ? Board.clone(data) : null;
 
     /// not related to `Board` Object
@@ -123,7 +122,8 @@ class CollaborationEditController extends GetxController
       titleController.text = data.title;
     } else {
       // new document
-      // ...
+      contentController.text = '';
+      titleController.text = '';
     }
     update();
   }
@@ -148,17 +148,15 @@ class CollaborationEditController extends GetxController
     if (docID.value != null) {
       // update
       uploadResult = await fireStore.updateBoard(
-        collectionName,
-        docID.value!,
-        newData,
-        binaryFile.value,
+        collectionName: collectionName,
+        docId: docID.value!,
+        board: newData,
       );
     } else {
       // add
       uploadResult = await fireStore.addNewBoard(
-        collectionName,
-        newData,
-        null,
+        collectionName: collectionName,
+        newBoard: newData,
       );
     }
     Get.back();
@@ -171,8 +169,10 @@ class CollaborationEditController extends GetxController
   /// this method is not shown in new data form
   void delete() async {
     if (docID.value != null) {
-      final result =
-          await fireStore.removeBoard(collectionName, docID.value!, null);
+      final result = await fireStore.removeBoard(
+        collectionName: collectionName,
+        docId: docID.value!,
+      );
       Get.back();
       bottomSnackBar(
         'Collaboration',

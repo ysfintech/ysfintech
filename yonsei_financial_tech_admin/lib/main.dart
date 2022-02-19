@@ -9,10 +9,12 @@ import 'package:ysfintech_admin/bindings/project_binding.dart';
 import 'package:ysfintech_admin/bindings/sigin_binding.dart';
 
 import 'package:ysfintech_admin/controllers/auth_controller.dart';
-import 'package:ysfintech_admin/screens/collaboration.dart';
 
+// screens
+import 'package:ysfintech_admin/screens/collaboration.dart';
 import 'package:ysfintech_admin/screens/introduction.dart';
 import 'package:ysfintech_admin/screens/login/login.dart';
+import 'package:ysfintech_admin/screens/paper.dart';
 import 'package:ysfintech_admin/screens/projects.dart';
 
 import 'screens/home/home_grid.dart';
@@ -84,6 +86,11 @@ class Home extends StatelessWidget {
           name: '/home/collaboration',
           page: () => CollaborationScreen(),
           binding: CollaborationBinding(),
+        ),
+        GetPage(
+          name: '/home/paper',
+          page: () => PaperScreen(),
+          binding: PaperBinding(),
         ),
       ],
       defaultTransition: Transition.zoom,

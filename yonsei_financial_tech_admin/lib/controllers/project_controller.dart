@@ -1,5 +1,3 @@
-import 'dart:html' as html;
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -150,7 +148,7 @@ class ProjectEditController extends GetxController {
     if (docID.value is String) {
       /// update exisiting data
       /// check if the new image file has been upload via `binaryImage`
-      if (binaryImage.value != null) {
+      if (binaryImage.value.isEmpty) {
         /// update without image
         uploadResult = await fireStore.updateProjectWithoutImage(
           docID.value,

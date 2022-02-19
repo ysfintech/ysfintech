@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 // Margin
 const EdgeInsets marginBottom12 = EdgeInsets.only(bottom: 12);

@@ -11,10 +11,10 @@ import 'package:ysfintech_admin/utils/typography.dart';
 import '../controllers/auth_controller.dart';
 
 const mapper = {
-  'Introduction & Education': ['/home/intro_edu', Icons.info_outline_rounded],
+  'Introduction': ['/home/intro_edu', Icons.info_outline_rounded],
   'People': ['', Icons.people_alt_rounded],
   'Project': ['/home/project', Icons.science_rounded],
-  'Working Papers': ['', Icons.contact_page_rounded],
+  'Working Papers': ['/home/paper', Icons.contact_page_rounded],
   'Collaboration': ['/home/collaboration', Icons.workspaces_rounded],
   'Seminars': ['', Icons.present_to_all_rounded],
 };
@@ -130,3 +130,14 @@ bottomSnackBar(String title, String msg) => Get.snackbar(
       padding: padding(32, 16),
       backgroundColor: Colors.white.withOpacity(0.5),
     );
+
+OutlineInputBorder outlineBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(12),
+  borderSide: BorderSide.none,
+);
+
+InputDecoration formDecoration = InputDecoration(
+  border: outlineBorder,
+  fillColor: Colors.grey[100],
+  filled: true,
+);

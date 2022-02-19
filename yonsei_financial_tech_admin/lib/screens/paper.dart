@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
+
+import 'package:ysfintech_admin/controllers/paper_controller.dart';
 import 'package:ysfintech_admin/screens/board_list.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
-class CollaborationScreen extends GetResponsiveView<CollaborationController> {
+class PaperScreen extends GetResponsiveView<PaperController> {
   @override
   Widget build(BuildContext context) {
     /// insert dependency
-    Get.put(CollaborationEditController());
+    Get.put(PaperEditController());
 
     return Scaffold(
       body: CustomScrollView(
@@ -32,7 +33,7 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
                     children: [
                       Center(
                         child: Text(
-                          'Collaboration',
+                          'Working Papers',
                           style: ThemeTyphography.subTitle.style,
                         ),
                       ),
@@ -84,7 +85,7 @@ class CollaborationScreen extends GetResponsiveView<CollaborationController> {
             /// list of boards
             Obx(
               () => BoardListScreen(
-                list: controller.boards,
+                list: controller.fetchedBoards,
                 withIndexOnPressed: controller.openBottomSheet,
               ),
             ),

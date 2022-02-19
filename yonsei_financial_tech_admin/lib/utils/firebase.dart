@@ -1,5 +1,3 @@
-import 'dart:html' as html;
-
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,12 +49,12 @@ class FireStoreDB {
       return false;
   }
 
-  static Future<bool> uploadFile(String filePath, html.File file) async {
+  static Future<bool> uploadFile(String filePath, Uint8List bytes) async {
     final storageRef = fireStorageInst.ref(filePath);
 
     /// upload file
-    final uploadResult = await storageRef.putBlob(
-      file,
+    final uploadResult = await storageRef.putData(
+      bytes,
       SettableMetadata(contentType: 'application/pdf'),
     );
 
@@ -287,14 +285,18 @@ class FireStoreDB {
   }
 
   /// `html.File` is used for uploading pdf/image both
-  Future<bool> addNewBoard(
-      String collectionName, Board newBoard, html.File? file) async {
+  Future<bool> addNewBoard({
+    required String collectionName,
+    required Board newBoard,
+    Uint8List? fileBytes,
+    String? fileName,
+  }) async {
     /// used for `Collaboration`
-    if (file == null && newBoard.imagePath == null) {
+    if (fileBytes == null && newBoard.imagePath == null) {
       return await addDocument(collectionName, newBoard.toJson());
     } else {
-      final imagePath = baseURL + collectionName + '/${file!.name}';
-      final uploadResult = await uploadFile(imagePath, file);
+      final imagePath = baseURL + collectionName + '/$fileName';
+      final uploadResult = await uploadFile(imagePath, fileBytes!);
 
       if (uploadResult) {
         Board updatedBoard = Board.cloneWith(newBoard, imagePath);
@@ -304,23 +306,29 @@ class FireStoreDB {
     }
   }
 
-  updateBoard(
-      String collectionName, String docID, Board board, html.File? file) async {
+  updateBoard({
+    required String collectionName,
+    required String docId,
+    required Board board,
+    Uint8List? fileBytes,
+    String? fileName,
+  }) async {
     /// 1. remove existing file from Firebase Storage
     final filePath = board.imagePath;
-    if (filePath != null && file != null) {
+    if (filePath != null && fileBytes != null && fileName != null) {
       final deleteResult = await deleteFile(filePath);
 
       /// 2. upload new file to Firebase Storage
       if (deleteResult) {
-        final fileUploadResult = await uploadFile(filePath, file);
+        final newFilePath = baseURL + collectionName + '/' + fileName;
+
+        final fileUploadResult = await uploadFile(newFilePath, fileBytes);
 
         /// update document fields
         if (fileUploadResult) {
-          final newFilePath = baseURL + collectionName + '/' + file.name;
           final updatedBoard = Board.cloneWith(board, newFilePath);
           return await updateDocument(
-              collectionName, docID, updatedBoard.toJson());
+              collectionName, docId, updatedBoard.toJson());
         }
       }
 
@@ -333,17 +341,21 @@ class FireStoreDB {
     /// 3. update to `docID` with `board`
     else {
       // no files to be updated
-      return await updateDocument(collectionName, docID, board.toJson());
+      return await updateDocument(collectionName, docId, board.toJson());
     }
   }
 
   /// remove file first then remove document
-  removeBoard(String collectionName, String docID, String? imagePath) async {
+  removeBoard({
+    required String collectionName,
+    required String docId,
+    String? imagePath,
+  }) async {
     if (imagePath != null) {
       final deleteResult = await deleteFile(imagePath);
       if (!deleteResult) throw FirebaseException(plugin: 'Delete from Storage');
     }
-    return await deleteDocument(collectionName, docID);
+    return await deleteDocument(collectionName, docId);
   }
 }
 

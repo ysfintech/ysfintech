@@ -16,8 +16,7 @@ class HomeGridViewScreen extends StatefulWidget {
 class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
   static Color unSelectedColor = Colors.grey.withOpacity(0.5);
 
-  var gridViewColors =
-      List.generate(mapper.length, (index) => unSelectedColor);
+  var gridViewColors = List.generate(mapper.length, (index) => unSelectedColor);
 
   void onSelected(int index) {
     setState(() {
@@ -45,19 +44,18 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
         child: Center(
           child: GridView.builder(
             shrinkWrap: true,
-            padding: padding(16, 16),
+            padding: padding(Get.width * 0.15, Get.width * 0.005),
             itemCount: mapper.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, // 3 x 3
+              crossAxisCount: 4, // 3 x 3
               childAspectRatio: 1, // width 1 / height 1
-              mainAxisSpacing: 16.0,
-              crossAxisSpacing: 16.0,
+              mainAxisSpacing: Get.width * 0.015,
+              crossAxisSpacing: Get.width * 0.015,
             ),
             itemBuilder: (context, index) => InkWell(
               onHover: (value) => onSelected(index),
               onTap: () {
-                final key =
-                    mapper.values.elementAt(index).first.toString();
+                final key = mapper.values.elementAt(index).first.toString();
                 if (key != '')
                   Get.toNamed(key);
                 else
@@ -65,7 +63,7 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
                   bottomSnackBar('route', 'preparing');
               },
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(Get.width * 0.015),
                 child: GridTile(
                   footer: GridTileBar(
                     backgroundColor: gridViewColors[index],
@@ -76,13 +74,13 @@ class _HomeGridViewScreenState extends State<HomeGridViewScreen> {
                     ),
                   ),
                   child: Container(
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Colors.white,
                     ),
                     child: Icon(
-                      mapper.values.elementAt(index).last
-                          as IconData,
-                      size: Get.width * 0.125,
+                      mapper.values.elementAt(index).last as IconData,
+                      size: Get.width * 0.045,
                       color: gridViewColors[index],
                     ),
                   ),

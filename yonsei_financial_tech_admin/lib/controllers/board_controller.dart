@@ -1,9 +1,7 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html' as html;
-import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
@@ -36,15 +34,16 @@ class BoardController extends GetxController {
 mixin BoardEditMixinController on GetxController {
   /// used for image/file upload
   /// can be null cause of [Collaboration]
-  Rx<html.File?> binaryFile = null.obs;
+  Rx<Uint8List?> fileBytes = Rx<Uint8List?>(null);
+  Rx<String?> fileName = Rx<String?>(null);
   Rx<Board?> selectedBoard = Rx<Board?>(null);
 
   void selectFile() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile? picked = await _picker.pickImage(source: ImageSource.gallery);
+    final picked = await FilePicker.platform.pickFiles();
 
     if (picked != null) {
-      binaryFile.value = File(picked.path) as html.File?;
+      fileBytes.value = picked.files.first.bytes;
+      fileName.value = picked.files.first.name;
       update();
     }
   }
