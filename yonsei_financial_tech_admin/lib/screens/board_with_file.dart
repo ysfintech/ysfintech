@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:ysfintech_admin/controllers/paper_controller.dart';
+import 'package:ysfintech_admin/controllers/board_with_file_controller.dart';
 import 'package:ysfintech_admin/screens/board_list.dart';
 import 'package:ysfintech_admin/utils/color.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
-class PaperScreen extends GetResponsiveView<PaperController> {
+class BoardWithFileScreen extends GetResponsiveView<BoardWithFileController> {
+  final String title;
+  BoardWithFileScreen(this.title);
   @override
   Widget build(BuildContext context) {
-    /// insert dependency
-    Get.put(PaperEditController());
-
     return Scaffold(
       body: CustomScrollView(
           controller: controller.scrollController.value,
@@ -33,7 +32,7 @@ class PaperScreen extends GetResponsiveView<PaperController> {
                     children: [
                       Center(
                         child: Text(
-                          'Working Papers',
+                          title,
                           style: ThemeTyphography.subTitle.style,
                         ),
                       ),
@@ -76,7 +75,7 @@ class PaperScreen extends GetResponsiveView<PaperController> {
               actions: [
                 IconButton(
                   onPressed: () => controller
-                      .openBottomSheet(controller.fetchedBoards.length + 1),
+                      .openBottomSheet(controller.originBoards.length + 1),
                   icon: Icon(Icons.plus_one_rounded),
                 )
               ],

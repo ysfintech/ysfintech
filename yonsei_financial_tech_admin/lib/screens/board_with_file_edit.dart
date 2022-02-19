@@ -2,20 +2,24 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:ysfintech_admin/utils/color.dart';
+import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/utils/spacing.dart';
 import 'package:ysfintech_admin/utils/typography.dart';
 
 import 'package:ysfintech_admin/widgets/common.dart';
 
-import 'package:ysfintech_admin/controllers/paper_controller.dart';
+import 'package:ysfintech_admin/controllers/board_with_file_controller.dart';
 import 'package:ysfintech_admin/model/board.dart';
 
-class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
+class BoardWithFileBottomSheet
+    extends GetResponsiveView<BoardWithFileEditController> {
+  final String title;
   final Board? board;
   final String? docId;
   final int docNumericId;
 
-  PaperBottomSheet({
+  BoardWithFileBottomSheet({
+    required this.title,
     this.board,
     this.docId,
     required this.docNumericId,
@@ -29,6 +33,12 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
   void openURL(String url) async {
     if (url == '' || !await launch(url))
       bottomSnackBar('Error', '파일을 찾을 수 없어요 :(');
+  }
+
+  String getFilename(String? imagePath) {
+    if (imagePath == null || imagePath == '') return '';
+    final ref = FireStoreDB.baseURL + '/' + controller.collectionName;
+    return imagePath.substring(ref.length);
   }
 
   @override
@@ -50,7 +60,7 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
               child: ListView(
                 children: [
                   Text(
-                    board == null ? '새롭게 작성하기' : '기존 글 수정하기',
+                    "$title ${board == null ? '새롭게 작성하기' : '기존 글 수정하기'}",
                     style: ThemeTyphography.title.style,
                   ),
                   SizedBox(height: 32),
@@ -100,7 +110,7 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
                           color: Colors.white,
                         ),
                         label: Text(
-                          '파일 다운로드',
+                          '${getFilename(controller.selectedBoard.value?.imagePath)} 파일 다운로드',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

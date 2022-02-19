@@ -315,26 +315,22 @@ class FireStoreDB {
   }) async {
     /// 1. remove existing file from Firebase Storage
     final filePath = board.imagePath;
-    if (filePath != null && fileBytes != null && fileName != null) {
-      final deleteResult = await deleteFile(filePath);
+    print(filePath ?? 'nothing');
+    if (filePath != null && filePath.length > 0) {
+      await deleteFile(filePath);
+    }
 
-      /// 2. upload new file to Firebase Storage
-      if (deleteResult) {
-        final newFilePath = baseURL + collectionName + '/' + fileName;
+    /// 2. upload new file to Firebase Storage
+    if (fileBytes != null && fileName != null) {
+      final newFilePath = baseURL + collectionName + '/' + fileName;
 
-        final fileUploadResult = await uploadFile(newFilePath, fileBytes);
+      final fileUploadResult = await uploadFile(newFilePath, fileBytes);
 
-        /// update document fields
-        if (fileUploadResult) {
-          final updatedBoard = Board.cloneWith(board, newFilePath);
-          return await updateDocument(
-              collectionName, docId, updatedBoard.toJson());
-        }
-      }
-
-      /// upload failure
-      else {
-        return Future.value(false);
+      /// update document fields
+      if (fileUploadResult) {
+        final updatedBoard = Board.cloneWith(board, newFilePath);
+        return await updateDocument(
+            collectionName, docId, updatedBoard.toJson());
       }
     }
 

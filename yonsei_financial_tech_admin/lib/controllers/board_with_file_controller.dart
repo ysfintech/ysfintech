@@ -4,17 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:ysfintech_admin/controllers/board_controller.dart';
+import 'package:ysfintech_admin/controllers/collaboration_controller.dart';
 import 'package:ysfintech_admin/model/board.dart';
-import 'package:ysfintech_admin/screens/paper_edit.dart';
+import 'package:ysfintech_admin/screens/board_with_file_edit.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
 
-const collectionName = 'paper';
+class BoardWithFileController extends BoardController {
+  final String collectionName;
 
-class PaperController extends BoardController {
   /// constructor
-  PaperController() : super(collectionName) {
-    Get.lazyPut(() => PaperEditController());
+  BoardWithFileController(this.collectionName) : super(collectionName) {
+    Get.put(BoardWithFileEditController(collectionName));
   }
 
   /// search bar
@@ -84,13 +85,17 @@ class PaperController extends BoardController {
   void openBottomSheet(int index) {
     if (index > originBoards.length) {
       Get.bottomSheet(
-        PaperBottomSheet(docNumericId: index),
+        BoardWithFileBottomSheet(
+          title: collectionName,
+          docNumericId: index,
+        ),
         ignoreSafeArea: true,
       );
     } else {
       // TODO: implement existing edit screen
       Get.bottomSheet(
-        PaperBottomSheet(
+        BoardWithFileBottomSheet(
+          title: collectionName,
           board: fetchedBoards[index],
           docId: mapper[fetchedBoards[index].id],
           docNumericId: fetchedBoards[index].id,
@@ -101,9 +106,12 @@ class PaperController extends BoardController {
   }
 }
 
-class PaperEditController extends GetxController with BoardEditMixinController {
+class BoardWithFileEditController extends GetxController
+    with BoardEditMixinController {
+  /// init with constructor
   late final FireStoreDB fireStore;
-  PaperEditController() {
+  final String collectionName;
+  BoardWithFileEditController(this.collectionName) {
     fireStore = FireStoreDB();
   }
 

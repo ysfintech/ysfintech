@@ -16,7 +16,8 @@ const mapper = {
   'Project': ['/home/project', Icons.science_rounded],
   'Working Papers': ['/home/paper', Icons.contact_page_rounded],
   'Collaboration': ['/home/collaboration', Icons.workspaces_rounded],
-  'Seminars': ['', Icons.present_to_all_rounded],
+  'Seminar': ['/home/seminar', Icons.present_to_all_rounded],
+  'Conference': ['/home/conference', Icons.emoji_people_rounded],
 };
 
 var drawer = Drawer(
@@ -31,22 +32,38 @@ var drawer = Drawer(
   // child
   child: ListView(
     padding: padding(0, 32),
-    children: mapper.entries
-        .map<Widget>((e) => ListTile(
-              // TODO: route pages
-              onTap: () => bottomSnackBar('title', 'msg'),
-              hoverColor: ThemeColor.second.color,
-              leading: Icon(
-                e.value.last as IconData,
-                color: Colors.white,
-              ),
-              title: Text(
-                e.key,
-                style: TextStyle(fontWeight: FontWeight.bold)
-                    .copyWith(color: Colors.white),
-              ),
-            ))
-        .toList()
+    children: [
+      ListTile(
+        onTap: () => Get.offAndToNamed('/home'),
+        hoverColor: ThemeColor.second.color,
+        leading: Icon(
+          Icons.home_max_rounded,
+          color: Colors.white,
+        ),
+        title: Text(
+          'Home',
+          style: TextStyle(fontWeight: FontWeight.bold)
+              .copyWith(color: Colors.white),
+        ),
+      )
+    ]
+      ..addAll(mapper.entries
+          .map<Widget>((e) => ListTile(
+                onTap: () => e.value.first.toString() != ''
+                    ? Get.offAllNamed(e.value.first.toString())
+                    : bottomSnackBar('관리자', '아직 공사중이에요, 조금만 기달려주세요'),
+                hoverColor: ThemeColor.second.color,
+                leading: Icon(
+                  e.value.last as IconData,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  e.key,
+                  style: TextStyle(fontWeight: FontWeight.bold)
+                      .copyWith(color: Colors.white),
+                ),
+              ))
+          .toList())
       ..add(SizedBox(
         height: 32,
       ))

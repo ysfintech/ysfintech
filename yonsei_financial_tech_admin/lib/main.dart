@@ -14,7 +14,7 @@ import 'package:ysfintech_admin/controllers/auth_controller.dart';
 import 'package:ysfintech_admin/screens/collaboration.dart';
 import 'package:ysfintech_admin/screens/introduction.dart';
 import 'package:ysfintech_admin/screens/login/login.dart';
-import 'package:ysfintech_admin/screens/paper.dart';
+import 'package:ysfintech_admin/screens/board_with_file.dart';
 import 'package:ysfintech_admin/screens/projects.dart';
 
 import 'screens/home/home_grid.dart';
@@ -89,8 +89,18 @@ class Home extends StatelessWidget {
         ),
         GetPage(
           name: '/home/paper',
-          page: () => PaperScreen(),
+          page: () => BoardWithFileScreen('Working Papers'),
           binding: PaperBinding(),
+        ),
+        GetPage(
+          name: '/home/seminar',
+          page: () => BoardWithFileScreen('Seminar'),
+          binding: SeminarBinding(),
+        ),
+        GetPage(
+          name: '/home/conference',
+          page: () => BoardWithFileScreen('Conference'),
+          binding: ConferenceBinding(),
         ),
       ],
       defaultTransition: Transition.zoom,
