@@ -44,6 +44,13 @@ class PaperController extends BoardController {
 
     /// copy [originBoardList] to [fetchedBoardList] for init
     // fetchedBoardList.value = List.from(originBoards);
+    super.boardStream.listen((event) {
+      if (originBoards != event) {
+        searchController.text = '';
+        fetchedBoardList.value = List.from(event);
+        update();
+      }
+    });
 
     /// add listener to [searchController]
     searchController.addListener(() {
@@ -109,6 +116,7 @@ class PaperEditController extends GetxController with BoardEditMixinController {
   Rx<int> docNumericId = Rx<int>(-1);
   Rx<String?> docId = Rx<String?>(null);
   Rx<String?> downloadableURL = Rx<String?>(null);
+  Rx<bool> onProgress = false.obs;
 
   Uint8List? get selectedFileBytes => super.fileBytes.value;
   String? get selectedFileName => super.fileName.value;
@@ -149,6 +157,8 @@ class PaperEditController extends GetxController with BoardEditMixinController {
   // TODO: implementation of BoardController Mixin or
   /// add abstract class to make [save], [delete], [init]
   void save() async {
+    onProgress.value = true;
+    update([onProgress]);
     final Board updatedBoard = Board(
       id: docNumericId.value,
       content: contentController.text,
@@ -179,6 +189,8 @@ class PaperEditController extends GetxController with BoardEditMixinController {
         fileName: fileName.value,
       );
     }
+    onProgress.value = false;
+    update([onProgress]);
     // get back - pop modal
     Get.back();
     bottomSnackBar(
@@ -189,11 +201,15 @@ class PaperEditController extends GetxController with BoardEditMixinController {
 
   void delete() async {
     if (docId.value != null && selectedBoard.value != null) {
+      onProgress.value = true;
+      update([onProgress]);
       final result = await fireStore.removeBoard(
         collectionName: collectionName,
         docId: docId.value!,
         imagePath: selectedBoard.value!.imagePath,
       );
+      onProgress.value = false;
+      update([onProgress]);
       // pop
       Get.back();
       bottomSnackBar(

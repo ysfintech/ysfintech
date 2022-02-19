@@ -27,7 +27,8 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
   }
 
   void openURL(String url) async {
-    if (!await launch(url)) bottomSnackBar('Error', '파일을 찾을 수 없어요 :(');
+    if (url == '' || !await launch(url))
+      bottomSnackBar('Error', '파일을 찾을 수 없어요 :(');
   }
 
   @override
@@ -41,126 +42,107 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
         ),
         color: Colors.white,
       ),
-      child: Form(
-        // TODO: validator implementation
-        child: ListView(
-          children: [
-            Text(
-              board == null ? '새롭게 작성하기' : '기존 글 수정하기',
-              style: ThemeTyphography.title.style,
-            ),
-            SizedBox(height: 32),
-
-            /// Title
-            Text(
-              'Title',
-              style: ThemeTyphography.subTitle.style.copyWith(
-                color: ThemeColor.primary.color,
-              ),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: controller.titleController,
-              decoration: formDecoration,
-            ),
-            SizedBox(height: 32),
-
-            /// Content
-            Text(
-              'Content',
-              style: ThemeTyphography.subTitle.style.copyWith(
-                color: ThemeColor.primary.color,
-              ),
-            ),
-            SizedBox(height: 16),
-            TextFormField(
-              controller: controller.contentController,
-              decoration: formDecoration,
-              maxLines: null,
-            ),
-            SizedBox(height: 32),
-
-            /// existing file
-            Wrap(
-              spacing: 16,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: ThemeColor.second.color,
-                    shape: StadiumBorder(),
-                    padding: padding(32, 16),
-                  ),
-                  icon: Icon(
-                    Icons.file_download,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    '파일 다운로드',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () =>
-                      openURL(controller.downloadableURL.value ?? ''),
-                ),
-                ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: ThemeColor.highlight.color,
-                    shape: StadiumBorder(),
-                    padding: padding(32, 16),
-                  ),
-                  icon: Icon(
-                    Icons.file_upload_rounded,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    '파일 업로드',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: controller.selectFile,
-                ),
-                Obx(
-                  () => Text(
-                    controller.selectedFileBytes != null
-                        ? '업로드된 파일 : ${controller.selectedFileName}'
-                        : '업로드한 파일이 없어요',
-                    style: ThemeTyphography.body.style,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 32),
-
-            /// save button
-            TextButton(
-              onPressed: controller.save,
-              child: Text(
-                '저장하기',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-              style: TextButton.styleFrom(
-                padding: padding(0, 16),
-                backgroundColor: ThemeColor.primary.color,
-                shape: StadiumBorder(),
-              ),
-            ),
-
-            if (docId != null)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Obx(
+        () {
+          if (controller.onProgress.isFalse) {
+            return Form(
+              // TODO: validator implementation
+              child: ListView(
                 children: [
+                  Text(
+                    board == null ? '새롭게 작성하기' : '기존 글 수정하기',
+                    style: ThemeTyphography.title.style,
+                  ),
+                  SizedBox(height: 32),
+
+                  /// Title
+                  Text(
+                    'Title',
+                    style: ThemeTyphography.subTitle.style.copyWith(
+                      color: ThemeColor.primary.color,
+                    ),
+                  ),
                   SizedBox(height: 16),
+                  TextFormField(
+                    controller: controller.titleController,
+                    decoration: formDecoration,
+                  ),
+                  SizedBox(height: 32),
+
+                  /// Content
+                  Text(
+                    'Content',
+                    style: ThemeTyphography.subTitle.style.copyWith(
+                      color: ThemeColor.primary.color,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  TextFormField(
+                    controller: controller.contentController,
+                    decoration: formDecoration,
+                    maxLines: null,
+                  ),
+                  SizedBox(height: 32),
+
+                  /// existing file
+                  Wrap(
+                    spacing: 16,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          primary: ThemeColor.second.color,
+                          shape: StadiumBorder(),
+                          padding: padding(32, 16),
+                        ),
+                        icon: Icon(
+                          Icons.file_download,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          '파일 다운로드',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: () =>
+                            openURL(controller.downloadableURL.value ?? ''),
+                      ),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          primary: ThemeColor.highlight.color,
+                          shape: StadiumBorder(),
+                          padding: padding(32, 16),
+                        ),
+                        icon: Icon(
+                          Icons.file_upload_rounded,
+                          color: Colors.white,
+                        ),
+                        label: Text(
+                          '파일 업로드',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onPressed: controller.selectFile,
+                      ),
+                      Obx(
+                        () => Text(
+                          controller.selectedFileBytes != null
+                              ? '업로드된 파일 : ${controller.selectedFileName}'
+                              : '업로드한 파일이 없어요',
+                          style: ThemeTyphography.body.style,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 32),
+
+                  /// save button
                   TextButton(
-                    onPressed: controller.delete,
+                    onPressed: controller.save,
                     child: Text(
-                      '삭제하기',
+                      '저장하기',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -169,14 +151,41 @@ class PaperBottomSheet extends GetResponsiveView<PaperEditController> {
                     ),
                     style: TextButton.styleFrom(
                       padding: padding(0, 16),
-                      backgroundColor: ThemeColor.highlight.color,
+                      backgroundColor: ThemeColor.primary.color,
                       shape: StadiumBorder(),
                     ),
                   ),
+
+                  if (docId != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 16),
+                        TextButton(
+                          onPressed: controller.delete,
+                          child: Text(
+                            '삭제하기',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                          ),
+                          style: TextButton.styleFrom(
+                            padding: padding(0, 16),
+                            backgroundColor: ThemeColor.highlight.color,
+                            shape: StadiumBorder(),
+                          ),
+                        ),
+                      ],
+                    ),
                 ],
               ),
-          ],
-        ),
+            );
+          } else {
+            return CircularProgressIndicator.adaptive();
+          }
+        },
       ),
     );
   }
