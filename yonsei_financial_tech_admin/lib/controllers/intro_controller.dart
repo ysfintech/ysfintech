@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// custom code
 import 'package:ysfintech_admin/model/introduction.dart';
@@ -71,6 +71,8 @@ class IntroEditController extends GetxController {
   IntroEditController() {
     fireStore = FireStoreDB();
   }
+  final String notFoundURL =
+      'https://cdn.pixabay.com/photo/2022/01/17/22/20/subtract-6945896_960_720.png';
 
   /// for CircularProgressingIndicator in Presentation Layer
   RxBool isLoading = false.obs;
@@ -91,7 +93,7 @@ class IntroEditController extends GetxController {
   /// for values that needs to be observable
   RxInt introID = 0.obs;
   Rx<String?> docID = Rx<String?>('');
-  Rx<Uint8List?> imageFile = null.obs;
+  Rx<Uint8List> imageFile = Uint8List.fromList([]).obs;
   RxString imagePath = ''.obs;
 
   @override
@@ -105,6 +107,8 @@ class IntroEditController extends GetxController {
     Intro? intro,
     int indexOfDoc,
   ) async {
+    imageFile.value = Uint8List.fromList([]);
+
     /// form data
     introContentCtlr.text = intro?.content ?? '';
     introNameCtlr.text = intro?.name ?? '';
@@ -128,9 +132,10 @@ class IntroEditController extends GetxController {
 
   /// select image file from PC
   void selectFile() async {
-    final Uint8List? picked = await ImagePickerWeb.getImageAsBytes();
+    final _picker = ImagePicker();
+    final picked = await _picker.pickImage(source: ImageSource.gallery);
     if (picked != null) {
-      imageFile.value = picked;
+      imageFile.value = await picked.readAsBytes();
       update();
     }
   }
@@ -140,7 +145,7 @@ class IntroEditController extends GetxController {
     isLoading.value = true;
     update();
 
-    final hasImage = imageFile.value != null;
+    final hasImage = imageFile.value.isNotEmpty;
     final data = Intro(
       content: introContentCtlr.text,
       id: introID.value,
@@ -155,13 +160,13 @@ class IntroEditController extends GetxController {
     if (docID.value != null) {
       if (hasImage) {
         result =
-            await fireStore.updateIntro(docID.value!, data, imageFile.value!);
+            await fireStore.updateIntro(docID.value!, data, imageFile.value);
       } else {
         result = await fireStore.updateIntroWithoutImage(docID.value!, data);
       }
     } else {
       // new intro must have image
-      result = await fireStore.addNewIntro(data, imageFile.value!);
+      result = await fireStore.addNewIntro(data, imageFile.value);
     }
 
     /// after all procedures

@@ -1,11 +1,12 @@
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
+import 'dart:io';
 
 import 'package:get/get.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:ysfintech_admin/model/board.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
-import 'package:ysfintech_admin/widgets/common.dart';
 
 /// `BoardController` gonna be the parent class of the other classes
 class BoardController extends GetxController {
@@ -39,9 +40,11 @@ mixin BoardEditMixinController on GetxController {
   Rx<Board?> selectedBoard = Rx<Board?>(null);
 
   void selectFile() async {
-    final html.File? picked = await ImagePickerWeb.getImageAsFile();
+    final ImagePicker _picker = ImagePicker();
+    final XFile? picked = await _picker.pickImage(source: ImageSource.gallery);
+
     if (picked != null) {
-      binaryFile.value = picked;
+      binaryFile.value = File(picked.path) as html.File?;
       update();
     }
   }

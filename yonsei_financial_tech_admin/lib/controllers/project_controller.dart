@@ -1,8 +1,10 @@
+import 'dart:html' as html;
+
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker_web/image_picker_web.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ysfintech_admin/model/project.dart';
 import 'package:ysfintech_admin/utils/firebase.dart';
 import 'package:ysfintech_admin/widgets/common.dart';
@@ -55,7 +57,7 @@ class ProjectEditController extends GetxController {
   final toController = TextEditingController();
 
   /// image
-  Rx<Uint8List?> binaryImage = null.obs;
+  Rx<Uint8List> binaryImage = Uint8List.fromList([]).obs;
   Rx<String> imagePath = ''.obs;
 
   /// docID
@@ -82,7 +84,7 @@ class ProjectEditController extends GetxController {
     titleController.text = '';
     fromController.text = '';
     toController.text = '';
-    binaryImage.value = null;
+    binaryImage.value = Uint8List.fromList([]);
     imagePath.value = notFoundURL;
     docID.value = null;
     update();
@@ -128,10 +130,11 @@ class ProjectEditController extends GetxController {
 
   /// upload new image file
   void uploadNewImage() async {
-    final Uint8List? selected = await ImagePickerWeb.getImageAsBytes();
-
-    /// check if the image file is not empty
-    if (selected != null) {
+    final _picker = ImagePicker();
+    final picked = await _picker.pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      final Uint8List selected = await picked.readAsBytes();
+      // save
       binaryImage.value = selected;
       update();
     }

@@ -1,3 +1,6 @@
+import 'dart:html' as html;
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -85,16 +88,16 @@ class ProjectBottomSheet extends GetResponsiveView<ProjectEditController> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: controller.binaryImage.value == null
-                              ? CachedNetworkImage(
+                          child: controller.binaryImage.value.isNotEmpty
+                              ? Image.memory(
+                                  controller.binaryImage.value,
+                                  width: Get.width * 0.3,
+                                )
+                              : CachedNetworkImage(
                                   imageUrl: controller.imagePath.value,
                                   width: Get.width * 0.3,
                                   errorWidget: (context, url, error) =>
                                       CircularProgressIndicator.adaptive(),
-                                )
-                              : Image.memory(
-                                  controller.binaryImage.value!,
-                                  width: Get.width * 0.3,
                                 ),
                         ),
                       ),

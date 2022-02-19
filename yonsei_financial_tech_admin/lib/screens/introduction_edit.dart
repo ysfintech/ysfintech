@@ -112,11 +112,11 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
 
                               /// check if user has selected image to upload
                               /// if not get the image from firebase first
-                              child: controller.imageFile.value == null
+                              child: controller.imageFile.value.isEmpty
                                   ? CachedNetworkImage(
                                       imageUrl: controller.imagePath.value != ''
                                           ? controller.imagePath.value
-                                          : 'https://picsum.photos/id/237/200/300', // TODO: basic image has been hard-coded !
+                                          : controller.notFoundURL,
                                       placeholder: (_, url) =>
                                           CircularProgressIndicator.adaptive(),
                                       errorWidget: (_, url, err) =>
@@ -127,7 +127,7 @@ class IntroBottomSheet extends GetResponsiveView<IntroEditController> {
                                       height: Get.height * 0.25,
                                     )
                                   : Image.memory(
-                                      controller.imageFile.value!,
+                                      controller.imageFile.value,
 
                                       /// size
                                       width: Get.width * 0.25,
