@@ -37,78 +37,71 @@ class _PeoplePageState extends State<PeoplePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          Scrollbar(
-              controller: _controller,
-              isAlwaysShown: true,
-              child: SingleChildScrollView(
-                controller: _controller,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    // MENU BAR ----------------------------------------------------------
-                    MenuBar(),
-                    title(context),
-                    FutureBuilder<QuerySnapshot>(
-                        future: fetchedData_yonsei,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(child: Text('500 - error'));
-                          } else if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          } else {
-                            List<Map<String, dynamic>> _yonsei_people = [];
-                            List<String> _yonsei_id = [];
-                            snapshot.data.docs.forEach((element) {
-                              _yonsei_people.add(element.data());
-                              _yonsei_id.add(element.id);
-                            });
-                            return yonseiPeople(
-                                context, _yonsei_people, _yonsei_id);
-                          }
-                        }),
-                    FutureBuilder<QuerySnapshot>(
-                        future: fetchedData_aca,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(child: Text('500 - error'));
-                          } else if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          } else {
-                            List<Map<String, dynamic>> _aca_people = [];
-                            List<String> _aca_id = [];
-                            snapshot.data.docs.forEach((element) {
-                              _aca_people.add(element.data());
-                              _aca_id.add(element.id);
-                            });
-                            return acaExPeople(context, _aca_people, _aca_id);
-                          }
-                        }),
-                    FutureBuilder<QuerySnapshot>(
-                        future: fetchedData_indus,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Center(child: Text('500 - error'));
-                          } else if (!snapshot.hasData) {
-                            return Center(child: CircularProgressIndicator());
-                          } else {
-                            List<Map<String, dynamic>> _indus_people = [];
-                            List<String> _indus_id = [];
-                            snapshot.data.docs.forEach((element) {
-                              _indus_people.add(element.data());
-                              _indus_id.add(element.id);
-                            });
-                            return indusExPeople(
-                                context, _indus_people, _indus_id);
-                          }
-                        }),
-                    Footer(),
-                  ],
-                ),
-              )),
-        ],
+      body: SingleChildScrollView(
+        controller: _controller,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            // MENU BAR ----------------------------------------------------------
+            MenuBar(),
+            title(context),
+            FutureBuilder<QuerySnapshot>(
+                future: fetchedData_yonsei,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('500 - error'));
+                  } else if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    List<Map<String, dynamic>> _yonsei_people = [];
+                    List<String> _yonsei_id = [];
+                    snapshot.data!.docs.forEach((element) {
+                      _yonsei_people.add(element.data() as Map<String, dynamic>);
+                      _yonsei_id.add(element.id);
+                    });
+                    return yonseiPeople(
+                        context, _yonsei_people, _yonsei_id);
+                  }
+                }),
+            FutureBuilder<QuerySnapshot>(
+                future: fetchedData_aca,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('500 - error'));
+                  } else if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    List<Map<String, dynamic>> _aca_people = [];
+                    List<String> _aca_id = [];
+                    snapshot.data!.docs.forEach((element) {
+                      _aca_people.add(element.data() as Map<String, dynamic>);
+                      _aca_id.add(element.id);
+                    });
+                    return acaExPeople(context, _aca_people, _aca_id);
+                  }
+                }),
+            FutureBuilder<QuerySnapshot>(
+                future: fetchedData_indus,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('500 - error'));
+                  } else if (!snapshot.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    List<Map<String, dynamic>> _indus_people = [];
+                    List<String> _indus_id = [];
+                    snapshot.data!.docs.forEach((element) {
+                      _indus_people.add(element.data() as Map<String, dynamic>);
+                      _indus_id.add(element.id);
+                    });
+                    return indusExPeople(
+                        context, _indus_people, _indus_id);
+                  }
+                }),
+            Footer(),
+          ],
+        ),
       ),
     );
   }
@@ -255,14 +248,14 @@ Widget _peopleList(
                               return Center(child: CircularProgressIndicator());
                             } else {
                               return ImagePixels(
-                                imageProvider: NetworkImage(snapshot.data),
+                                imageProvider: NetworkImage(snapshot.data.toString()),
                                 defaultColor: Colors.white,
                                 builder: (context, img) => CircleAvatar(
                                   radius: 100,
-                                  backgroundColor: img.pixelColorAtAlignment(
+                                  backgroundColor: img.pixelColorAtAlignment!(
                                       Alignment.centerLeft),
                                   child: ClipOval(
-                                    child: Image.network(snapshot.data,
+                                    child: Image.network(snapshot.data.toString(),
                                         width: 200, height: 200),
                                   ),
                                 ),
@@ -273,14 +266,14 @@ Widget _peopleList(
                       return Center(child: CircularProgressIndicator());
                     } else {
                       return ImagePixels(
-                        imageProvider: NetworkImage(snapshot.data),
+                        imageProvider: NetworkImage(snapshot.data.toString()),
                         defaultColor: Colors.white,
                         builder: (context, img) => CircleAvatar(
                           radius: 100,
                           backgroundColor:
-                              img.pixelColorAtAlignment(Alignment.centerLeft),
+                              img.pixelColorAtAlignment!(Alignment.centerLeft),
                           child: ClipOval(
-                            child: Image.network(snapshot.data,
+                            child: Image.network(snapshot.data.toString(),
                                 width: 200, height: 200),
                           ),
                         ),

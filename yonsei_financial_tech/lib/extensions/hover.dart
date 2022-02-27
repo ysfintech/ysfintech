@@ -20,7 +20,7 @@ class _HoverState extends State<Hover> {
         onHover: (hover) {
           if (mounted) {
             setState(() {
-              appContainer.style.cursor = 'pointer';
+              appContainer?.style.cursor = 'pointer';
             });
           }
         },

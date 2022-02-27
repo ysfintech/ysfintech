@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Board {
   final List<BoardItem> list;
 
-  Board({this.list});
+  Board({
+    required this.list,
+  });
 
   factory Board.fromJson(List<Map<String, dynamic>> json) {
     List<BoardItem> boardList =
@@ -22,26 +24,26 @@ class BoardItem {
   final String content;
   final String imagePath;
 
-  BoardItem(
-      {this.content,
-      this.date,
-      this.number,
-      this.title,
-      this.view,
-      this.writer,
-      this.imagePath});
+  BoardItem({
+    required this.content,
+    required this.date,
+    required this.number,
+    required this.title,
+    required this.view,
+    required this.writer,
+    required this.imagePath,
+  });
 
   factory BoardItem.fromJson(Map<String, dynamic> json) {
     Timestamp _timeStamp = json['date'];
     DateTime _dateTime = _timeStamp.toDate();
     return BoardItem(
-        number: json['number'],
+        number: json['id'],
         title: json['title'],
         writer: json['writer'],
         date: _dateTime,
         view: json['view'],
         content: json['content'],
-        imagePath: json['imagePath']
-        );
+        imagePath: json['imagePath']);
   }
 }

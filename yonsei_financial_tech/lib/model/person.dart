@@ -4,7 +4,12 @@ class Person {
   String img;
   String field;
 
-  Person({this.name, this.major, this.img, this.field});
+  Person({
+    required this.name,
+    required this.major,
+    required this.img,
+    required this.field,
+  });
 
   Person.fromMap(Map<String, dynamic> map)
       : name = map['name'],

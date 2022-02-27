@@ -1,9 +1,6 @@
 import 'dart:html' as html;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
@@ -12,14 +9,17 @@ import 'package:yonsei_financial_tech/model/board.dart';
 class BoardDetail extends StatefulWidget {
   final String storage;
   final BoardItem data;
-  BoardDetail({@required this.data, @required this.storage});
+  BoardDetail({
+    required this.data,
+    required this.storage,
+  });
 
   @override
   _BoardDetailState createState() => _BoardDetailState();
 }
 
 class _BoardDetailState extends State<BoardDetail> {
-  ScrollController scrollController;
+  late final ScrollController scrollController;
   @override
   void initState() {
     super.initState();
@@ -42,7 +42,10 @@ class _BoardDetailState extends State<BoardDetail> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         MenuBar(),
-                        BoardDetailArticle(data: widget.data, storage: widget.storage,),
+                        BoardDetailArticle(
+                          data: widget.data,
+                          storage: widget.storage,
+                        ),
                         Footer(),
                       ]))),
         ],
@@ -54,16 +57,19 @@ class _BoardDetailState extends State<BoardDetail> {
 class BoardDetailArticle extends StatefulWidget {
   final BoardItem data;
   final String storage;
-  BoardDetailArticle({@required this.data, @required this.storage});
+  BoardDetailArticle({
+    required this.data,
+    required this.storage,
+  });
 
   @override
   _BoardDetailArticleState createState() => _BoardDetailArticleState();
 }
 
 class _BoardDetailArticleState extends State<BoardDetailArticle> {
-  BoardItem data;
+  late final BoardItem data;
 
-  String storageURL;
+  late final String storageURL;
 
   @override
   void initState() {
@@ -74,8 +80,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
 
   String getOnlyTitle(String imagePath) {
     String res;
-    res = imagePath
-        .substring(storageURL.length);
+    res = imagePath.substring(storageURL.length);
     return res;
   }
 
@@ -127,8 +132,7 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                       ),
                       style: ButtonStyle(
                           overlayColor: MaterialStateColor.resolveWith(
-                              (states) => Colors.transparent))
-                  )
+                              (states) => Colors.transparent)))
                 ],
               ),
             ),
@@ -164,7 +168,12 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
                           spacing: 20.0,
                           // DATE | VIEW
                           children: <Widget>[
-                            Text('작성일자:  ' + data.date.toIso8601String().substring(0,10), style: bodyTextStyle),
+                            Text(
+                                '작성일자:  ' +
+                                    data.date
+                                        .toIso8601String()
+                                        .substring(0, 10),
+                                style: bodyTextStyle),
                             Text('조회수: ' + data.view.toString(),
                                 style: bodyTextStyle),
                             Text('작성자: ' + data.writer, style: bodyTextStyle)
@@ -183,17 +192,14 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
             ),
             // ARTICLE
             Align(
-              alignment: Alignment.center,
-              // child: Article(
-              //   false, // no Image condition
-              //   content: "content",
-              //   backgroundColor: Colors.white,
-              // ),
-              //child: MarkdownContent(data: data.content)
-              child: Text(
-                data.content, style: bodyTextStyle
-              )
-            ),
+                alignment: Alignment.center,
+                // child: Article(
+                //   false, // no Image condition
+                //   content: "content",
+                //   backgroundColor: Colors.white,
+                // ),
+                //child: MarkdownContent(data: data.content)
+                child: Text(data.content, style: bodyTextStyle)),
             data.imagePath != null
                 ? Column(
                     children: <Align>[
@@ -241,13 +247,15 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
 
 class MarkdownContent extends StatefulWidget {
   final String data;
-  MarkdownContent({@required this.data});
+  MarkdownContent({
+    required this.data,
+  });
   @override
   _MarkdownContentState createState() => _MarkdownContentState();
 }
 
 class _MarkdownContentState extends State<MarkdownContent> {
-  ScrollController controller;
+  late final ScrollController controller;
 
   @override
   void initState() {
@@ -270,7 +278,8 @@ class _MarkdownContentState extends State<MarkdownContent> {
               selectable: true,
               shrinkWrap: true,
               data: widget.data,
-              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(textScaleFactor: 1.5),
+              styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                  .copyWith(textScaleFactor: 1.5),
               styleSheetTheme: MarkdownStyleSheetBaseTheme.cupertino,
             )
           ],

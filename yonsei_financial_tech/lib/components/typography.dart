@@ -82,7 +82,7 @@ TextStyle titleIntroductionTextStyle = TextStyle(
     // fontFamily: 'Yonsei'
     fontFamily: GoogleFonts.nunito().fontFamily);
 
-TextStyle articleTitleTextStyle({Color color}) {
+TextStyle articleTitleTextStyle({Color? color}) {
   return TextStyle(
       fontSize: 28,
       color: color != null ? color : Colors.white,
@@ -90,7 +90,7 @@ TextStyle articleTitleTextStyle({Color color}) {
       fontWeight: FontWeight.w800);
 }
 
-TextStyle articleContentTextStyle({Color color}) {
+TextStyle articleContentTextStyle({Color? color}) {
   return TextStyle(
     fontSize: 22,
     color: color != null ? color : ligthGray,

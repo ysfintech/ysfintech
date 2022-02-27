@@ -10,6 +10,7 @@ class Routes {
   static const String publish = "publish";
   static const String work = "work";
   static const String seminar = "seminar";
+  static const String conference = "conference";
 
   static Route<T> fadeThrough<T>(RouteSettings settings, WidgetBuilder page,
       {int duration = 300}) {

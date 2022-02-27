@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:yonsei_financial_tech/pages/extendable_board.dart';
 
 // pages
 import 'package:yonsei_financial_tech/pages/people/people.dart';
 import 'package:yonsei_financial_tech/pages/home/home.dart';
 import 'package:yonsei_financial_tech/pages/project/project.dart';
 import 'package:yonsei_financial_tech/pages/publication/publication.dart';
-import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
-import 'package:yonsei_financial_tech/pages/worklist/worklist.dart';
-import 'package:yonsei_financial_tech/pages/seminar/seminar.dart';
+// import 'package:yonsei_financial_tech/pages/working_paper/working_paper.dart';
+// import 'package:yonsei_financial_tech/pages/worklist/worklist.dart';
+// import 'package:yonsei_financial_tech/pages/seminar/seminar.dart';
 // routes
 import './routes.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, widget) => ResponsiveWrapper.builder(
-          BouncingScrollWrapper.builder(context, widget),
+          BouncingScrollWrapper.builder(context, widget ?? this) ,
           maxWidth: double.infinity,
           minWidth: 450,
           defaultScale: true,
@@ -45,13 +46,15 @@ class MyApp extends StatelessWidget {
             case Routes.project:
               return ProjectPage();
             case Routes.paper:
-              return PaperPage();
+              return ExtendablePage('paper');
             case Routes.publish:
               return PublishPage();
             case Routes.work:
-              return WorkPage();
+              return ExtendablePage('work');
             case Routes.seminar:
-              return SeminarPage();
+              return ExtendablePage('seminar');
+            case Routes.conference:
+              return ExtendablePage('conference');
             default:
               return SizedBox.shrink();
           }
