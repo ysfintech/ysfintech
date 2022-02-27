@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +12,6 @@ import 'package:yonsei_financial_tech/components/text.dart';
 import 'package:yonsei_financial_tech/components/typography.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
 import 'package:yonsei_financial_tech/pages/board_detail.dart';
-import 'package:yonsei_financial_tech/pages/work_detail.dart';
 // route
 import 'package:yonsei_financial_tech/routes.dart';
 
@@ -184,6 +181,16 @@ class MenuBar extends StatelessWidget {
                                 overlayColor: MaterialStateColor.resolveWith(
                                     (states) => Colors.transparent))),
                         TextButton(
+                            onPressed: () =>
+                                Navigator.pushNamed(context, Routes.conference),
+                            child: Text(
+                              "Conference",
+                              style: buttonTextStyle,
+                            ),
+                            style: ButtonStyle(
+                                overlayColor: MaterialStateColor.resolveWith(
+                                    (states) => Colors.transparent))),
+                        TextButton(
                             onPressed: () async {
                               var dest =
                                   'https://www.facebook.com/groups/ahn.yonsei/';
@@ -234,22 +241,23 @@ class MenuBar extends StatelessWidget {
 
 // Article
 class Article extends StatelessWidget {
-  final Color backgroundColor;
-  final Image image;
-  final String imageDesc;
-  final String period;
-  final String from;
+  final Color? backgroundColor;
+  final Image? image;
+  final String? imageDesc;
+  final String? period;
+  final String? from;
   final String content;
-  final String title;
+  final String? title;
 
-  Article(
-      {this.title,
-      this.period,
-      this.from,
-      this.backgroundColor,
-      this.image,
-      @required this.content,
-      this.imageDesc});
+  Article({
+    this.title,
+    this.period,
+    this.from,
+    this.backgroundColor,
+    this.image,
+    required this.content,
+    this.imageDesc,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -268,12 +276,12 @@ class Article extends StatelessWidget {
                   ? Container(
                       width: md.width,
                       height: md.width > 800
-                          ? title.length > 40
-                              ? (title.length - 40) * 4.0
+                          ? title!.length > 40
+                              ? (title!.length - 40) * 4.0
                               : 40
-                          : title.length * 3.0,
+                          : title!.length * 3.0,
                       margin: marginHorizontal(md.width),
-                      child: Text(title,
+                      child: Text(title!,
                           style: backgroundColor == Colors.white
                               ? h2TextStyle
                               : h2WhiteTextStyle,
@@ -285,7 +293,7 @@ class Article extends StatelessWidget {
                       width: md.width,
                       height: 80,
                       margin: marginHorizontal(md.width),
-                      child: Text(period + ', ' + from,
+                      child: Text(period! + ', ' + from!,
                           style: backgroundColor == Colors.white
                               ? h3TextStyle
                               : h3WhiteTextStyle))
@@ -322,7 +330,7 @@ class Article extends StatelessWidget {
                           height: md.width * 0.15,
                           margin: marginHorizontal(md.width),
                           child: Text(
-                            imageDesc,
+                            imageDesc ?? '',
                             style: backgroundColor == Colors.white
                                 ? bodyTextStyle
                                 : bodyWhiteTextStyle,
@@ -350,10 +358,11 @@ class Article extends StatelessWidget {
                 title != null
                     ? Container(
                         width: md.width,
-                        height:
-                            title.length > 40 ? (title.length - 40) * 4.0 : 40,
+                        height: title!.length > 40
+                            ? (title!.length - 40) * 4.0
+                            : 40,
                         margin: marginHorizontal(md.width),
-                        child: Text(title,
+                        child: Text(title!,
                             style: backgroundColor != null
                                 ? h2WhiteTextStyle
                                 : h2TextStyle),
@@ -382,12 +391,12 @@ class Article extends StatelessWidget {
 
 // ArticleB
 class ArticleB extends StatelessWidget {
-  final Color backgroundColor;
-  final Image image;
-  final String name;
-  final String role;
+  final Color? backgroundColor;
+  final Image? image;
+  final String? name;
+  final String? role;
   final String content;
-  final String title;
+  final String? title;
 
   ArticleB(
       {this.title,
@@ -395,7 +404,7 @@ class ArticleB extends StatelessWidget {
       this.role,
       this.backgroundColor,
       this.image,
-      @required this.content});
+      required this.content});
 
   @override
   Widget build(BuildContext context) {
@@ -446,7 +455,7 @@ class ArticleB extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Text>[
                                 Text(
-                                  name,
+                                  name ?? '',
                                   style: backgroundColor == Colors.white
                                       ? bodyTextStyle
                                       : bodyWhiteTextStyle,
@@ -454,7 +463,7 @@ class ArticleB extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  role,
+                                  role ?? '',
                                   style: backgroundColor == Colors.white
                                       ? bodyTextStyle
                                       : bodyWhiteTextStyle,
@@ -543,9 +552,13 @@ Stack title(BuildContext context) {
 class BoardArticle extends StatefulWidget {
   final List<Map<String, dynamic>> board;
   final String storage;
-  final Function onRefresh;
+  final VoidCallback onRefresh;
 
-  BoardArticle({this.board, this.storage, this.onRefresh});
+  BoardArticle({
+    required this.board,
+    required this.storage,
+    required this.onRefresh,
+  });
 
   @override
   _BoardArticleState createState() => _BoardArticleState();
@@ -577,7 +590,7 @@ class _BoardArticleState extends State<BoardArticle> {
   int pageListRow = 0;
 
   // firebase
-  CollectionReference papers;
+  late final CollectionReference papers;
 
   Future<void> updateView(String docID, int updatedView) {
     return papers
@@ -719,45 +732,53 @@ class _BoardArticleState extends State<BoardArticle> {
                                           onTap: () {
                                             // page route
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      BoardDetail(
-                                                    storage: widget.storage,
-                                                    data: BoardItem(
-                                                        title: widget.board[listIndex]
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BoardDetail(
+                                                  storage: widget.storage,
+                                                  data: BoardItem(
+                                                    title:
+                                                        widget.board[listIndex]
                                                             ['title'],
-                                                        writer: widget.board[listIndex]
+                                                    writer:
+                                                        widget.board[listIndex]
                                                             ['writer'],
-                                                        number:
-                                                            widget.board[listIndex]
-                                                                ['number'],
-                                                        date: (widget.board[listIndex]
+                                                    number: widget
+                                                        .board[listIndex]['id'],
+                                                    date:
+                                                        (widget.board[listIndex]
                                                                     ['date']
                                                                 as Timestamp)
                                                             .toDate(),
-                                                        view: widget.board[listIndex]
+                                                    view:
+                                                        widget.board[listIndex]
                                                             ['view'],
-                                                        content:
-                                                            widget.board[listIndex]
-                                                                ['content'],
-                                                        imagePath:
-                                                            widget.board[listIndex]
-                                                                ['imagePath']),
+                                                    content:
+                                                        widget.board[listIndex]
+                                                            ['content'],
+                                                    imagePath:
+                                                        widget.board[listIndex]
+                                                            ['imagePath'],
                                                   ),
-                                                )).then(this.widget.onRefresh);
+                                                ),
+                                              ),
+                                            ).then(
+                                              (value) =>
+                                                  this.widget.onRefresh(),
+                                            );
+
                                             // increase view
                                             updateView(
-                                                widget.board[
-                                                    (selectedPageIndex - 1) *
-                                                            10 +
-                                                        (index)]['docID'],
-                                                widget.board[
-                                                        (selectedPageIndex -
-                                                                    1) *
-                                                                10 +
-                                                            (index)]['view'] +
-                                                    1);
+                                              widget.board[
+                                                  (selectedPageIndex - 1) * 10 +
+                                                      (index)]['docID'],
+                                              widget.board[
+                                                      (selectedPageIndex - 1) *
+                                                              10 +
+                                                          (index)]['view'] +
+                                                  1,
+                                            );
                                           },
                                           child: Text(
                                             widget.board[listIndex]['title']
@@ -807,6 +828,7 @@ class _BoardArticleState extends State<BoardArticle> {
                         ),
                       );
                     }
+                    return SizedBox();
                   },
                 )
               : Align(

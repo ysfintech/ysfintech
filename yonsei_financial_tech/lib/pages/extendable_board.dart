@@ -1,21 +1,23 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:yonsei_financial_tech/components/components.dart';
 
-class SeminarPage extends StatefulWidget {
+class ExtendablePage extends StatefulWidget {
+  final String collectionName;
+
+  ExtendablePage(this.collectionName);
+
   @override
-  _SeminarPageState createState() => _SeminarPageState();
+  _ExtendablePageState createState() => _ExtendablePageState();
 }
 
-class _SeminarPageState extends State<SeminarPage> {
+class _ExtendablePageState extends State<ExtendablePage> {
   ScrollController _controller = new ScrollController();
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  CollectionReference papers = FirebaseFirestore.instance.collection('seminar');
+  late final CollectionReference papers;
 
   var fetchedData;
 
@@ -25,158 +27,158 @@ class _SeminarPageState extends State<SeminarPage> {
   @override
   void initState() {
     super.initState();
+    papers = FirebaseFirestore.instance.collection(widget.collectionName);
     fetchedData = papers.orderBy('id').get();
   }
 
-  _refresh(dynamic value) => setState(() {
-        fetchedData = papers.orderBy('id').get();
-      });
+  _refresh() => setState(
+        () {
+          fetchedData = papers.orderBy('id').get();
+        },
+      );
 
   // search action
   void searchWithTitle(String title) {
-    setState(() {
-      filterText = title;
-    });
+    setState(
+      () {
+        filterText = title;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: <Widget>[
-          Scrollbar(
-              controller: _controller,
-              isAlwaysShown: true,
-              child: SingleChildScrollView(
-                  controller: _controller,
-                  child: FutureBuilder<QuerySnapshot>(
-                    future: fetchedData,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Center(child: Text('500 - error'));
-                      } else if (!snapshot.hasData) {
-                        return Column(
-                          children: <Widget>[
-                            // MENU BAR ----------------------------------------------------------
-                            MenuBar(),
-                            Container(
-                              color: Colors.white,
-                              width: double.infinity,
-                              height: 400,
-                              child: Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            ),
-                            Footer()
-                          ],
-                        );
-                      } else {
-                        // data
-                        List<Map<String, dynamic>> data = [];
-                        // add filtering
-                        snapshot.data.docs.forEach((element) {
-                          if (filterText.length == 0) {
-                            Map<String, dynamic> temp = {
-                              'docID': element.id,
-                              ...element.data()
-                            };
-                            data.add(temp);
-                          } else {
-                            if (element
-                                .data()['title']
-                                .toString()
-                                .contains(filterText)) {
-                              Map<String, dynamic> temp = {
-                                'docID': element.id,
-                                ...element.data()
-                              };
-                              data.add(temp);
-                            }
-                          }
-                        });
-                        data = data.reversed.toList();
-                        return Column(
-                          children: <Widget>[
-                            // MENU BAR ----------------------------------------------------------
-                            MenuBar(),
-                            title(context),
-                            Container(
-                              padding: paddingBottom24,
-                              color: Colors.white,
-                              child: divider,
-                            ),
-                            // IMAGE BACKGROUND - NAME -------------------------------------------
-                            searchTab(context),
-                            filterText.length != 0
-                                ? Align(
-                                    alignment: Alignment.topRight,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.stretch,
-                                      children: <Widget>[
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              vertical: 20),
-                                          color: themeBlue.withOpacity(0.7),
-                                          alignment: Alignment.centerRight,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: <Widget>[
-                                              TextButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    filterText = '';
-                                                  });
-                                                },
-                                                child: Text("'" +
-                                                    filterText +
-                                                    "'" +
-                                                    ' 관련 검색 결과 초기화',
-                                                    style: h3WhiteTextStyle,
-                                                ),
-                                                style: ButtonStyle(
-                                                  overlayColor: MaterialStateColor.resolveWith(
-                                                    (states) => Colors.transparent))
-                                              ),
-                                              TextButton.icon(
-                                                  onPressed: () {
-                                                    setState(() {
-                                                      filterText = '';
-                                                    });
-                                                  },
-                                                  icon: Icon(
-                                                      Icons.close_rounded,
-                                                      color: Colors.white,
-                                                      size: 22),
-                                                  label: Text('')),
-                                            ],
+      body: SingleChildScrollView(
+          controller: _controller,
+          child: FutureBuilder<QuerySnapshot>(
+            future: fetchedData,
+            builder: (BuildContext context,
+                AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Center(child: Text('500 - error'));
+              } else if (!snapshot.hasData) {
+                return Column(
+                  children: <Widget>[
+                    // MENU BAR ----------------------------------------------------------
+                    MenuBar(),
+                    Container(
+                      color: Colors.white,
+                      width: double.infinity,
+                      height: 400,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    Footer()
+                  ],
+                );
+              } else {
+                // data
+                List<Map<String, dynamic>> data = [];
+                // add filtering
+                snapshot.data!.docs.forEach((element) {
+                  if (filterText.length == 0) {
+                    Map<String, dynamic> temp = {
+                      'docID': element.id,
+                      ...element.data() as Map<String, dynamic>
+                    };
+                    data.add(temp);
+                  } else {
+                    if (element
+                        .get('title')
+                        .toString()
+                        .contains(filterText)) {
+                      Map<String, dynamic> temp = {
+                        'docID': element.id,
+                        ...element.data() as Map<String, dynamic>
+                      };
+                      data.add(temp);
+                    }
+                  }
+                });
+                data = data.reversed.toList();
+                return Column(
+                  children: <Widget>[
+                    // MENU BAR ----------------------------------------------------------
+                    MenuBar(),
+                    title(context),
+                    Container(
+                      padding: paddingBottom24,
+                      color: Colors.white,
+                      child: divider,
+                    ),
+                    // IMAGE BACKGROUND - NAME -------------------------------------------
+                    searchTab(context),
+                    filterText.length != 0
+                        ? Align(
+                            alignment: Alignment.topRight,
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                          0.15,
+                                      vertical: 20),
+                                  color: themeBlue.withOpacity(0.7),
+                                  alignment: Alignment.centerRight,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      TextButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              filterText = '';
+                                            });
+                                          },
+                                          child: Text(
+                                            "'" +
+                                                filterText +
+                                                "'" +
+                                                ' 관련 검색 결과 초기화',
+                                            style: h3WhiteTextStyle,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : SizedBox(height: 0),
-                            // Board  ------------------------------------------------------------
-                            BoardArticle(
-                              board: data,
-                              storage: 'seminar',
-                              onRefresh: _refresh,
+                                          style: ButtonStyle(
+                                              overlayColor: MaterialStateColor
+                                                  .resolveWith(
+                                                      (states) => Colors
+                                                          .transparent))),
+                                      TextButton.icon(
+                                          onPressed: () {
+                                            setState(() {
+                                              filterText = '';
+                                            });
+                                          },
+                                          icon: Icon(
+                                              Icons.close_rounded,
+                                              color: Colors.white,
+                                              size: 22),
+                                          label: Text('')),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            Footer(),
-                          ],
-                        );
-                      }
-                    },
-                  ))),
-        ],
-      ),
+                          )
+                        : SizedBox(height: 0),
+                    // Board  ------------------------------------------------------------
+                    BoardArticle(
+                      board: data,
+                      storage: '${widget.collectionName}',
+                      onRefresh:_refresh,
+                    ),
+                    Footer(),
+                  ],
+                );
+              }
+            },
+          )),
     );
   }
 
@@ -192,7 +194,7 @@ class _SeminarPageState extends State<SeminarPage> {
           SizedBox(height: 100),
           Container(
             child: Text(
-              'Seminar',
+              '${widget.collectionName[0].toUpperCase()}${widget.collectionName.substring(1)}',
               style: h1TextStyle,
             ),
           ),

@@ -40,38 +40,30 @@ class _PublishPageState extends State<PublishPage> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
-        children: <Widget>[
-          Scrollbar(
-            controller: _controller,
-            isAlwaysShown: true,
-            child: 
-          SingleChildScrollView(
-              controller: _controller,
-              child: Column(
-                children: <Widget>[
-                  // MENU BAR ----------------------------------------------------------
-                  MenuBar(),
-                  title(context),
-                  Container(
-                    padding: paddingBottom24,
-                    color: Colors.white,
-                    child: divider,
-                  ),
-                  // WEB VIEW
-                  SizedBox(
-                    width: size.width * 0.8,
-                    height: size.height,
-                    child: HtmlElementView(
-                      key: UniqueKey(),
-                      viewType: 'iframeElement',
-                    ),
-                  ),
-                  Footer(),
-                ],
-              ))),
-        ],
-      ),
+      body: SingleChildScrollView(
+          controller: _controller,
+          child: Column(
+            children: <Widget>[
+              // MENU BAR ----------------------------------------------------------
+              MenuBar(),
+              title(context),
+              Container(
+                padding: paddingBottom24,
+                color: Colors.white,
+                child: divider,
+              ),
+              // WEB VIEW
+              SizedBox(
+                width: size.width * 0.8,
+                height: size.height,
+                child: HtmlElementView(
+                  key: UniqueKey(),
+                  viewType: 'iframeElement',
+                ),
+              ),
+              Footer(),
+            ],
+          )),
     );
   }
 
