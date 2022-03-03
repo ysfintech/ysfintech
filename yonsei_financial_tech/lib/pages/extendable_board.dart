@@ -192,25 +192,20 @@ class _ExtendablePageState extends State<ExtendablePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           SizedBox(height: 100),
-          widget.collectionName == 'paper'
-            ? Container(
-              child: Text(
+          Container(
+            child: widget.collectionName == 'paper'
+            ? Text(
                 'Working Paper',
                 style: h1TextStyle,
-                ),
               )
             : widget.collectionName == 'work'
-              ? Container(
-                child: Text(
+              ? Text(
                   'Collaboration',
                   style: h1TextStyle,
-                  ),
                 )
-              : Container(
-                child: Text(
+              : Text(
                   '${widget.collectionName[0].toUpperCase()}${widget.collectionName.substring(1)}',
                   style: h1TextStyle,
-                  ),
                 ),
           ),
           SizedBox(height: 100),
