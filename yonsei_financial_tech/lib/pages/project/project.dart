@@ -55,7 +55,7 @@ class _ProjectPageState extends State<ProjectPage> {
                   Container(
                     margin: marginHorizontal(size.width),
                     child: Text(
-                      'Projects',
+                      'Project',
                       style: h1TextStyle,
                     ),
                   ),
