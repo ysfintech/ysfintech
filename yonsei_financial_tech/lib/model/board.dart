@@ -22,7 +22,7 @@ class BoardItem {
   final DateTime date;
   final int view;
   final String content;
-  final String imagePath;
+  final String? imagePath;
 
   BoardItem({
     required this.content,
@@ -31,7 +31,7 @@ class BoardItem {
     required this.title,
     required this.view,
     required this.writer,
-    required this.imagePath,
+    this.imagePath,
   });
 
   factory BoardItem.fromJson(Map<String, dynamic> json) {
