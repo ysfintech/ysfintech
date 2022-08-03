@@ -23,18 +23,18 @@ handlers:
       Access-Control-Allow-Origin: gs://ysfintech-homepage.appspot.com
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.17.6 <3.0.0"
 
 dependencies:
-  responsive_framework: ^0.1.0
+  responsive_framework: ^0.2.0
   animations: ^2.0.0
-  google_fonts: ^2.0.0
+  google_fonts: ^3.0.1
   firebase_core: "^1.0.3"
   cloud_firestore: ^3.1.10
   firebase_storage: ^10.2.9
   flutter_markdown: ^0.6.1
   url_launcher: ^6.0.3
-  image_pixels: ^2.0.0
+  image_pixels: ^3.0.0
   path_provider: ^2.0.1
   flutter_svg: ^1.0.3
 

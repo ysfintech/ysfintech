@@ -7,6 +7,8 @@ import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:image_pixels/image_pixels.dart';
 import 'package:yonsei_financial_tech/model/person.dart';
 
+import 'dart:ui' as ui;
+
 class PeoplePage extends StatefulWidget {
   @override
   _PeoplePageState createState() => _PeoplePageState();
@@ -57,11 +59,11 @@ class _PeoplePageState extends State<PeoplePage> {
                     List<Map<String, dynamic>> _yonsei_people = [];
                     List<String> _yonsei_id = [];
                     snapshot.data!.docs.forEach((element) {
-                      _yonsei_people.add(element.data() as Map<String, dynamic>);
+                      _yonsei_people
+                          .add(element.data() as Map<String, dynamic>);
                       _yonsei_id.add(element.id);
                     });
-                    return yonseiPeople(
-                        context, _yonsei_people, _yonsei_id);
+                    return yonseiPeople(context, _yonsei_people, _yonsei_id);
                   }
                 }),
             FutureBuilder<QuerySnapshot>(
@@ -95,8 +97,7 @@ class _PeoplePageState extends State<PeoplePage> {
                       _indus_people.add(element.data() as Map<String, dynamic>);
                       _indus_id.add(element.id);
                     });
-                    return indusExPeople(
-                        context, _indus_people, _indus_id);
+                    return indusExPeople(context, _indus_people, _indus_id);
                   }
                 }),
             Footer(),
@@ -216,6 +217,23 @@ Widget _peopleList(
     return downloadURL;
   }
 
+  Future<String> getDownloadableURL(String fileName) async {
+    final basePeopleURL = 'gs://ysfintech-homepage.appspot.com/people/';
+    try {
+      return await FirebaseStorage.instance
+          .ref(
+            basePeopleURL + fileName + '.jpg',
+          )
+          .getDownloadURL();
+    } catch (e) {
+      return await FirebaseStorage.instance
+          .ref(
+            basePeopleURL + fileName + '.png',
+          )
+          .getDownloadURL();
+    }
+  }
+
   return GridView.builder(
       shrinkWrap: true,
       primary: false,
@@ -236,45 +254,30 @@ Widget _peopleList(
                 height: 20.0,
               ),
               FutureBuilder(
-                  future: downloadURL_jpg(_id[index]),
+                  future: getDownloadableURL(_id[index]),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
-                      return FutureBuilder(
-                          future: downloadURL_png(_id[index]),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Center(child: Text('500 - error'));
-                            } else if (!snapshot.hasData) {
-                              return Center(child: CircularProgressIndicator());
-                            } else {
-                              return ImagePixels(
-                                imageProvider: NetworkImage(snapshot.data.toString()),
-                                defaultColor: Colors.white,
-                                builder: (context, img) => CircleAvatar(
-                                  radius: 100,
-                                  backgroundColor: img.pixelColorAtAlignment!(
-                                      Alignment.centerLeft),
-                                  child: ClipOval(
-                                    child: Image.network(snapshot.data.toString(),
-                                        width: 200, height: 200),
-                                  ),
-                                ),
-                              );
-                            }
-                          });
+                      debugPrint('has bug at : ${snapshot.error.toString()}');
+                      return SizedBox.square(
+                        dimension: 200,
+                        child: Center(child: Text('Error')),
+                      );
                     } else if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
                     } else {
-                      return ImagePixels(
-                        imageProvider: NetworkImage(snapshot.data.toString()),
-                        defaultColor: Colors.white,
-                        builder: (context, img) => CircleAvatar(
-                          radius: 100,
-                          backgroundColor:
-                              img.pixelColorAtAlignment!(Alignment.centerLeft),
-                          child: ClipOval(
-                            child: Image.network(snapshot.data.toString(),
-                                width: 200, height: 200),
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: SizedBox(
+                          width: 210,
+                          height: 280,
+                          child: Transform.scale(
+                            scale: 1.125,
+                            alignment: Alignment.topCenter,
+                            child: Image.network(
+                              snapshot.data.toString(),
+                              fit: BoxFit.fitHeight,
+                              height: 60,
+                            ),
                           ),
                         ),
                       );
