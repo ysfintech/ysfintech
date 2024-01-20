@@ -46,7 +46,7 @@ class _PeoplePageState extends State<PeoplePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // MENU BAR ----------------------------------------------------------
-            MenuBar(),
+            MenuBarY(),
             title(context),
             FutureBuilder<QuerySnapshot>(
                 future: fetchedData_yonsei,
