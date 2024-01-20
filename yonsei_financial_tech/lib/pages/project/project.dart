@@ -44,7 +44,7 @@ class _ProjectPageState extends State<ProjectPage> {
         child: Column(
           children: <Widget>[
             // MENU BAR ----------------------------------------------------------
-            MenuBar(),
+            MenuBarY(),
             // PROJECTS  ------------------------------------------------------------
             Container(
               color: Colors.white,
