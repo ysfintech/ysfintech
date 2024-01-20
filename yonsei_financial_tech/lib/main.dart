@@ -26,19 +26,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      builder: (context, widget) => ResponsiveWrapper.builder(
-          BouncingScrollWrapper.builder(context, widget ?? this),
-          maxWidth: double.infinity,
-          minWidth: 450,
-          defaultScale: true,
+      builder: (context, child) => ResponsiveBreakpoints.builder(
+          child: child!,
           breakpoints: [
-            ResponsiveBreakpoint.resize(450, name: MOBILE),
-            ResponsiveBreakpoint.autoScale(800, name: TABLET),
-            ResponsiveBreakpoint.autoScale(1000, name: TABLET),
-            ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-            ResponsiveBreakpoint.autoScale(2460, name: "4K"),
+            Breakpoint(start: 0, end: 360, name: 'SMALL_MOBILE'),
+            Breakpoint(start: 361, end: 450, name: MOBILE),
+            Breakpoint(start: 451, end: 800, name: TABLET),
+            Breakpoint(start: 801, end: 1920, name: DESKTOP),
+            Breakpoint(start: 1921, end: double.infinity, name: '4K'),
           ],
-          background: Container(color: Colors.white)),
+      ),
       initialRoute: Routes.home,
       onGenerateRoute: (RouteSettings settings) {
         return Routes.fadeThrough(settings, (context) {
