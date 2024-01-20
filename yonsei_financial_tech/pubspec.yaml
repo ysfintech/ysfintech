@@ -23,7 +23,7 @@ handlers:
       Access-Control-Allow-Origin: gs://ysfintech-homepage.appspot.com
 
 environment:
-  sdk: ">=3.16.8 <4.0.0"
+  sdk: ">=3.2.5 <4.0.0"
 
 dependencies:
   responsive_framework: ^1.1.1
