@@ -45,7 +45,7 @@ class _PublishPageState extends State<PublishPage> {
           child: Column(
             children: <Widget>[
               // MENU BAR ----------------------------------------------------------
-              MenuBar(),
+              MenuBarY(),
               title(context),
               Container(
                 padding: paddingBottom24,
