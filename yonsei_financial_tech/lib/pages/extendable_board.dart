@@ -62,7 +62,7 @@ class _ExtendablePageState extends State<ExtendablePage> {
                 return Column(
                   children: <Widget>[
                     // MENU BAR ----------------------------------------------------------
-                    MenuBar(),
+                    MenuBarY(),
                     Container(
                       color: Colors.white,
                       width: double.infinity,
@@ -102,7 +102,7 @@ class _ExtendablePageState extends State<ExtendablePage> {
                 return Column(
                   children: <Widget>[
                     // MENU BAR ----------------------------------------------------------
-                    MenuBar(),
+                    MenuBarY(),
                     title(context),
                     Container(
                       padding: paddingBottom24,
