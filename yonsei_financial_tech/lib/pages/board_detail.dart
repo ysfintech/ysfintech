@@ -41,7 +41,7 @@ class _BoardDetailState extends State<BoardDetail> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        MenuBar(),
+                        MenuBarY(),
                         BoardDetailArticle(
                           data: widget.data,
                           storage: widget.storage,
