@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       body: ListView(
         children: <Widget>[
           // MENU BAR ----------------------------------------------------------
-          MenuBar(),
+          MenuBarY(),
           // IMAGE BACKGROUND - NAME -------------------------------------------
           title(context),
           // PROJECTS  ------------------------------------------------------------
