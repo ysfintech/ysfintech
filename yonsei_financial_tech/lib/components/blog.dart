@@ -135,10 +135,10 @@ class MenuBar extends StatelessWidget {
                         //            (states) => Colors.transparent))),
                         TextButton(
                             onPressed: () async {
-                              var dest =
-                                  'https://orcid.org/0000-0003-3611-183X';
-                              await canLaunch(dest)
-                                  .then((value) => launch(dest))
+                              Uri dest =
+                                  Uri.parse('https://orcid.org/0000-0003-3611-183X');
+                              await canLaunchUrl(dest)
+                                  .then((value) => launchUrl(dest))
                                   // ignore: return_of_invalid_type_from_catch_error
                                   .catchError(
                                       (err) => print('could not launch'));
@@ -192,10 +192,10 @@ class MenuBar extends StatelessWidget {
                                     (states) => Colors.transparent))),
                         TextButton(
                             onPressed: () async {
-                              var dest =
-                                  'https://www.facebook.com/groups/ahn.yonsei/';
-                              await canLaunch(dest)
-                                  .then((value) => launch(dest))
+                              Uri dest =
+                                  Uri.parse('https://www.facebook.com/groups/ahn.yonsei/');
+                              await canLaunchUrl(dest)
+                                  .then((value) => launchUrl(dest))
                                   // ignore: return_of_invalid_type_from_catch_error
                                   .catchError(
                                       (err) => print('could not launch'));
@@ -209,9 +209,9 @@ class MenuBar extends StatelessWidget {
                                     (states) => Colors.transparent))),
                         TextButton(
                             onPressed: () async {
-                              var dest = 'http://ahn.yonsei.ac.kr/';
-                              await canLaunch(dest)
-                                  .then((value) => launch(dest))
+                              Uri dest = Uri.parse('http://ahn.yonsei.ac.kr/');
+                              await canLaunchUrl(dest)
+                                  .then((value) => launchUrl(dest))
                                   // ignore: return_of_invalid_type_from_catch_error
                                   .catchError(
                                       (err) => print('could not launch'));
