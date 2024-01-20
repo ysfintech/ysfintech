@@ -1,4 +1,4 @@
-library static_interop
+library static_interop;
 import 'package:js/js.dart';
 
 import 'package:firebase_core/firebase_core.dart';
