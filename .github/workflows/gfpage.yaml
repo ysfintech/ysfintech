@@ -18,12 +18,13 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+        working-directory: yonsei_financial_tech
 
       - name: Build web
         run: flutter build web
+        working-directory: yonsei_financial_tech
 
       - name: Deploy to GitHub Pages
         uses: bluefireteam/flutter-gh-pages@v7
         with:
-          baseHref: /
-          webDirectory: build/web
+          webDirectory: yonsei_financial_tech/build/web
