@@ -8,23 +8,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: yonsei_financial_tech
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.16.9'  # 프로젝트에 맞는 Flutter 버전으로 변경 가능
+          flutter-version: '3.16.9'
+
+      - name: Enable web support
+        run: flutter config --enable-web
 
       - name: Install dependencies
         run: flutter pub get
-        working-directory: yonsei_financial_tech
 
       - name: Build web
         run: flutter build web
-        working-directory: yonsei_financial_tech
 
       - name: Deploy to GitHub Pages
         uses: bluefireteam/flutter-gh-pages@v7
         with:
-          webDirectory: yonsei_financial_tech/build/web
+          workingDir: yonsei_financial_tech
+          baseHref: /
