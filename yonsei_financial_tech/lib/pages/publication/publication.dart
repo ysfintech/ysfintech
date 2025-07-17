@@ -1,5 +1,5 @@
 import 'dart:html';
-import 'dart:ui' as ui;
+import 'dart:ui_web' as ui;
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
 
@@ -28,7 +28,6 @@ class _PublishPageState extends State<PublishPage> {
      *  iframe을 사용하기 위해서 설정해둔 값입니다. 
      *  @author seunghwanly
      */
-   // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(
       'iframeElement',
       (int viewId) => _iFrameElement,
