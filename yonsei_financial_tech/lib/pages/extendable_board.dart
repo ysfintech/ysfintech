@@ -278,7 +278,7 @@ class _ExtendablePageState extends State<ExtendablePage> {
                           onPressed: () =>
                               searchWithTitle(textEditingController.text),
                           style: ElevatedButton.styleFrom(
-                              primary: themeBlue,
+                              backgroundColor: themeBlue,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               shape: RoundedRectangleBorder(
@@ -335,7 +335,7 @@ class _ExtendablePageState extends State<ExtendablePage> {
                           onPressed: () =>
                               searchWithTitle(textEditingController.text),
                           style: ElevatedButton.styleFrom(
-                              primary: themeBlue,
+                              backgroundColor: themeBlue,
                               padding: EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               shape: RoundedRectangleBorder(
