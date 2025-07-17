@@ -4,6 +4,9 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:yonsei_financial_tech/components/components.dart';
 import 'package:yonsei_financial_tech/model/board.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:html/dom.dart' as dom;
 
 // 2021/04/15 added
 class BoardDetail extends StatefulWidget {
@@ -192,14 +195,28 @@ class _BoardDetailArticleState extends State<BoardDetailArticle> {
             ),
             // ARTICLE
             Align(
-                alignment: Alignment.center,
-                // child: Article(
-                //   false, // no Image condition
-                //   content: "content",
-                //   backgroundColor: Colors.white,
-                // ),
-                //child: MarkdownContent(data: data.content)
-                child: Text(data.content, style: bodyTextStyle)),
+              alignment: Alignment.center,
+              child: Html(
+                      data: data.content,
+                      onLinkTap: (String? url, Map<String, String> attributes, dom.Element? element) async {
+                        print("🔗 링크 클릭됨: $url");  // ← 여기가 안 뜨면 클릭 자체가 안 된 것
+                        if (url != null) {
+                          final uri = Uri.parse(url);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri, mode: LaunchMode.platformDefault); // 웹 지원
+                          } else {
+                            print("🚫 열 수 없음: $url");
+                          }
+                        }
+                      },
+                      style: {
+                        "a": Style(
+                          color: Colors.blue,
+                          textDecoration: TextDecoration.underline,
+                        ),
+                      },
+                    ),
+            ),
             if (data.imagePath != null)
               Column(
                 children: <Align>[
