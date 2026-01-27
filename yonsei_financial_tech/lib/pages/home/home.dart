@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
                     alignment: Alignment.center,
                     child: ListView.builder(
                       reverse: true,
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
