@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                 name: data[index]?.get('name') ?? '',
                                 image:
                                     Image.network(snapshot.data.toString(),
-                                        width: 200, // image in one size
+                                        width: 1000, // image in one size
                                         fit: BoxFit.cover),
                               );
                             }
