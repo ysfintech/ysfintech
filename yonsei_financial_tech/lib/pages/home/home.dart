@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                                     
                                       image: Image.network(
                                         snapshot.data.toString(),
-                                        height: 420,
+                                        height: 600,
                                         width: double.infinity,
                                         fit: BoxFit.cover,
                                         alignment: Alignment.center,
