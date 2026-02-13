@@ -102,14 +102,12 @@ class _HomePageState extends State<HomePage> {
                                       role: '', // data[index]?.get('role') ?? '',
                                       name: '', // data[index]?.get('name') ?? '',
                                     
-                                      image: SizedBox(
-                                        width: double.infinity,
+                                      image: Image.network(
+                                        snapshot.data.toString(),
                                         height: 420,
-                                        child: Image.network(
-                                          snapshot.data.toString(),
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.center,
-                                        ),
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        alignment: Alignment.center,
                                       ),
                                     );
                             }
