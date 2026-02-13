@@ -95,20 +95,23 @@ class _HomePageState extends State<HomePage> {
                               return SizedBox(); // remove indicator
                             } else {
                               return ArticleB(
-                                backgroundColor: 
-                                    : Colors.white,
-                                title: data[index]?.get('title') ?? '',
-                                content: content(),
-                                role: '', //data[index]?.get('role') ?? 
-                                name: '', //data[index]?.get('name') ??
-                                image: SizedBox(
-                                  width: double.infinity,
-                                  height: 420,
-                                  child: Image.network(
-                                    snapshot.data.toString(),
-                                    fit: BoxFit.cover,
-                                    alignment: Alignment.center,),);
-                              );
+                                      backgroundColor: Colors.white,
+                                      title: data[index]?.get('title') ?? '',
+                                      content: content(),
+                                    
+                                      role: '', // data[index]?.get('role') ?? '',
+                                      name: '', // data[index]?.get('name') ?? '',
+                                    
+                                      image: SizedBox(
+                                        width: double.infinity,
+                                        height: 420,
+                                        child: Image.network(
+                                          snapshot.data.toString(),
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                        ),
+                                      ),
+                                    );
                             }
                           },
                         );
