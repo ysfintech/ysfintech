@@ -95,17 +95,19 @@ class _HomePageState extends State<HomePage> {
                               return SizedBox(); // remove indicator
                             } else {
                               return ArticleB(
-                                backgroundColor: index % 2 == 0
-                                    ? themeBlue
+                                backgroundColor: 
                                     : Colors.white,
                                 title: data[index]?.get('title') ?? '',
                                 content: content(),
-                                role: data[index]?.get('role') ?? '',
-                                name: data[index]?.get('name') ?? '',
-                                image:
-                                    Image.network(snapshot.data.toString(),
-                                        width: 1000, // image in one size
-                                        fit: BoxFit.cover),
+                                role: '', //data[index]?.get('role') ?? 
+                                name: '', //data[index]?.get('name') ??
+                                image: SizedBox(
+                                  width: double.infinity,
+                                  height: 420,
+                                  child: Image.network(
+                                    snapshot.data.toString(),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.center,),);
                               );
                             }
                           },
