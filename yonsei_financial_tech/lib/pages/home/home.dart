@@ -3,6 +3,8 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:yonsei_financial_tech/components/blog.dart';
 import 'package:yonsei_financial_tech/components/components.dart';
+import 'package:yonsei_financial_tech/components/typography.dart';
+import 'package:yonsei_financial_tech/components/spacing.dart';
 // firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -14,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  // firebase cloud firestore\
+  // firebase cloud firestore
   CollectionReference homes =
       FirebaseFirestore.instance.collection('introduction');
 
@@ -71,6 +73,7 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
+                        final md = MediaQuery.of(context).size;
                         // content parsing
                         List<String> parsedContent = data[index]!
                             .get('content')
@@ -89,32 +92,31 @@ class _HomePageState extends State<HomePage> {
                               data[index]?.get('id').toString() ?? ''),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
-                              return Text(
-                                  '500 - error');
+                              return Text('500 - error');
                             } else if (!snapshot.hasData) {
-                              return SizedBox(); // remove indicator
+                              return SizedBox();
                             } else {
                               return Container(
-                                      color: Colors.white,
-                                      child: Column(
-                                          children: [
-                                              SizedBox(height: 100),
-                                              Container(
-                                                  margin: marginHorizontal(md.width),
-                                                  child: Text(content(), style: bodyTextStyle),
-                                              ),
-                                              SizedBox(height: 10),
-                                              Image.network(
-                                                  snapshot.data.toString(),
-                                                  height: 600,
-                                                  width: double.infinity,
-                                                  fit: BoxFit.cover,
-                                                  alignment: Alignment.center,
-                                              ),
-                                              SizedBox(height: 40), // ← 여기 숫자만 조절하면 됨
-                                          ],
-                                      ),
-                                  );
+                                color: Colors.white,
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 100),
+                                    Container(
+                                      margin: marginHorizontal(md.width),
+                                      child: Text(content(), style: bodyTextStyle),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Image.network(
+                                      snapshot.data.toString(),
+                                      height: md.width * 0.25, // 가로:세로 4:1 비율에 맞게
+                                      width: double.infinity,
+                                      fit: BoxFit.contain, // 이미지 잘림 없이 전체 표시
+                                      alignment: Alignment.center,
+                                    ),
+                                    SizedBox(height: 20),
+                                  ],
+                                ),
+                              );
                             }
                           },
                         );
