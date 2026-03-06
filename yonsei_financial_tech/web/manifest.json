@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "연세대학교 금융기술센터 공식 홈페이지입니다.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
