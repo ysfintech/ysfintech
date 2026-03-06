@@ -94,22 +94,27 @@ class _HomePageState extends State<HomePage> {
                             } else if (!snapshot.hasData) {
                               return SizedBox(); // remove indicator
                             } else {
-                              return ArticleB(
-                                      backgroundColor: Colors.white,
-                                      title: data[index]?.get('title') ?? '',
-                                      content: content(),
-                                    
-                                      role: '', // data[index]?.get('role') ?? '',
-                                      name: '', // data[index]?.get('name') ?? '',
-                                    
-                                      image: Image.network(
-                                        snapshot.data.toString(),
-                                        height: 600,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        alignment: Alignment.center,
+                              return Container(
+                                      color: Colors.white,
+                                      child: Column(
+                                          children: [
+                                              SizedBox(height: 100),
+                                              Container(
+                                                  margin: marginHorizontal(md.width),
+                                                  child: Text(content(), style: bodyTextStyle),
+                                              ),
+                                              SizedBox(height: 10),
+                                              Image.network(
+                                                  snapshot.data.toString(),
+                                                  height: 600,
+                                                  width: double.infinity,
+                                                  fit: BoxFit.cover,
+                                                  alignment: Alignment.center,
+                                              ),
+                                              SizedBox(height: 40), // ← 여기 숫자만 조절하면 됨
+                                          ],
                                       ),
-                                    );
+                                  );
                             }
                           },
                         );
